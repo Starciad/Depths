@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- INFORMATIONS -->
+	<PropertyGroup>
+		<Title>Depths</Title>
+		<Authors>Davi "Starciad" Fernandes</Authors>
+		<Company>Davi "Starciad" Fernandes</Company>
+		<Description>A mining game made for the Depths 3310 Jam - 7th Edition.</Description>
+		<Copyright>Copyright © Davi "Starciad" Fernandes. All rights Reserved.</Copyright>
+		<PackageProjectUrl>https://github.com/Starciad/Depths.git</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Starciad/Depths.git</RepositoryUrl>
+		<PackageReleaseNotes>https://github.com/Starciad/Depths/releases</PackageReleaseNotes>
+		<RepositoryType>git</RepositoryType>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Version>1.0.0.0</Version>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+	</PropertyGroup>
+</Project>

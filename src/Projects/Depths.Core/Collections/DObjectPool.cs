@@ -1,0 +1,36 @@
+﻿using Depths.Core.Interfaces.Collections;
+
+using System.Collections.Generic;
+
+namespace Depths.Core.Collections
+{
+    internal sealed class DObjectPool
+    {
+        private readonly Queue<IDPoolableObject> pool = [];
+
+        internal IDPoolableObject Get()
+        {
+            _ = TryGet(out IDPoolableObject value);
+            return value;
+        }
+
+        internal bool TryGet(out IDPoolableObject value)
+        {
+            value = null;
+
+            if (this.pool.Count > 0)
+            {
+                value = this.pool.Dequeue();
+                value.Reset();
+                return true;
+            }
+
+            return false;
+        }
+
+        internal void Add(IDPoolableObject value)
+        {
+            this.pool.Enqueue(value);
+        }
+    }
+}

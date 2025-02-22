@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<!-- IMPORTS -->
+	<Import Project="../Targets/WebGL/Project_Compilation.targets" />
+	<Import Project="../Targets/WebGL/Project_Settings.targets" />
+	<Import Project="../Targets/WebGL/Project_Infos.targets" />
+
+	<!-- HEADER -->
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<RollForward>Major</RollForward>
+		<InvariantGlobalization>true</InvariantGlobalization>
+	</PropertyGroup>
+
+	<!-- SYSTEM -->
+	<PropertyGroup>
+		<AssemblyName>Depths.Core</AssemblyName>
+		<RootNamespace>Depths.Core</RootNamespace>
+	</PropertyGroup>
+
+	<!-- DEPENDENCIES -->
+	<ItemGroup>
+		<PackageReference Include="nkast.Xna.Framework.Content" Version="4.0.9001" />
+		<PackageReference Include="nkast.Xna.Framework.Graphics" Version="4.0.9001" />
+		<PackageReference Include="nkast.Xna.Framework.Audio" Version="4.0.9001" />
+		<PackageReference Include="nkast.Xna.Framework.Game" Version="4.0.9001" />
+		<PackageReference Include="nkast.Xna.Framework.Content.Pipeline.Builder" Version="4.0.9001" />
+	</ItemGroup>
+
+	<!-- TARGETS -->
+	<Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+		<Message Text="Restoring dotnet tools" Importance="High" />
+		<Exec Command="dotnet tool restore" />
+	</Target>
+</Project>
