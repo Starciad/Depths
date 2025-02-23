@@ -38,6 +38,7 @@ namespace Depths.Core.Databases
 
         private void LoadGraphics(ContentManager contentManager)
         {
+            AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_ENTITY_LENGTH, "texture_entity_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_ENTITY_ASSETS));
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_FONT_LENGTH, "texture_font_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_FONT_ASSETS));
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_TILE_LENGTH, "texture_tile_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_TILE_ASSETS));
         }

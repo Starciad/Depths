@@ -20,12 +20,14 @@ namespace Depths.Core
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
         private readonly DLevelDatabase levelDatabase;
+        private readonly DEntityDatabase entityDatabase;
 
         private readonly DGraphicsManager graphicsManager;
         private readonly DInputManager inputManager;
         private readonly DTextManager textManager;
         private readonly DMusicManager musicManager;
         private readonly DLevelManager levelManager;
+        private readonly DEntityManager entityManager;
 
         public DGame()
         {
@@ -43,12 +45,14 @@ namespace Depths.Core
             this.assetDatabase = new();
             this.musicDatabase = new(this.assetDatabase);
             this.levelDatabase = new(this.assetDatabase);
+            this.entityDatabase = new(this.assetDatabase);
 
             // Managers
             this.inputManager = new();
             this.textManager = new(this.assetDatabase);
             this.musicManager = new();
             this.levelManager = new(this.levelDatabase);
+            this.entityManager = new(this.entityDatabase);
 
             // Initialize Content
             this.Content.RootDirectory = DDirectoryConstants.ASSETS;
@@ -67,6 +71,7 @@ namespace Depths.Core
         protected override void Initialize()
         {
             this.assetDatabase.Initialize(this.Content);
+            this.entityDatabase.Initialize();
             this.graphicsManager.Initialize();
             this.textManager.Initialize();
 
@@ -84,12 +89,14 @@ namespace Depths.Core
             this.musicManager.PlayMusic();
 
             this.levelManager.LoadLevel("Surface");
+            this.entityManager.InstantiateEntity("Player", null);
         }
 
         protected override void Update(GameTime gameTime)
         {
             this.inputManager.Update();
             this.musicManager.Update(gameTime);
+            this.entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -102,6 +109,7 @@ namespace Depths.Core
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
             this.levelManager.Draw(this.spriteBatch);
+            this.entityManager.Draw(gameTime, this.spriteBatch);
             this.spriteBatch.End();
             #endregion
 

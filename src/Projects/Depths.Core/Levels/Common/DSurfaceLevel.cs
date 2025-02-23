@@ -13,7 +13,11 @@ namespace Depths.Core.Levels.Common
         internal DSurfaceLevel(DAssetDatabase assetDatabase) : base(assetDatabase)
         {
             this.tilemap = new(assetDatabase, new(12, 7));
-            this.tilemap.SetTile(new(0, 0), DTileType.Ground);
+
+            for (int i = 0; i < 5; i++)
+            {
+                this.tilemap.SetTile(new(i, 6), DTileType.Ground);
+            }
         }
 
         internal override void Draw(SpriteBatch spriteBatch)
