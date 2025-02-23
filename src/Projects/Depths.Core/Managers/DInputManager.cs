@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Depths.Core.Interfaces.Managers;
 
-using Depths.Core.Interfaces.Managers;
+using Microsoft.Xna.Framework.Input;
 
 namespace Depths.Core.Managers
 {

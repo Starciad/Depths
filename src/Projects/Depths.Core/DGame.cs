@@ -1,13 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Depths.Core.Audio;
-using Depths.Core.Colors;
+﻿using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Enums.Fonts;
 using Depths.Core.Managers;
-using Depths.Core.Mathematics;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using System;
 
@@ -89,7 +86,7 @@ namespace Depths.Core
             this.musicManager.PlayMusic();
 
             this.levelManager.LoadLevel("Surface");
-            this.entityManager.InstantiateEntity("Player", null);
+            _ = this.entityManager.InstantiateEntity("Player", null);
         }
 
         protected override void Update(GameTime gameTime)

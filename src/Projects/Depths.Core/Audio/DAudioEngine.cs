@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework.Audio;
-
-using Depths.Core.Collections;
+﻿using Depths.Core.Collections;
 using Depths.Core.Interfaces.Collections;
+
+using Microsoft.Xna.Framework.Audio;
 
 using System.Collections.Generic;
 

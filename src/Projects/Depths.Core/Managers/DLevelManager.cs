@@ -1,7 +1,6 @@
 ﻿using Depths.Core.Databases;
 using Depths.Core.Levels;
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Depths.Core.Managers

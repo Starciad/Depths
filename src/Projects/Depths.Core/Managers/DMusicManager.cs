@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Depths.Core.Audio.Music;
 
-using Depths.Core.Audio.Music;
+using Microsoft.Xna.Framework;
 
 namespace Depths.Core.Managers
 {

@@ -1,7 +1,5 @@
 ﻿using Depths.Core.Enums.General;
-using Depths.Core.Enums.Tiles;
 using Depths.Core.World.Ores;
-using Depths.Core.World.Tiles;
 
 using System.Collections.Generic;
 
@@ -10,7 +8,7 @@ namespace Depths.Core.Databases
     internal sealed class DWorldDatabase
     {
         private readonly Dictionary<string, DOre> ores;
-        
+
         internal DWorldDatabase(DAssetDatabase assetDatabase)
         {
             this.ores = new()

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Depths.Core.Constants;
+﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using System;
 using System.Collections.Generic;

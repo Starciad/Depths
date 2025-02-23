@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using Depths.Core.Constants;
+
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-using Depths.Core.Constants;
 
 using System.Collections.Generic;
 using System.IO;

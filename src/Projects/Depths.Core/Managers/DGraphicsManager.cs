@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using Depths.Core.Constants;
+﻿using Depths.Core.Constants;
 using Depths.Core.Interfaces.Managers;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Depths.Core.Managers
 {

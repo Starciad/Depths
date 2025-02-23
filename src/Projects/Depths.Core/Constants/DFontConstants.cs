@@ -5,7 +5,7 @@
         internal const byte WIDTH = 7;
         internal const byte HEIGHT = 8;
 
-        internal readonly static char[] MAPPED_CHARACTERS = [
+        internal static readonly char[] MAPPED_CHARACTERS = [
             'A',
             'B',
             'C',
