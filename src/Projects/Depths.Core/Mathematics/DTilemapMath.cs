@@ -21,5 +21,13 @@ namespace Depths.Core.Mathematics
                 position.Y * DWorldConstants.TILE_SIZE
             );
         }
+
+        internal static Point GetTotalTileCount(int chunkColumns, int chunkRows)
+        {
+            return new(
+                chunkColumns * DTilemapConstants.TILES_PER_CHUNK_WIDTH,
+                chunkRows * DTilemapConstants.TILES_PER_CHUNK_HEIGHT
+            );
+        }
     }
 }

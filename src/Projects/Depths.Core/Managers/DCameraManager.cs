@@ -1,4 +1,5 @@
-﻿using Depths.Core.Interfaces.Managers;
+﻿using Depths.Core.Constants;
+using Depths.Core.Interfaces.Managers;
 using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
@@ -72,7 +73,11 @@ namespace Depths.Core.Managers
         public DCameraManager(IDGraphicsManager graphicsManager)
         {
             this.graphicsManager = graphicsManager;
-            Reset();
+
+            this.Rotation = 0;
+            this.Zoom = 1;
+            this.Origin = new Vector2(DScreenConstants.SCREEN_WIDTH, DScreenConstants.SCREEN_HEIGHT) / 2f;
+            this.Position = Vector2.Zero;
         }
 
         public void Move(Vector2 direction)
@@ -152,14 +157,6 @@ namespace Depths.Core.Managers
 
             return screenBottomRight.X >= 0 && screenTopLeft.X < viewport.Width &&
                    screenBottomRight.Y >= 0 && screenTopLeft.Y < viewport.Height;
-        }
-
-        public void Reset()
-        {
-            this.Rotation = 0;
-            this.Zoom = 1;
-            this.Origin = new Vector2(this.graphicsManager.Viewport.Width, this.graphicsManager.Viewport.Height) / 2f;
-            this.Position = Vector2.Zero;
         }
     }
 }
