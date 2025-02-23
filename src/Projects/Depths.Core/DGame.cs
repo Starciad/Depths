@@ -24,6 +24,7 @@ namespace Depths.Core
         private readonly DTextManager textManager;
         private readonly DMusicManager musicManager;
         private readonly DEntityManager entityManager;
+        private readonly DCameraManager cameraManager;
 
         private readonly DWorld world;
 
@@ -49,6 +50,7 @@ namespace Depths.Core
             this.textManager = new(this.assetDatabase);
             this.musicManager = new();
             this.entityManager = new(this.entityDatabase);
+            this.cameraManager = new(this.graphicsManager);
 
             // Core
             this.world = new(this.assetDatabase);
@@ -105,7 +107,7 @@ namespace Depths.Core
             this.GraphicsDevice.SetRenderTarget(this.graphicsManager.ScreenRenderTarget);
             this.GraphicsDevice.Clear(DColorPalette.LightGreen);
 
-            this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
+            this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, this.cameraManager.GetViewMatrix());
             this.world.Draw(this.spriteBatch);
             this.entityManager.Draw(gameTime, this.spriteBatch);
             this.spriteBatch.End();
