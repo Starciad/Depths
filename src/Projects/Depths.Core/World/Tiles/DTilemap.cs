@@ -80,6 +80,11 @@ namespace Depths.Core.World.Tiles
 
         internal DTile GetTile(Point position)
         {
+            if (!IsInsideBounds(position))
+            {
+                return null;
+            }
+
             return this.tiles[position.X, position.Y];
         }
 
@@ -93,6 +98,12 @@ namespace Depths.Core.World.Tiles
                 DTileType.Ore => this.assetDatabase.GetTexture("texture_tile_3"),
                 _ => null,
             };
+        }
+
+        internal bool IsInsideBounds(Point position)
+        {
+            return position.X >= 0 && position.X < this.size.Width &&
+                   position.Y >= 0 && position.Y < this.size.Height;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
+using Depths.Core.Managers;
+using Depths.Core.World;
 
 using System.Collections.Generic;
 
@@ -16,9 +18,9 @@ namespace Depths.Core.Databases
             this.assetDatabase = assetDatabase;
         }
 
-        internal void Initialize()
+        internal void Initialize(DWorld world, DInputManager inputManager)
         {
-            RegisterEntityDescriptor(new DPlayerEntityDescriptor("Player", this.assetDatabase.GetTexture("texture_entity_1")));
+            RegisterEntityDescriptor(new DPlayerEntityDescriptor("Player", this.assetDatabase.GetTexture("texture_entity_1"), world, inputManager));
         }
 
         internal void RegisterEntityDescriptor(DEntityDescriptor descriptor)
