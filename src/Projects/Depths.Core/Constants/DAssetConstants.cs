@@ -3,7 +3,7 @@
     internal static class DAssetConstants
     {
         internal const byte TEXTURE_FONT_LENGTH = 2;
-        internal const byte TEXTURE_OTHER_LENGTH = 1;
+        internal const byte TEXTURE_TILE_LENGTH = 3;
 
         internal const byte BLIP_SOUND_LENGTH = 14;
         internal const byte GOOD_SOUND_LENGTH = 3;

@@ -17,15 +17,15 @@ namespace Depths.Core
     {
         private SpriteBatch spriteBatch;
 
-        private Point position;
-
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
+        private readonly DLevelDatabase levelDatabase;
 
         private readonly DGraphicsManager graphicsManager;
         private readonly DInputManager inputManager;
         private readonly DTextManager textManager;
         private readonly DMusicManager musicManager;
+        private readonly DLevelManager levelManager;
 
         public DGame()
         {
@@ -42,11 +42,13 @@ namespace Depths.Core
             // Databases
             this.assetDatabase = new();
             this.musicDatabase = new(this.assetDatabase);
+            this.levelDatabase = new(this.assetDatabase);
 
             // Managers
             this.inputManager = new();
             this.textManager = new(this.assetDatabase);
             this.musicManager = new();
+            this.levelManager = new(this.levelDatabase);
 
             // Initialize Content
             this.Content.RootDirectory = DDirectoryConstants.ASSETS;
@@ -80,33 +82,14 @@ namespace Depths.Core
         {
             this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
             this.musicManager.PlayMusic();
+
+            this.levelManager.LoadLevel("Surface");
         }
 
         protected override void Update(GameTime gameTime)
         {
             this.inputManager.Update();
             this.musicManager.Update(gameTime);
-
-            if (this.inputManager.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.W))
-            {
-                this.position.Y--;
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_blip_1"));
-            }
-            else if (this.inputManager.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
-            {
-                this.position.X--;
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_blip_1"));
-            }
-            else if (this.inputManager.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.D))
-            {
-                this.position.X++;
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_blip_1"));
-            }
-            else if (this.inputManager.KeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.S))
-            {
-                this.position.Y++;
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_blip_1"));
-            }
 
             base.Update(gameTime);
         }
@@ -118,8 +101,7 @@ namespace Depths.Core
             this.GraphicsDevice.Clear(DColorPalette.LightGreen);
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
-            this.spriteBatch.Draw(this.assetDatabase.GetTexture("texture_other_1"), this.position.ToVector2(), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-            this.textManager.DrawText(this.spriteBatch, string.Concat("Text", DRandomMath.Range(0, 100)), Point.Zero, DFontType.Dark, 1);
+            this.levelManager.Draw(this.spriteBatch);
             this.spriteBatch.End();
             #endregion
 

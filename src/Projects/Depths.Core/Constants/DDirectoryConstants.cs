@@ -8,7 +8,7 @@
 
         internal const string TEXTURE_ASSETS = "textures";
         internal const string TEXTURE_FONT_ASSETS = "fonts";
-        internal const string TEXTURE_OTHER_ASSETS = "others";
+        internal const string TEXTURE_TILE_ASSETS = "tiles";
 
         internal const string SOUND_ASSETS = "sounds";
         internal const string BLIP_SOUND_ASSETS = "blips";
