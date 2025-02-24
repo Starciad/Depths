@@ -134,7 +134,7 @@ namespace Depths.Core.Databases
                 },
             ];
 
-            this.chunks = DChunkLoader.Load();
+            this.chunks = DChunkLoaderUtility.Load();
         }
     }
 }

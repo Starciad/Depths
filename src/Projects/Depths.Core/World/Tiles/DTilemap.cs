@@ -7,6 +7,9 @@ using Depths.Core.Mathematics.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using System;
+using System.Collections.Generic;
+
 namespace Depths.Core.World.Tiles
 {
     internal sealed class DTilemap
@@ -17,6 +20,119 @@ namespace Depths.Core.World.Tiles
         private readonly DTile[,] tiles;
 
         private readonly DAssetDatabase assetDatabase;
+
+        private readonly Dictionary<DTileType, Action<DTile>> tileTypes = new()
+        {
+            [DTileType.Empty] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 0;
+                tile.IsSolid = false;
+                tile.IsDestructible = false;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.Ground] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 1;
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.Stone] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = (byte)DRandomMath.Range(2, 3);
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.Ore] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = (byte)DRandomMath.Range(4, 5);
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.Stairs] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 0;
+                tile.IsSolid = false;
+                tile.IsDestructible = false;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.Box] = (DTile tile) =>
+            {
+                tile.HasGravity = true;
+                tile.Health = 2;
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.SpikeTrap] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 0;
+                tile.IsSolid = false;
+                tile.IsDestructible = false;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.ArrowTrap] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 1;
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.Wall] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 0;
+                tile.IsSolid = true;
+                tile.IsDestructible = false;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.BoulderTrap] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 5;
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+
+            [DTileType.ExplosiveTrap] = (DTile tile) =>
+            {
+                tile.HasGravity = false;
+                tile.Health = 1;
+                tile.IsSolid = true;
+                tile.IsDestructible = true;
+                tile.Ore = null;
+                tile.Resistance = 0;
+            },
+        };
 
         internal DTilemap(DAssetDatabase assetDatabase, DSize2 size)
         {
@@ -40,13 +156,41 @@ namespace Depths.Core.World.Tiles
             {
                 for (int x = 0; x < this.size.Width; x++)
                 {
-                    DTile tile = GetTile(new(x, y));
+                    Point position = new(x, y);
+                    DTile tile = GetTile(position);
 
-                    if (tile.Health == 0 && tile.IsDestructible)
-                    {
-                        SetTile(new(x, y), DTileType.Empty);
-                    }
+                    UpdateTileHealth(tile, position);
+                    UpdateTileGravity(tile, position);
                 }
+            }
+        }
+
+        private void UpdateTileHealth(DTile tile, Point position)
+        {
+            if (tile.Health == 0 && tile.IsDestructible)
+            {
+                SetTile(position, DTileType.Empty);
+            }
+        }
+
+        private void UpdateTileGravity(DTile tile, Point position)
+        {
+            if (!tile.HasGravity)
+            {
+                return;
+            }
+
+            DTile tileBelow = this.tiles[position.X, position.Y + 1];
+
+            if (tileBelow == null)
+            {
+                return;
+            }
+
+            if (tileBelow.Type == DTileType.Empty)
+            {
+                tileBelow.Copy(tile);
+                SetTile(position, DTileType.Empty);
             }
         }
 
@@ -79,92 +223,7 @@ namespace Depths.Core.World.Tiles
             }
 
             tile.Type = type;
-
-            switch (type)
-            {
-                case DTileType.Empty:
-                    tile.Health = 0;
-                    tile.IsSolid = false;
-                    tile.IsDestructible = false;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.Ground:
-                    tile.Health = 1;
-                    tile.IsSolid = true;
-                    tile.IsDestructible = true;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.Stone:
-                    tile.Health = (byte)DRandomMath.Range(2, 3);
-                    tile.IsSolid = true;
-                    tile.IsDestructible = true;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.Ore:
-                    tile.Health = (byte)DRandomMath.Range(4, 5);
-                    tile.IsSolid = true;
-                    tile.IsDestructible = true;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.Stairs:
-                    tile.Health = 0;
-                    tile.IsSolid = false;
-                    tile.IsDestructible = false;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.SpikeTrap:
-                    tile.Health = 0;
-                    tile.IsSolid = false;
-                    tile.IsDestructible = false;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.ArrowTrap:
-                    tile.Health = 1;
-                    tile.IsSolid = true;
-                    tile.IsDestructible = true;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.Wall:
-                    tile.Health = 0;
-                    tile.IsSolid = true;
-                    tile.IsDestructible = false;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.BoulderTrap:
-                    tile.Health = 5;
-                    tile.IsSolid = true;
-                    tile.IsDestructible = true;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                case DTileType.ExplosiveTrap:
-                    tile.Health = 1;
-                    tile.IsSolid = true;
-                    tile.IsDestructible = true;
-                    tile.Ore = null;
-                    tile.Resistance = 0;
-                    break;
-
-                default:
-                    break;
-            }
+            this.tileTypes[type]?.Invoke(tile);
         }
 
         internal DTile GetTile(Point position)
@@ -181,7 +240,7 @@ namespace Depths.Core.World.Tiles
                 DTileType.Stone => this.assetDatabase.GetTexture("texture_tile_2"),
                 DTileType.Ore => this.assetDatabase.GetTexture("texture_tile_3"),
                 DTileType.Stairs => this.assetDatabase.GetTexture("texture_tile_4"),
-                DTileType.MovableBlock => this.assetDatabase.GetTexture("texture_tile_5"),
+                DTileType.Box => this.assetDatabase.GetTexture("texture_tile_5"),
                 DTileType.SpikeTrap => this.assetDatabase.GetTexture("texture_tile_6"),
                 DTileType.ArrowTrap => this.assetDatabase.GetTexture("texture_tile_7"),
                 DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_8"),

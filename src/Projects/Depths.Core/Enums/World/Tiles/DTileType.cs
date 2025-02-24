@@ -7,7 +7,7 @@
         Stone = 2,
         Ore = 3,
         Stairs = 4,
-        MovableBlock = 5,
+        Box = 5,
         SpikeTrap = 6,
         ArrowTrap = 7,
         Wall = 8,

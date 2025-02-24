@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace Depths.Core.Utilities
 {
-    internal static class DChunkLoader
+    internal static class DChunkLoaderUtility
     {
         public static DWorldChunk[] Load()
         {
