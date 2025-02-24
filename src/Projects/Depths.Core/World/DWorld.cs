@@ -16,6 +16,11 @@ namespace Depths.Core.World
             this.Tilemap = new(assetDatabase, DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT));
         }
 
+        internal void Update()
+        {
+            this.Tilemap.Update();
+        }
+
         internal void Draw(SpriteBatch spriteBatch)
         {
             this.Tilemap.Draw(spriteBatch);

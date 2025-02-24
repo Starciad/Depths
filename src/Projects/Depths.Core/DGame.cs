@@ -124,6 +124,7 @@ namespace Depths.Core
             if (!this.worldTransitionManager.IsTransitioning())
             {
                 this.entityManager.Update(gameTime);
+                this.world.Update();
             }
 
             this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.playerEntity.Position));

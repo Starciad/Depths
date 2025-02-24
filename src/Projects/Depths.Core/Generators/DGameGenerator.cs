@@ -35,8 +35,8 @@ namespace Depths.Core.Generators
         private void GenerateWorld()
         {
             GenerateWorldSurface();
-            // GenerateWorldUnderground();
-            // GenerateWorldDepths();
+            GenerateWorldUnderground();
+            GenerateWorldDepths();
         }
 
         private void GenerateWorldSurface()

@@ -39,8 +39,8 @@ namespace Depths.Core.Entities.Common
         private readonly int gravityDelayFrames = 5;
 
         private readonly Rectangle[] textureClipAreas = [
-            new(new(0, 0), new(7)),
-            new(new(0, 7), new(7)),
+            new(new(0, 0), new(7)), // Right Sprite
+            new(new(0, 7), new(7)), // Left Sprite
         ];
 
         internal DPlayerEntity(DEntityDescriptor descriptor, DInputManager inputManager) : base(descriptor)
@@ -52,7 +52,11 @@ namespace Depths.Core.Entities.Common
 
         internal override void Update(GameTime gameTime)
         {
-            ApplyGravityStep();
+            if (TryApplyGravityStep())
+            {
+                return;
+            }
+
             HandleInput();
         }
 
@@ -61,13 +65,13 @@ namespace Depths.Core.Entities.Common
             spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), this.direction == DDirection.Right ? this.textureClipAreas[0] : this.textureClipAreas[1], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 
-        private void ApplyGravityStep()
+        private bool TryApplyGravityStep()
         {
             this.gravityFrameCounter++;
 
             if (this.gravityFrameCounter < this.gravityDelayFrames)
             {
-                return;
+                return false;
             }
 
             this.gravityFrameCounter = 0;
@@ -76,15 +80,17 @@ namespace Depths.Core.Entities.Common
 
             if (IsCollidingAt(checkPointBottom))
             {
-                return;
+                return false;
             }
 
             this.Position = checkPointBottom;
+            return true;
         }
 
         private void HandleInput()
         {
             HandleHorizontalMovement();
+            HandleVerticalMovement();
         }
 
         private void HandleHorizontalMovement()
@@ -93,14 +99,14 @@ namespace Depths.Core.Entities.Common
             DDirection targetDirection = DDirection.None;
 
             if (this.inputManager.KeyboardState.IsKeyDown(Keys.A) &&
-                !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.A))
+               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.A))
             {
                 deltaX = -1;
                 targetDirection = DDirection.Left;
             }
 
             if (this.inputManager.KeyboardState.IsKeyDown(Keys.D) &&
-                !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.D))
+               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.D))
             {
                 deltaX = 1;
                 targetDirection = DDirection.Right;
@@ -120,6 +126,62 @@ namespace Depths.Core.Entities.Common
                 {
                     this.Position = checkPointFront;
                 }
+                else
+                {
+                    TryMineBlock(checkPointFront);
+                }
+            }
+        }
+
+        private void HandleVerticalMovement()
+        {
+            sbyte deltaY = 0;
+
+            if (this.inputManager.KeyboardState.IsKeyDown(Keys.W) &&
+               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.W))
+            {
+                deltaY = -1;
+            }
+
+            if (this.inputManager.KeyboardState.IsKeyDown(Keys.S) &&
+               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.S))
+            {
+                deltaY = 1;
+            }
+
+            if (deltaY != 0)
+            {
+                Point checkPointFront = new(this.Position.X, this.Position.Y + deltaY);
+
+                DTile tile = this.tilemap.GetTile(this.Position);
+                if (tile != null && tile.Type == DTileType.Stairs)
+                {
+                    if (!IsCollidingAt(checkPointFront))
+                    {
+                        this.Position = checkPointFront;
+                    }
+                }
+                else if (IsCollidingAt(checkPointFront))
+                {
+                    TryMineBlock(checkPointFront);
+                }
+            }
+        }
+
+        private void TryMineBlock(Point position)
+        {
+            DTile tile = this.tilemap.GetTile(position);
+
+            if (tile == null || !tile.IsDestructible)
+            {
+                return;
+            }
+
+            tile.Health--;
+
+            if (tile.Health <= 0)
+            {
+                this.tilemap.SetTile(position, DTileType.Empty);
             }
         }
 
@@ -127,7 +189,7 @@ namespace Depths.Core.Entities.Common
         {
             DTile tile = this.tilemap.GetTile(position);
 
-            return tile == null || tile.Type != DTileType.Empty;
+            return tile == null || tile.IsSolid;
         }
     }
 }

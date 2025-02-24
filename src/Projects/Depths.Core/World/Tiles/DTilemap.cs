@@ -34,6 +34,22 @@ namespace Depths.Core.World.Tiles
             }
         }
 
+        internal void Update()
+        {
+            for (int y = 0; y < this.size.Height; y++)
+            {
+                for (int x = 0; x < this.size.Width; x++)
+                {
+                    DTile tile = GetTile(new(x, y));
+
+                    if (tile.Health == 0 && tile.IsDestructible)
+                    {
+                        SetTile(new(x, y), DTileType.Empty);
+                    }
+                }
+            }
+        }
+
         internal void Draw(SpriteBatch spriteBatch)
         {
             for (int y = 0; y < this.size.Height; y++)
@@ -67,34 +83,38 @@ namespace Depths.Core.World.Tiles
             switch (type)
             {
                 case DTileType.Empty:
+                    tile.Health = 0;
+                    tile.IsSolid = false;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
                     break;
 
                 case DTileType.Ground:
                     tile.Health = 1;
                     tile.IsSolid = true;
-                    tile.IsIndestructible = false;
+                    tile.IsDestructible = true;
                     break;
 
                 case DTileType.Stone:
                     tile.Health = (byte)DRandomMath.Range(2, 3);
                     tile.IsSolid = true;
-                    tile.IsIndestructible = false;
+                    tile.IsDestructible = true;
                     break;
 
                 case DTileType.Ore:
                     tile.Health = (byte)DRandomMath.Range(4, 5);
                     tile.IsSolid = true;
-                    tile.IsIndestructible = false;
+                    tile.IsDestructible = true;
                     break;
 
                 case DTileType.Stairs:
                     tile.IsSolid = false;
-                    tile.IsIndestructible = true;
+                    tile.IsDestructible = false;
                     break;
 
                 case DTileType.Trap:
-                    tile.IsSolid = true;
-                    tile.IsIndestructible = true;
+                    tile.IsDestructible = false;
                     break;
 
                 default:
