@@ -11,6 +11,8 @@ namespace Depths.Core.World.Tiles
 {
     internal sealed class DTilemap
     {
+        internal DSize2 Size => this.size;
+
         private readonly DSize2 size;
         private readonly DTile[,] tiles;
 
@@ -80,12 +82,7 @@ namespace Depths.Core.World.Tiles
 
         internal DTile GetTile(Point position)
         {
-            if (!IsInsideBounds(position))
-            {
-                return null;
-            }
-
-            return this.tiles[position.X, position.Y];
+            return !IsInsideBounds(position) ? null : this.tiles[position.X, position.Y];
         }
 
         internal Texture2D GetTileTexture(DTileType tileType)

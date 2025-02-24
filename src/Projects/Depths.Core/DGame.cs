@@ -1,7 +1,9 @@
 ﻿using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
+using Depths.Core.Generators;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.World;
@@ -22,6 +24,7 @@ namespace Depths.Core
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
         private readonly DEntityDatabase entityDatabase;
+        private readonly DWorldDatabase worldDatabase;
 
         private readonly DGraphicsManager graphicsManager;
         private readonly DInputManager inputManager;
@@ -32,6 +35,7 @@ namespace Depths.Core
         private readonly DWorldTransitionManager worldTransitionManager;
 
         private readonly DWorld world;
+        private readonly DGameGenerator gameGenerator;
 
         public DGame()
         {
@@ -49,6 +53,7 @@ namespace Depths.Core
             this.assetDatabase = new();
             this.musicDatabase = new(this.assetDatabase);
             this.entityDatabase = new(this.assetDatabase);
+            this.worldDatabase = new(this.assetDatabase);
 
             // Managers
             this.inputManager = new();
@@ -60,6 +65,14 @@ namespace Depths.Core
 
             // Core
             this.world = new(this.assetDatabase);
+            this.gameGenerator = new()
+            {
+                AssetDatabase = this.assetDatabase,
+                EntityDatabase = this.entityDatabase,
+                WorldDatabase = this.worldDatabase,
+                EntityManager = this.entityManager,
+                World = this.world,
+            };
 
             // Initialize Content
             this.Content.RootDirectory = DDirectoryConstants.ASSETS;
@@ -81,6 +94,7 @@ namespace Depths.Core
             this.entityDatabase.Initialize(this.world, this.inputManager);
             this.graphicsManager.Initialize();
             this.textManager.Initialize();
+            this.gameGenerator.Initialize();
 
             base.Initialize();
         }
@@ -95,7 +109,10 @@ namespace Depths.Core
             this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
             this.musicManager.PlayMusic();
 
-            this.playerEntity = (DPlayerEntity)this.entityManager.InstantiateEntity("Player", null);
+            this.playerEntity = (DPlayerEntity)this.entityManager.InstantiateEntity("Player", (DEntity entity) =>
+            {
+                entity.Position = new(this.world.Tilemap.Size.Width / 2, 0);
+            });
         }
 
         protected override void Update(GameTime gameTime)

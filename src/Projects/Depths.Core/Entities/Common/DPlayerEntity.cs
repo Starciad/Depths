@@ -58,7 +58,7 @@ namespace Depths.Core.Entities.Common
 
         internal override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), this.direction == DDirection.Right ? textureClipAreas[0] : textureClipAreas[1], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), this.direction == DDirection.Right ? this.textureClipAreas[0] : this.textureClipAreas[1], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 
         private void ApplyGravityStep()
