@@ -56,7 +56,7 @@ namespace Depths.Core
             this.musicManager = new();
             this.entityManager = new(this.entityDatabase);
             this.cameraManager = new(this.graphicsManager);
-            this.worldTransitionManager = new(this.cameraManager);
+            this.worldTransitionManager = new(this.assetDatabase, this.cameraManager);
 
             // Core
             this.world = new(this.assetDatabase);

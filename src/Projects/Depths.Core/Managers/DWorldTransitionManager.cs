@@ -1,4 +1,6 @@
-﻿using Depths.Core.Constants;
+﻿using Depths.Core.Audio;
+using Depths.Core.Constants;
+using Depths.Core.Databases;
 
 using Microsoft.Xna.Framework;
 
@@ -10,11 +12,14 @@ namespace Depths.Core.Managers
         private bool isTransitioning;
 
         private readonly int transitionSpeed = 2;
+        private readonly DAssetDatabase assetDatabase;
         private readonly DCameraManager cameraManager;
 
-        internal DWorldTransitionManager(DCameraManager cameraManager)
+        internal DWorldTransitionManager(DAssetDatabase assetDatabase, DCameraManager cameraManager)
         {
+            this.assetDatabase = assetDatabase;
             this.cameraManager = cameraManager;
+
             this.targetPosition = cameraManager.Position.ToPoint();
         }
 
@@ -22,6 +27,7 @@ namespace Depths.Core.Managers
         {
             if (this.isTransitioning)
             {
+                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_blip_10"));
                 MoveCameraToTarget();
                 return;
             }
@@ -35,18 +41,18 @@ namespace Depths.Core.Managers
         private bool HasPlayerMovedToNewScreen(Point playerPosition)
         {
             int cameraX = this.cameraManager.Position.ToPoint().X;
-            int cameraY = this.cameraManager.Position.ToPoint().Y;
+            int cameraWorldY = -this.cameraManager.Position.ToPoint().Y;
 
             return playerPosition.X < cameraX || playerPosition.X >= cameraX + DScreenConstants.GAME_WIDTH ||
-                   playerPosition.Y < cameraY || playerPosition.Y >= cameraY + DScreenConstants.GAME_HEIGHT;
+                   playerPosition.Y < cameraWorldY || playerPosition.Y >= cameraWorldY + DScreenConstants.GAME_HEIGHT;
         }
 
         private void StartTransition(Point playerPosition)
         {
             int newX = playerPosition.X / DScreenConstants.GAME_WIDTH * DScreenConstants.GAME_WIDTH;
-            int newY = playerPosition.Y / DScreenConstants.GAME_HEIGHT * DScreenConstants.GAME_HEIGHT * -1;
-
-            this.targetPosition = new Point(newX, newY);
+            int newY = playerPosition.Y / (DScreenConstants.GAME_HEIGHT + 1) * (DScreenConstants.GAME_HEIGHT + 1);
+            
+            this.targetPosition = new Point(newX, -newY);
             this.isTransitioning = true;
         }
 
