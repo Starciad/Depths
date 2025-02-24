@@ -115,22 +115,49 @@ namespace Depths.Core.World.Tiles
                     break;
 
                 case DTileType.Stairs:
+                    tile.Health = 0;
                     tile.IsSolid = false;
                     tile.IsDestructible = false;
                     tile.Ore = null;
                     tile.Resistance = 0;
                     break;
 
-                case DTileType.Trap:
+                case DTileType.SpikeTrap:
+                    tile.Health = 0;
                     tile.IsSolid = false;
                     tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                    break;
+
+                case DTileType.ArrowTrap:
+                    tile.Health = 1;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
                     tile.Ore = null;
                     tile.Resistance = 0;
                     break;
 
                 case DTileType.Wall:
+                    tile.Health = 0;
                     tile.IsSolid = true;
                     tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                    break;
+
+                case DTileType.BoulderTrap:
+                    tile.Health = 5;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                    break;
+
+                case DTileType.ExplosiveTrap:
+                    tile.Health = 1;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
                     tile.Ore = null;
                     tile.Resistance = 0;
                     break;
@@ -155,8 +182,11 @@ namespace Depths.Core.World.Tiles
                 DTileType.Ore => this.assetDatabase.GetTexture("texture_tile_3"),
                 DTileType.Stairs => this.assetDatabase.GetTexture("texture_tile_4"),
                 DTileType.MovableBlock => this.assetDatabase.GetTexture("texture_tile_5"),
-                DTileType.Trap => null,
-                DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_6"),
+                DTileType.SpikeTrap => this.assetDatabase.GetTexture("texture_tile_6"),
+                DTileType.ArrowTrap => this.assetDatabase.GetTexture("texture_tile_7"),
+                DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_8"),
+                DTileType.BoulderTrap => this.assetDatabase.GetTexture("texture_tile_9"),
+                DTileType.ExplosiveTrap => this.assetDatabase.GetTexture("texture_tile_10"),
                 _ => null,
             };
         }

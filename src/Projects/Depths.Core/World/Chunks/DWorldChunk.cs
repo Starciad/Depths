@@ -24,12 +24,16 @@ namespace Depths.Core.World.Chunks
             ["T1"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Ground),
             ["T2"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stone),
             ["T3"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stairs),
-            ["T4"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stairs),
+            ["T4"] = (tilemap, position) => tilemap.SetTile(position, DTileType.MovableBlock),
+            ["T5"] = (tilemap, position) => tilemap.SetTile(position, DTileType.SpikeTrap),
+            ["T6"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),
+            ["T7"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Wall),
+            ["T8"] = (tilemap, position) => tilemap.SetTile(position, DTileType.BoulderTrap),
+            ["T9"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ExplosiveTrap),
             #endregion
 
             #region RANDOM
             ["R0"] = (tilemap, position) => { },
-            ["R1"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Trap),
             #endregion
         };
 

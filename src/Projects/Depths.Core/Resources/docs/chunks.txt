@@ -12,10 +12,14 @@ T1 - Ground
 T2 - Stone
 T3 - Stairs
 T4 - Movable Block
+T5 - Spike Trap
+T6 - Arrow Trap
+T7 - Wall
+T8 - Boulder Trap
+T9 - Explosive Trap
 
 RANDOM
 
 R0 - Enemy (random)
-R1 - Trap (random)
 
 ============================================
