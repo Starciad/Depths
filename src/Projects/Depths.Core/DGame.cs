@@ -91,7 +91,7 @@ namespace Depths.Core
         protected override void Initialize()
         {
             this.assetDatabase.Initialize(this.Content);
-            this.entityDatabase.Initialize(this.world, this.inputManager);
+            this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager);
             this.graphicsManager.Initialize();
             this.textManager.Initialize();
 

@@ -2,6 +2,7 @@
 using Depths.Core.Databases;
 using Depths.Core.Enums.General;
 using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Helpers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
@@ -17,6 +18,7 @@ namespace Depths.Core.World.Tiles
     {
         internal DSize2 Size => this.size;
 
+        private DUpdateCycleFlag updateCycleFlag;
         private byte boulderTrapFrameCounter = 0;
 
         private readonly byte boulderTrapFrameDelay = 5;
@@ -168,6 +170,8 @@ namespace Depths.Core.World.Tiles
 
         internal void Update()
         {
+            this.boulderTrapFrameCounter++;
+
             for (int y = 0; y < this.size.Height; y++)
             {
                 for (int x = 0; x < this.size.Width; x++)
@@ -175,15 +179,29 @@ namespace Depths.Core.World.Tiles
                     Point position = new(x, y);
                     DTile tile = GetTile(position);
 
+                    if (tile.UpdateCycleFlag == this.updateCycleFlag)
+                    {
+                        continue;
+                    }
+
+                    tile.UpdateCycleFlag = tile.UpdateCycleFlag.GetNextCycle();
+
                     UpdateTileHealth(tile, position);
                     UpdateTileGravity(tile, position);
 
-                    if (tile.Type == DTileType.BoulderTrap)
+                    if (tile.Type == DTileType.BoulderTrap && this.boulderTrapFrameCounter > this.boulderTrapFrameDelay)
                     {
                         UpdateBolderTrap(tile, position);
                     }
                 }
             }
+
+            if (this.boulderTrapFrameCounter > this.boulderTrapFrameDelay)
+            {
+                this.boulderTrapFrameCounter = 0;
+            }
+
+            this.updateCycleFlag = this.updateCycleFlag.GetNextCycle();
         }
 
         private void UpdateTileHealth(DTile tile, Point position)
@@ -217,32 +235,13 @@ namespace Depths.Core.World.Tiles
 
         private void UpdateBolderTrap(DTile tile, Point position)
         {
-            this.boulderTrapFrameCounter++;
-
-            if (this.boulderTrapFrameCounter < this.boulderTrapFrameDelay)
-            {
-                return;
-            }
-
-            this.boulderTrapFrameCounter = 0;
-
             DTile leftTile = GetTile(new(position.X - 1, position.Y));
             DTile rightTile = GetTile(new(position.X + 1, position.Y));
-            DTile topTile = GetTile(new(position.X, position.Y - 1));
-            DTile bottomTile = GetTile(new(position.X, position.Y + 1));
-
-            if (leftTile != null && leftTile.Type != DTileType.Empty &&
-                rightTile != null && rightTile.Type != DTileType.Empty &&
-                topTile != null && topTile.Type != DTileType.Empty &&
-                bottomTile != null && bottomTile.Type != DTileType.Empty)
-            {
-                return;
-            }
 
             switch (tile.Direction)
             {
                 case DDirection.Right:
-                    if (rightTile.Type == DTileType.Empty)
+                    if (rightTile != null && !rightTile.IsSolid)
                     {
                         rightTile.Copy(tile);
                         SetTile(position, DTileType.Empty);
@@ -251,10 +250,11 @@ namespace Depths.Core.World.Tiles
                     {
                         tile.Direction = DDirection.Left;
                     }
-                        break;
+
+                    break;
 
                 case DDirection.Left:
-                    if (leftTile.Type == DTileType.Empty)
+                    if (leftTile != null && !leftTile.IsSolid)
                     {
                         leftTile.Copy(tile);
                         SetTile(position, DTileType.Empty);
@@ -263,6 +263,7 @@ namespace Depths.Core.World.Tiles
                     {
                         tile.Direction = DDirection.Right;
                     }
+
                     break;
 
                 default:

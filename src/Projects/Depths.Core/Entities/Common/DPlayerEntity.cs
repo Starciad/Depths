@@ -1,4 +1,6 @@
-﻿using Depths.Core.Enums.General;
+﻿using Depths.Core.Audio;
+using Depths.Core.Databases;
+using Depths.Core.Enums.General;
 using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
@@ -13,56 +15,114 @@ namespace Depths.Core.Entities.Common
 {
     internal sealed class DPlayerEntityDescriptor : DEntityDescriptor
     {
+        private readonly DAssetDatabase assetDatabase;
         private readonly DInputManager inputManager;
+        private readonly DMusicManager musicManager;
 
-        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DInputManager inputManager) : base(identifier, texture, world)
+        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager) : base(identifier, texture, world)
         {
+            this.assetDatabase = assetDatabase;
             this.inputManager = inputManager;
+            this.musicManager = musicManager;
         }
 
         internal override DEntity CreateEntity()
         {
-            return new DPlayerEntity(this, this.inputManager);
+            return new DPlayerEntity(this, this.assetDatabase, this.inputManager, this.musicManager);
         }
     }
 
     internal sealed class DPlayerEntity : DEntity
     {
+        internal bool IsDead => this.isDead;
+
         private DDirection direction = DDirection.Right;
 
-        private int gravityFrameCounter = 0;
+        private bool isDead = false;
+
+        private readonly byte currentHealth = 3;
+        private readonly byte power = 1;
+        private readonly byte attack = 1;
+        private readonly byte energy = 10;
+
+        private readonly byte maximumHealth = 3;
+        private readonly byte maximumEnergy = 10;
+
+        private byte gravityFrameCounter = 0;
 
         private readonly Texture2D texture;
         private readonly DTilemap tilemap;
+        private readonly DAssetDatabase assetDatabase;
         private readonly DInputManager inputManager;
+        private readonly DMusicManager musicManager;
 
-        private readonly int gravityDelayFrames = 5;
+        private readonly byte gravityDelayFrames = 5;
 
         private readonly Rectangle[] textureClipAreas = [
             new(new(0, 0), new(7)), // Right Sprite
             new(new(0, 7), new(7)), // Left Sprite
+            new(new(0, 14), new(7)), // Death Sprite
         ];
 
-        internal DPlayerEntity(DEntityDescriptor descriptor, DInputManager inputManager) : base(descriptor)
+        internal DPlayerEntity(DEntityDescriptor descriptor, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager) : base(descriptor)
         {
             this.texture = descriptor.Texture;
             this.tilemap = descriptor.World.Tilemap;
+            this.assetDatabase = assetDatabase;
             this.inputManager = inputManager;
+            this.musicManager = musicManager;
         }
 
         internal override void Update(GameTime gameTime)
         {
+            if (!this.isDead && (CheckForSuffocation() || this.currentHealth == 0))
+            {
+                Kill();
+                return;
+            }
+
             if (TryApplyGravityStep())
             {
                 return;
             }
 
-            HandleInput();
+            if (!this.isDead)
+            {
+                HandleInput();
+            }
         }
 
         internal override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), this.direction == DDirection.Right ? this.textureClipAreas[0] : this.textureClipAreas[1], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+        }
+
+        private Rectangle? GetCurrentSpriteRectangle()
+        {
+            if (this.isDead)
+            {
+                return this.textureClipAreas[2];
+            }
+
+            return this.direction switch
+            {
+                DDirection.Right => (Rectangle?)this.textureClipAreas[0],
+                DDirection.Left => (Rectangle?)this.textureClipAreas[1],
+                _ => null,
+            };
+        }
+
+        private bool CheckForSuffocation()
+        {
+            DTile tile = this.tilemap.GetTile(this.Position);
+
+            if ((tile.Type != DTileType.Empty && tile.Type != DTileType.Stair) ||
+                tile.IsSolid)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool TryApplyGravityStep()
@@ -187,7 +247,15 @@ namespace Depths.Core.Entities.Common
                 return;
             }
 
-            tile.Health--;
+            if (this.power > tile.Resistance)
+            {
+                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_hit_6"));
+                tile.Health -= this.attack;
+            }
+            else
+            {
+                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_negative_2"));
+            }
 
             if (tile.Health <= 0)
             {
@@ -200,6 +268,13 @@ namespace Depths.Core.Entities.Common
             DTile tile = this.tilemap.GetTile(position);
 
             return tile == null || tile.IsSolid;
+        }
+
+        private void Kill()
+        {
+            this.isDead = true;
+            this.musicManager.StopMusic();
+            DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_negative_1"));
         }
     }
 }

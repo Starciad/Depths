@@ -14,6 +14,7 @@ namespace Depths.Core.World.Tiles
         internal DOre Ore { get; set; }
         internal byte Resistance { get; set; }
         internal DTileType Type { get; set; }
+        internal DUpdateCycleFlag UpdateCycleFlag { get; set; }
 
         internal void Copy(DTile tile)
         {
@@ -25,6 +26,7 @@ namespace Depths.Core.World.Tiles
             this.Ore = tile.Ore;
             this.Resistance = tile.Resistance;
             this.Type = tile.Type;
+            this.UpdateCycleFlag = tile.UpdateCycleFlag;
         }
     }
 }

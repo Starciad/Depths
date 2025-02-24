@@ -268,6 +268,7 @@ namespace Depths.Core.Generators
                             this.worldTilemap.SetTile(value.Item1, DTileType.SpikeTrap);
                             _ = this.emptyTiles.Remove(value);
                         }
+
                         break;
 
                     case 1:
