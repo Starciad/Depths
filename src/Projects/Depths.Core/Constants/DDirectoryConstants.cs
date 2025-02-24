@@ -3,6 +3,7 @@
     internal static class DDirectoryConstants
     {
         internal const string LOGS_LOCAL = "Logs";
+        internal const string RESOURCES_LOCAL = "Resources";
 
         internal const string ASSETS = "Assets";
 

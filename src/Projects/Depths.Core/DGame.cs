@@ -94,8 +94,7 @@ namespace Depths.Core
             this.entityDatabase.Initialize(this.world, this.inputManager);
             this.graphicsManager.Initialize();
             this.textManager.Initialize();
-            this.gameGenerator.Initialize();
-
+            
             base.Initialize();
         }
 
@@ -106,6 +105,8 @@ namespace Depths.Core
 
         protected override void BeginRun()
         {
+            this.gameGenerator.Initialize();
+
             this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
             this.musicManager.PlayMusic();
 

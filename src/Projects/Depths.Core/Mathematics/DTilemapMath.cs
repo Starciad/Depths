@@ -25,8 +25,8 @@ namespace Depths.Core.Mathematics
         internal static Point GetTotalTileCount(int chunkColumns, int chunkRows)
         {
             return new(
-                chunkColumns * DTilemapConstants.TILES_PER_CHUNK_WIDTH,
-                chunkRows * DTilemapConstants.TILES_PER_CHUNK_HEIGHT
+                chunkColumns * DWorldConstants.TILES_PER_CHUNK_WIDTH,
+                chunkRows * DWorldConstants.TILES_PER_CHUNK_HEIGHT
             );
         }
     }

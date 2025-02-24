@@ -1,4 +1,6 @@
 ﻿using Depths.Core.Enums.General;
+using Depths.Core.Utilities;
+using Depths.Core.World.Chunks;
 using Depths.Core.World.Ores;
 
 using System.Collections.Generic;
@@ -7,14 +9,18 @@ namespace Depths.Core.Databases
 {
     internal sealed class DWorldDatabase
     {
-        private readonly Dictionary<string, DOre> ores;
+        internal IEnumerable<DOre> Ores => this.ores;
+        internal IEnumerable<DWorldChunk> Chunks => this.chunks;
+
+        private readonly DOre[] ores;
+        private readonly DWorldChunk[] chunks;
 
         internal DWorldDatabase(DAssetDatabase assetDatabase)
         {
-            this.ores = new()
-            {
+            this.ores =
+            [
                 // Common
-                ["Coal"] = new()
+                new()
                 {
                     DisplayName = "Coal",
                     CaveSpawnLevel = new(new(), new()),
@@ -22,7 +28,7 @@ namespace Depths.Core.Databases
                     Value = 1,
                 },
 
-                ["Limestone"] = new()
+                new()
                 {
                     DisplayName = "Limestone",
                     CaveSpawnLevel = new(new(), new()),
@@ -30,103 +36,105 @@ namespace Depths.Core.Databases
                     Value = 1,
                 },
 
-                ["Iron"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Iron",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Uncommon,
                     Value = 3,
                 },
 
-                ["Sulfur"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Sulfur",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Uncommon,
                     Value = 3,
                 },
 
-                ["Gold"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Gold",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Rare,
                     Value = 6,
                 },
 
-                ["Lapis Lazuli"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Lapis Lazuli",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Rare,
                     Value = 5,
                 },
 
-                ["Diamond"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Diamond",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.VeryRare,
                     Value = 12,
                 },
 
                 // Gemstone
-                ["Quartz"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Quartz",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Common,
                     Value = 2,
                 },
 
-                ["Ambar"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Ambar",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Uncommon,
                     Value = 4,
                 },
 
-                ["Emerald"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Emerald",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Rare,
                     Value = 7,
                 },
 
-                ["Sapphire"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Sapphire",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.VeryRare,
                     Value = 10,
                 },
 
-                ["Ruby"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Ruby",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.ExtremelyRare,
                     Value = 15,
                 },
 
-                ["Onyx"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Onyx",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Legendary,
                     Value = 20,
                 },
 
-                ["Amethyst"] = new()
+                new()
                 {
-                    DisplayName = "",
+                    DisplayName = "Amethyst",
                     CaveSpawnLevel = new(new(), new()),
                     Rarity = DRarity.Legendary,
                     Value = 22,
                 },
-            };
+            ];
+
+            this.chunks = DChunkLoader.Load();
         }
     }
 }

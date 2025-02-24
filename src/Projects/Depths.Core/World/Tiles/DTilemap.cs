@@ -1,6 +1,6 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Enums.Tiles;
+using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
@@ -56,6 +56,12 @@ namespace Depths.Core.World.Tiles
         internal void SetTile(Point position, DTileType type)
         {
             DTile tile = GetTile(position);
+
+            if (tile == null)
+            {
+                return;
+            }
+
             tile.Type = type;
 
             switch (type)
@@ -65,14 +71,30 @@ namespace Depths.Core.World.Tiles
 
                 case DTileType.Ground:
                     tile.Health = 1;
+                    tile.IsSolid = true;
+                    tile.IsIndestructible = false;
                     break;
 
                 case DTileType.Stone:
                     tile.Health = (byte)DRandomMath.Range(2, 3);
+                    tile.IsSolid = true;
+                    tile.IsIndestructible = false;
                     break;
 
                 case DTileType.Ore:
                     tile.Health = (byte)DRandomMath.Range(4, 5);
+                    tile.IsSolid = true;
+                    tile.IsIndestructible = false;
+                    break;
+
+                case DTileType.Stairs:
+                    tile.IsSolid = false;
+                    tile.IsIndestructible = true;
+                    break;
+
+                case DTileType.Trap:
+                    tile.IsSolid = true;
+                    tile.IsIndestructible = true;
                     break;
 
                 default:
@@ -93,6 +115,9 @@ namespace Depths.Core.World.Tiles
                 DTileType.Ground => this.assetDatabase.GetTexture("texture_tile_1"),
                 DTileType.Stone => this.assetDatabase.GetTexture("texture_tile_2"),
                 DTileType.Ore => this.assetDatabase.GetTexture("texture_tile_3"),
+                DTileType.Stairs => this.assetDatabase.GetTexture("texture_tile_4"),
+                DTileType.MovableBlock => this.assetDatabase.GetTexture("texture_tile_5"),
+                DTileType.Trap => null,
                 _ => null,
             };
         }

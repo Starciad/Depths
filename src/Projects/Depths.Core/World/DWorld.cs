@@ -1,4 +1,5 @@
-﻿using Depths.Core.Databases;
+﻿using Depths.Core.Constants;
+using Depths.Core.Databases;
 using Depths.Core.Mathematics;
 using Depths.Core.World.Tiles;
 
@@ -12,7 +13,7 @@ namespace Depths.Core.World
 
         internal DWorld(DAssetDatabase assetDatabase)
         {
-            this.Tilemap = new(assetDatabase, DTilemapMath.GetTotalTileCount(5, 5));
+            this.Tilemap = new(assetDatabase, DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT));
         }
 
         internal void Draw(SpriteBatch spriteBatch)

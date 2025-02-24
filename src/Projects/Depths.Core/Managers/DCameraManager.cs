@@ -75,7 +75,7 @@ namespace Depths.Core.Managers
             this.graphicsManager = graphicsManager;
 
             this.Rotation = 0;
-            this.Zoom = 1;
+            this.Zoom = 1f;
             this.Origin = new Vector2(DScreenConstants.SCREEN_WIDTH, DScreenConstants.SCREEN_HEIGHT) / 2f;
             this.Position = Vector2.Zero;
         }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunks>
+	<!-- SURFACE -->
+	<chunk>
+		<header>
+			<type>surface</type>
+		</header>
+
+		<contents>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+		</contents>
+	</chunk>
+
+	<!-- UNDERGROUND -->
+	<chunk>
+		<header>
+			<type>underground</type>
+		</header>
+
+		<contents>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+		</contents>
+	</chunk>
+	
+	<!-- DEPTH -->
+	<chunk>
+		<header>
+			<type>depth</type>
+		</header>
+
+		<contents>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0 T0</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+			<content>T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1 T1</content>
+		</contents>
+	</chunk>
+</chunks>

@@ -1,5 +1,5 @@
 ﻿using Depths.Core.Enums.General;
-using Depths.Core.Enums.Tiles;
+using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.World;
