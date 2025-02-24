@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using SharpDX.Direct2D1.Effects;
+
 namespace Depths.Core.Entities.Common
 {
     internal sealed class DPlayerEntityDescriptor : DEntityDescriptor
@@ -40,13 +42,16 @@ namespace Depths.Core.Entities.Common
 
         private bool isDead = false;
 
+        private uint stairCount = 10;
+        private uint money = 0;
+
         private readonly byte currentHealth = 3;
         private readonly byte power = 1;
         private readonly byte attack = 1;
-        private readonly byte energy = 10;
+        private byte energy = 30;
 
         private readonly byte maximumHealth = 3;
-        private readonly byte maximumEnergy = 10;
+        private readonly byte maximumEnergy = 30;
 
         private byte gravityFrameCounter = 0;
 
@@ -156,6 +161,7 @@ namespace Depths.Core.Entities.Common
         {
             HandleHorizontalMovement();
             HandleVerticalMovement();
+            HandlePlaceLadder();
         }
 
         private void HandleHorizontalMovement()
@@ -238,6 +244,22 @@ namespace Depths.Core.Entities.Common
             }
         }
 
+        private void HandlePlaceLadder()
+        {
+            if (this.inputManager.KeyboardState.IsKeyDown(Keys.K))
+            {
+                DTile tile = this.tilemap.GetTile(this.Position);
+
+                if (tile == null || tile.Type != DTileType.Empty || this.stairCount <= 0)
+                {
+                    return;
+                }
+
+                this.stairCount--;
+                this.tilemap.SetTile(this.Position, DTileType.Stair);
+            }
+        }
+
         private void TryMineBlock(Point position)
         {
             DTile tile = this.tilemap.GetTile(position);
@@ -259,7 +281,45 @@ namespace Depths.Core.Entities.Common
 
             if (tile.Health <= 0)
             {
-                this.tilemap.SetTile(position, DTileType.Empty);
+                this.energy--;
+
+                if (this.energy == 0)
+                {
+                    Kill();
+                }
+
+                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_good_3"));
+
+                GetTileRewards(tile);
+            }
+        }
+
+        private void GetTileRewards(DTile tile)
+        {
+            switch (tile.Type)
+            {
+                case DTileType.Ore:
+                    this.money += tile.Ore.Value;
+                    break;
+
+                case DTileType.Box:
+                    switch (DRandomMath.Range(0, 1))
+                    {
+                        case 0:
+                            this.money += (uint)DRandomMath.Range(1, 5);
+                            break;
+
+                        case 1:
+                            this.stairCount += (uint)DRandomMath.Range(3, 6);
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
 

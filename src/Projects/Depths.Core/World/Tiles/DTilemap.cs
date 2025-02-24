@@ -77,7 +77,7 @@ namespace Depths.Core.World.Tiles
             [DTileType.Stair] = (DTile tile) =>
             {
                 tile.Direction = DDirection.None;
-                tile.HasGravity = false;
+                tile.HasGravity = true;
                 tile.Health = 0;
                 tile.IsSolid = false;
                 tile.IsDestructible = false;
