@@ -13,7 +13,7 @@ namespace Depths.Core.World
 
         internal DWorld(DAssetDatabase assetDatabase)
         {
-            this.Tilemap = new(assetDatabase, DTilemapMath.GetTotalTileCount(2, 1));
+            this.Tilemap = new(assetDatabase, DTilemapMath.GetTotalTileCount(3, 1));
 
             for (byte i = 0; i < 3; i++)
             {
@@ -25,7 +25,7 @@ namespace Depths.Core.World
                 this.Tilemap.SetTile(new(i, 6), DTileType.Ground);
             }
 
-            this.Tilemap.SetTile(new(23, 6), DTileType.Ground);
+            this.Tilemap.SetTile(new(11, 4), DTileType.Ground);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

@@ -1,7 +1,9 @@
 ﻿using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Entities.Common;
 using Depths.Core.Managers;
+using Depths.Core.Mathematics;
 using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
@@ -15,6 +17,8 @@ namespace Depths.Core
     {
         private SpriteBatch spriteBatch;
 
+        private DPlayerEntity playerEntity;
+
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
         private readonly DEntityDatabase entityDatabase;
@@ -25,6 +29,7 @@ namespace Depths.Core
         private readonly DMusicManager musicManager;
         private readonly DEntityManager entityManager;
         private readonly DCameraManager cameraManager;
+        private readonly DWorldTransitionManager worldTransitionManager;
 
         private readonly DWorld world;
 
@@ -51,6 +56,7 @@ namespace Depths.Core
             this.musicManager = new();
             this.entityManager = new(this.entityDatabase);
             this.cameraManager = new(this.graphicsManager);
+            this.worldTransitionManager = new(this.cameraManager);
 
             // Core
             this.world = new(this.assetDatabase);
@@ -89,14 +95,20 @@ namespace Depths.Core
             this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
             this.musicManager.PlayMusic();
 
-            _ = this.entityManager.InstantiateEntity("Player", null);
+            this.playerEntity = (DPlayerEntity)this.entityManager.InstantiateEntity("Player", null);
         }
 
         protected override void Update(GameTime gameTime)
         {
             this.inputManager.Update();
             this.musicManager.Update(gameTime);
-            this.entityManager.Update(gameTime);
+
+            if (!this.worldTransitionManager.IsTransitioning())
+            {
+                this.entityManager.Update(gameTime);
+            }
+
+            this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.playerEntity.Position));
 
             base.Update(gameTime);
         }
