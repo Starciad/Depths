@@ -37,6 +37,11 @@ namespace Depths.Core.Generators
             GenerateWorldSurface();
             GenerateWorldUnderground();
             GenerateWorldDepths();
+            GenerateOres();
+            GenerateExtraBlocks();
+            GenerateTreasures();
+            GenerateTraps();
+            GenerateEntities();
         }
 
         private void GenerateWorldSurface()
@@ -70,6 +75,31 @@ namespace Depths.Core.Generators
             {
                 chunks.GetRandomItem().ApplyToTilemap(new(i, DWorldConstants.WORLD_HEIGHT - 1), this.worldTilemap);
             }
+        }
+
+        private void GenerateOres()
+        {
+
+        }
+
+        private void GenerateExtraBlocks()
+        {
+
+        }
+
+        private void GenerateTreasures()
+        {
+
+        }
+
+        private void GenerateTraps()
+        {
+
+        }
+
+        private void GenerateEntities()
+        {
+
         }
     }
 }
