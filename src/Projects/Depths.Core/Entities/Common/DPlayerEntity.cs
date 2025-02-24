@@ -78,7 +78,12 @@ namespace Depths.Core.Entities.Common
 
             Point checkPointBottom = new(this.Position.X, this.Position.Y + 1);
 
-            if (IsCollidingAt(checkPointBottom))
+            DTile currentTile = this.tilemap.GetTile(this.Position);
+            DTile bottomTile = this.tilemap.GetTile(checkPointBottom);
+
+            if ((currentTile != null && currentTile.Type == DTileType.Stairs) ||
+                (bottomTile != null && bottomTile.Type == DTileType.Stairs) ||
+                IsCollidingAt(checkPointBottom))
             {
                 return false;
             }
@@ -153,15 +158,20 @@ namespace Depths.Core.Entities.Common
             {
                 Point checkPointFront = new(this.Position.X, this.Position.Y + deltaY);
 
-                DTile tile = this.tilemap.GetTile(this.Position);
-                if (tile != null && tile.Type == DTileType.Stairs)
+                DTile currentTile = this.tilemap.GetTile(this.Position);
+                DTile frontTile = this.tilemap.GetTile(checkPointFront);
+                
+                if (currentTile != null && currentTile.Type == DTileType.Stairs ||
+                    frontTile != null && frontTile.Type == DTileType.Stairs)
                 {
                     if (!IsCollidingAt(checkPointFront))
                     {
                         this.Position = checkPointFront;
+                        return;
                     }
                 }
-                else if (IsCollidingAt(checkPointFront))
+
+                if (IsCollidingAt(checkPointFront))
                 {
                     TryMineBlock(checkPointFront);
                 }

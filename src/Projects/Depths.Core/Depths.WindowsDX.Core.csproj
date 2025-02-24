@@ -27,7 +27,7 @@
 	<!-- RESOURCES -->
 	<ItemGroup>
 		<None Update="Resources\generator\chunks.xml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
 
