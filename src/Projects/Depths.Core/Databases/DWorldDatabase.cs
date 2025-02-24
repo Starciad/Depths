@@ -23,7 +23,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Coal",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(1), new(4)),
                     Rarity = DRarity.Common,
                     Value = 1,
                 },
@@ -31,7 +31,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Limestone",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(1), new(4)),
                     Rarity = DRarity.Common,
                     Value = 1,
                 },
@@ -39,7 +39,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Iron",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(2), new(6)),
                     Rarity = DRarity.Uncommon,
                     Value = 3,
                 },
@@ -47,7 +47,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Sulfur",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(3), new(7)),
                     Rarity = DRarity.Uncommon,
                     Value = 3,
                 },
@@ -55,7 +55,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Gold",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(5), new(8)),
                     Rarity = DRarity.Rare,
                     Value = 6,
                 },
@@ -63,7 +63,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Lapis Lazuli",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(6), new(9)),
                     Rarity = DRarity.Rare,
                     Value = 5,
                 },
@@ -71,7 +71,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Diamond",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(7), new(10)),
                     Rarity = DRarity.VeryRare,
                     Value = 12,
                 },
@@ -80,7 +80,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Quartz",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(1), new(3)),
                     Rarity = DRarity.Common,
                     Value = 2,
                 },
@@ -88,7 +88,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Ambar",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(2), new(4)),
                     Rarity = DRarity.Uncommon,
                     Value = 4,
                 },
@@ -96,7 +96,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Emerald",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(4), new(7)),
                     Rarity = DRarity.Rare,
                     Value = 7,
                 },
@@ -104,7 +104,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Sapphire",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(5), new(8)),
                     Rarity = DRarity.VeryRare,
                     Value = 10,
                 },
@@ -112,7 +112,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Ruby",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(7), new(10)),
                     Rarity = DRarity.ExtremelyRare,
                     Value = 15,
                 },
@@ -120,7 +120,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Onyx",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(9), new(10)),
                     Rarity = DRarity.Legendary,
                     Value = 20,
                 },
@@ -128,7 +128,7 @@ namespace Depths.Core.Databases
                 new()
                 {
                     DisplayName = "Amethyst",
-                    CaveSpawnLevel = new(new(), new()),
+                    CaveSpawnLevel = new(new(9), new(10)),
                     Rarity = DRarity.Legendary,
                     Value = 22,
                 },
