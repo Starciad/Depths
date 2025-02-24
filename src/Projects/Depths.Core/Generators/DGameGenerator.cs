@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Enums.World.Chunks;
+using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Extensions;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics.Primitives;
@@ -42,6 +43,7 @@ namespace Depths.Core.Generators
             GenerateTreasures();
             GenerateTraps();
             GenerateEntities();
+            GenerateWalls();
         }
 
         private void GenerateWorldSurface()
@@ -100,6 +102,24 @@ namespace Depths.Core.Generators
         private void GenerateEntities()
         {
 
+        }
+
+        private void GenerateWalls()
+        {
+            for (int i = 0; i < this.worldSize.Height; i++)
+            {
+                // Right
+                this.worldTilemap.SetTile(new(0, i), DTileType.Wall);
+
+                // Left
+                this.worldTilemap.SetTile(new(this.worldSize.Width - 1, i), DTileType.Wall);
+            }
+            
+            for (int i = 0; i < this.worldSize.Width; i++)
+            {
+                // Bottom
+                this.worldTilemap.SetTile(new(i, this.worldSize.Height - 1), DTileType.Wall);
+            }
         }
     }
 }

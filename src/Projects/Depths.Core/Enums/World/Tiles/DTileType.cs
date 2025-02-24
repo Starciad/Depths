@@ -8,6 +8,7 @@
         Ore = 3,
         Stairs = 4,
         MovableBlock = 5,
-        Trap = 6
+        Trap = 6,
+        Wall = 7
     }
 }

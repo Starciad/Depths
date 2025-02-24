@@ -94,27 +94,45 @@ namespace Depths.Core.World.Tiles
                     tile.Health = 1;
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
                     break;
 
                 case DTileType.Stone:
                     tile.Health = (byte)DRandomMath.Range(2, 3);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
                     break;
 
                 case DTileType.Ore:
                     tile.Health = (byte)DRandomMath.Range(4, 5);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
                     break;
 
                 case DTileType.Stairs:
                     tile.IsSolid = false;
                     tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
                     break;
 
                 case DTileType.Trap:
+                    tile.IsSolid = false;
                     tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                    break;
+
+                case DTileType.Wall:
+                    tile.IsSolid = true;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
                     break;
 
                 default:
@@ -138,6 +156,7 @@ namespace Depths.Core.World.Tiles
                 DTileType.Stairs => this.assetDatabase.GetTexture("texture_tile_4"),
                 DTileType.MovableBlock => this.assetDatabase.GetTexture("texture_tile_5"),
                 DTileType.Trap => null,
+                DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_6"),
                 _ => null,
             };
         }
