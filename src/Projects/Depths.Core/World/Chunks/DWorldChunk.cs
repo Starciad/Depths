@@ -21,9 +21,9 @@ namespace Depths.Core.World.Chunks
         {
             #region TILES
             ["T0"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Empty),
-            ["T1"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Ground),
+            ["T1"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Dirt),
             ["T2"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stone),
-            ["T3"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stairs),
+            ["T3"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stair),
             ["T4"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Box),
             ["T5"] = (tilemap, position) => tilemap.SetTile(position, DTileType.SpikeTrap),
             ["T6"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),

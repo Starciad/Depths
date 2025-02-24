@@ -14,7 +14,6 @@ using Depths.Core.World.Tiles;
 
 using Microsoft.Xna.Framework;
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +30,9 @@ namespace Depths.Core.Generators
         private DTilemap worldTilemap;
         private DSize2 worldSize;
 
+        private readonly List<(Point, DTile)> stoneTiles = [];
+        private readonly List<(Point, DTile)> emptyTiles = [];
+
         internal void Initialize()
         {
             this.worldTilemap = this.World.Tilemap;
@@ -44,12 +46,9 @@ namespace Depths.Core.Generators
             GenerateWorldSurface();
             GenerateWorldUnderground();
             GenerateWorldDepths();
-            GenerateOres();
-            GenerateExtraBlocks();
-            GenerateTreasures();
-            GenerateTraps();
-            GenerateEntities();
-            GenerateWalls();
+            GetAllUndergroundTiles();
+            GenerateUnderground();
+            GenerateMapBorders();
         }
 
         private void GenerateWorldSurface()
@@ -85,35 +84,64 @@ namespace Depths.Core.Generators
             }
         }
 
-        private void GenerateOres()
+        private void GetAllUndergroundTiles()
         {
-            List<(Point, DTile)> stoneTiles = [];
-
-            for (int y = 0; y < this.worldSize.Height; y++)
+            for (int y = DWorldConstants.TILES_PER_CHUNK_HEIGHT; y < this.worldSize.Height - DWorldConstants.TILES_PER_CHUNK_HEIGHT; y++)
             {
                 for (int x = 0; x < this.worldSize.Width; x++)
                 {
                     DTile tile = this.worldTilemap.GetTile(new(x, y));
 
-                    if (tile != null && tile.Type == DTileType.Stone)
+                    if (tile == null)
                     {
-                        stoneTiles.Add((new(x, y), tile));
+                        continue;
+                    }
+
+                    switch (tile.Type)
+                    {
+                        case DTileType.Empty:
+                            this.emptyTiles.Add((new(x, y), tile));
+                            break;
+
+                        case DTileType.Stone:
+                            this.stoneTiles.Add((new(x, y), tile));
+                            break;
+
+                        default:
+                            break;
                     }
                 }
             }
+        }
 
+        private void GenerateUnderground()
+        {
+            GenerateOres();
+            GenerateExtraBlocks();
+            GenerateTraps();
+            GenerateEntities();
+        }
+
+        private void GenerateOres()
+        {
             foreach (DOre ore in this.WorldDatabase.Ores)
             {
-                for (int i = 0; i < DRandomMath.Range(50, 100); i++)
+                int total = DRandomMath.Range(50, 150);
+
+                if (this.stoneTiles.Count < total)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < total; i++)
                 {
                     if (!DRandomMath.Chance(DRarityUtility.GetOreNumericalChance(ore.Rarity), 100))
                     {
                         continue;
                     }
 
-                    (Point, DTile) value = stoneTiles.GetRandomItem();
-
-                    stoneTiles.Remove(value);
+                    (Point, DTile) value = this.stoneTiles.GetRandomItem();
+                    _ = this.stoneTiles.Remove(value);
 
                     this.worldTilemap.SetTile(value.Item1, DTileType.Ore);
                     value.Item2.Ore = ore;
@@ -123,17 +151,134 @@ namespace Depths.Core.Generators
 
         private void GenerateExtraBlocks()
         {
-
+            GenerateBoxes();
+            GenerateDirt();
+            GenerateWalls();
         }
 
-        private void GenerateTreasures()
+        private void GenerateBoxes()
         {
+            int total = DRandomMath.Range(80, 150);
 
+            if (this.stoneTiles.Count < total)
+            {
+                return;
+            }
+
+            for (int i = 0; i < total; i++)
+            {
+                (Point, DTile) value = this.stoneTiles.GetRandomItem();
+                _ = this.stoneTiles.Remove(value);
+
+                this.worldTilemap.SetTile(value.Item1, DTileType.Box);
+            }
+        }
+
+        private void GenerateDirt()
+        {
+            int total = DRandomMath.Range(100, 200);
+
+            if (this.stoneTiles.Count < total)
+            {
+                return;
+            }
+
+            for (int i = 0; i < total; i++)
+            {
+                (Point, DTile) value = this.stoneTiles.GetRandomItem();
+                _ = this.stoneTiles.Remove(value);
+
+                this.worldTilemap.SetTile(value.Item1, DTileType.Dirt);
+            }
+        }
+
+        private void GenerateWalls()
+        {
+            int total = DRandomMath.Range(100, 200);
+
+            if (this.stoneTiles.Count < total)
+            {
+                return;
+            }
+
+            for (int i = 0; i < total; i++)
+            {
+                (Point, DTile) value = this.stoneTiles.GetRandomItem();
+                _ = this.stoneTiles.Remove(value);
+
+                this.worldTilemap.SetTile(value.Item1, DTileType.Wall);
+            }
         }
 
         private void GenerateTraps()
         {
+            GenerateTrapsInStones();
+            GenerateTrapsInVoids();
+        }
 
+        private void GenerateTrapsInStones()
+        {
+            int total = DRandomMath.Range(30, 60);
+
+            if (this.stoneTiles.Count < total)
+            {
+                return;
+            }
+
+            for (int i = 0; i < total; i++)
+            {
+                (Point, DTile) value = this.stoneTiles.GetRandomItem();
+                _ = this.stoneTiles.Remove(value);
+
+                switch (DRandomMath.Range(0, 1))
+                {
+                    case 0:
+                        this.worldTilemap.SetTile(value.Item1, DTileType.BoulderTrap);
+                        break;
+
+                    case 1:
+                        this.worldTilemap.SetTile(value.Item1, DTileType.ExplosiveTrap);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void GenerateTrapsInVoids()
+        {
+            int total = DRandomMath.Range(30, 60);
+
+            if (this.emptyTiles.Count < total)
+            {
+                return;
+            }
+
+            for (int i = 0; i < total; i++)
+            {
+                (Point, DTile) value = this.emptyTiles.GetRandomItem();
+                DTile tileBelow = this.worldTilemap.GetTile(new(value.Item1.X, value.Item1.Y + 1));
+
+                switch (DRandomMath.Range(0, 1))
+                {
+                    case 0:
+                        if (tileBelow != null && tileBelow.Type != DTileType.Empty)
+                        {
+                            this.worldTilemap.SetTile(value.Item1, DTileType.SpikeTrap);
+                            _ = this.emptyTiles.Remove(value);
+                        }
+                        break;
+
+                    case 1:
+                        this.worldTilemap.SetTile(value.Item1, DTileType.ArrowTrap);
+                        _ = this.emptyTiles.Remove(value);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
         private void GenerateEntities()
@@ -141,7 +286,7 @@ namespace Depths.Core.Generators
 
         }
 
-        private void GenerateWalls()
+        private void GenerateMapBorders()
         {
             for (int i = 0; i < this.worldSize.Height; i++)
             {
@@ -151,7 +296,7 @@ namespace Depths.Core.Generators
                 // Left
                 this.worldTilemap.SetTile(new(this.worldSize.Width - 1, i), DTileType.Wall);
             }
-            
+
             for (int i = 0; i < this.worldSize.Width; i++)
             {
                 // Bottom

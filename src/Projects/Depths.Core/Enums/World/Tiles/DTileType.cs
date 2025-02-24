@@ -3,10 +3,10 @@
     internal enum DTileType : byte
     {
         Empty = 0,
-        Ground = 1,
+        Dirt = 1,
         Stone = 2,
         Ore = 3,
-        Stairs = 4,
+        Stair = 4,
         Box = 5,
         SpikeTrap = 6,
         ArrowTrap = 7,

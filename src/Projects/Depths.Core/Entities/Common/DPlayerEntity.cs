@@ -81,8 +81,8 @@ namespace Depths.Core.Entities.Common
             DTile currentTile = this.tilemap.GetTile(this.Position);
             DTile bottomTile = this.tilemap.GetTile(checkPointBottom);
 
-            if ((currentTile != null && currentTile.Type == DTileType.Stairs) ||
-                (bottomTile != null && bottomTile.Type == DTileType.Stairs) ||
+            if ((currentTile != null && currentTile.Type == DTileType.Stair) ||
+                (bottomTile != null && bottomTile.Type == DTileType.Stair) ||
                 IsCollidingAt(checkPointBottom))
             {
                 return false;
@@ -160,9 +160,9 @@ namespace Depths.Core.Entities.Common
 
                 DTile currentTile = this.tilemap.GetTile(this.Position);
                 DTile frontTile = this.tilemap.GetTile(checkPointFront);
-                
-                if (currentTile != null && currentTile.Type == DTileType.Stairs ||
-                    frontTile != null && frontTile.Type == DTileType.Stairs)
+
+                if ((currentTile != null && currentTile.Type == DTileType.Stair) ||
+                    (frontTile != null && frontTile.Type == DTileType.Stair))
                 {
                     if (!IsCollidingAt(checkPointFront))
                     {

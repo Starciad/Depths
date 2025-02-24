@@ -94,7 +94,7 @@ namespace Depths.Core
             this.entityDatabase.Initialize(this.world, this.inputManager);
             this.graphicsManager.Initialize();
             this.textManager.Initialize();
-            
+
             base.Initialize();
         }
 
