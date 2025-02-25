@@ -48,11 +48,11 @@ namespace Depths.Core.Entities.Common
         private DDirection direction = DDirection.Right;
 
         private bool isDead = false;
-        private byte backpackSize = 10;
+        private readonly byte backpackSize = 10;
         private uint stairCount = 10;
         private uint money = 0;
-        private byte power = 1;
-        private byte attack = 1;
+        private readonly byte power = 1;
+        private readonly byte attack = 1;
         private byte energy = 50;
 
         private readonly byte maximumEnergy = 30;
@@ -86,7 +86,7 @@ namespace Depths.Core.Entities.Common
 
         internal override void Update(GameTime gameTime)
         {
-            if (!this.isDead && (CheckForSuffocation()))
+            if (!this.isDead && CheckForSuffocation())
             {
                 Kill();
                 return;
@@ -306,7 +306,8 @@ namespace Depths.Core.Entities.Common
                     {
                         this.OnFullBackpack?.Invoke();
                     }
-                        break;
+
+                    break;
 
                 case DTileType.Box:
                     switch (DRandomMath.Range(0, 1))

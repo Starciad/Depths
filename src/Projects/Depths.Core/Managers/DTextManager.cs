@@ -37,11 +37,11 @@ namespace Depths.Core.Managers
 
         internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, Point position, DFontType fontType, int spacing, DTextAlignment alignment)
         {
-            int totalWidth = value.Length * (DFontConstants.WIDTH + spacing) - spacing;
+            int totalWidth = (value.Length * (DFontConstants.WIDTH + spacing)) - spacing;
 
             Point startPosition = alignment switch
             {
-                DTextAlignment.Center => new(position.X - totalWidth / 2, position.Y),
+                DTextAlignment.Center => new(position.X - (totalWidth / 2), position.Y),
                 DTextAlignment.Right => new(position.X - totalWidth, position.Y),
                 _ => position
             };

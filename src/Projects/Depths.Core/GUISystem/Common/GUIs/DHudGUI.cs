@@ -4,12 +4,9 @@ using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
-using Depths.Core.Mathematics;
 using Depths.Core.World.Ores;
 
 using Microsoft.Xna.Framework;
-
-using System;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
@@ -62,10 +59,10 @@ namespace Depths.Core.GUISystem.Common.GUIs
             {
                 return;
             }
-            
+
             this.notifyTextVisibilityFrameCounter++;
 
-            if (this.notifyTextVisibilityFrameCounter >= notifyTextVisibilityTotalFrames)
+            if (this.notifyTextVisibilityFrameCounter >= this.notifyTextVisibilityTotalFrames)
             {
                 this.notifyTextElement.IsVisible = false;
                 return;

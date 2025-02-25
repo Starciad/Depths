@@ -37,7 +37,7 @@ namespace Depths.Core
         private readonly DGUIManager guiManager;
 
         private readonly DWorld world;
-        private readonly DGameGenerator gameGenerator;
+        private readonly DGameWorldGenerator gameGenerator;
 
         public DGame()
         {

@@ -200,6 +200,7 @@ namespace Depths.Core.World.Tiles
                             {
                                 UpdateBolderTrap(tile, position);
                             }
+
                             break;
 
                         default:
