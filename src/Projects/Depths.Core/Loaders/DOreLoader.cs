@@ -1,5 +1,4 @@
 ﻿using Depths.Core.Enums.General;
-using Depths.Core.Enums.World.Chunks;
 using Depths.Core.IO;
 using Depths.Core.World.Ores;
 

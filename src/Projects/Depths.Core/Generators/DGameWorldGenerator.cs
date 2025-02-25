@@ -14,6 +14,7 @@ using Depths.Core.World.Tiles;
 
 using Microsoft.Xna.Framework;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -134,29 +135,47 @@ namespace Depths.Core.Generators
         {
             foreach (DOre ore in this.WorldDatabase.Ores)
             {
-                int orePlacementCount = DRandomMath.Range(50, 150);
-                if (this.stoneTiles.Count < orePlacementCount)
+                byte orePlacementCount = (byte)DRandomMath.Range(50, 150);
+
+                // Filter stone tiles to only include those in the ore's allowed chunk range.
+                List<(Point Position, DTile Tile)> validStoneTiles = [];
+                foreach ((Point Position, DTile Tile) stoneTile in this.stoneTiles)
                 {
-                    return;
+                    byte tileChunk = GetChunkIndex(stoneTile.Position);
+
+                    if (tileChunk >= ore.LayerRange.Start.Value && tileChunk <= ore.LayerRange.End.Value)
+                    {
+                        validStoneTiles.Add(stoneTile);
+                    }
                 }
 
-                for (int i = 0; i < orePlacementCount; i++)
+                // If there are not enough valid stone tiles, skip this ore.
+                if (validStoneTiles.Count < orePlacementCount)
+                {
+                    continue;
+                }
+
+                for (byte i = 0; i < orePlacementCount; i++)
                 {
                     bool isOrePlaced = DRandomMath.Chance(DRarityUtility.GetOreNumericalChance(ore.Rarity), 100);
+
                     if (!isOrePlaced)
                     {
                         continue;
                     }
 
-                    (Point Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-                    bool removed = this.stoneTiles.Remove(tileEntry);
-                    if (!removed)
+                    // Pick a random valid stone tile.
+                    (Point Position, DTile Tile) selectedTile = validStoneTiles.GetRandomItem();
+                    bool removedFromGlobal = this.stoneTiles.Remove(selectedTile);
+                    bool removedFromLocal = validStoneTiles.Remove(selectedTile);
+
+                    if (!removedFromGlobal || !removedFromLocal)
                     {
                         continue;
                     }
 
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.Ore);
-                    tileEntry.Tile.Ore = ore;
+                    this.worldTilemap.SetTile(selectedTile.Position, DTileType.Ore);
+                    selectedTile.Tile.Ore = ore;
                 }
             }
         }
@@ -321,6 +340,15 @@ namespace Depths.Core.Generators
             {
                 this.worldTilemap.SetTile(new Point(x, this.worldSize.Height - 1), DTileType.Wall);
             }
+        }
+
+        // =============================== //
+        // Utilities
+
+        private static byte GetChunkIndex(Point tilePosition)
+        {
+            // Each chunk is 12 tiles wide. We use 1-indexing for chunk numbers.
+            return Convert.ToByte((tilePosition.X / DWorldConstants.TILES_PER_CHUNK_WIDTH) + 1);
         }
     }
 }

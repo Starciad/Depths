@@ -6,7 +6,6 @@ using Depths.Core.World.Chunks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace Depths.Core.Loaders
@@ -34,7 +33,7 @@ namespace Depths.Core.Loaders
         {
             return (DWorldChunkType)Enum.Parse(typeof(DWorldChunkType), groupingElement.Element("information").Element("type").Value.Trim(), true);
         }
-        
+
         private static IEnumerable<DWorldChunk> ParseChunks(XElement groupingElement, DWorldChunkType chunkType)
         {
             foreach (XElement chunkElement in groupingElement.Element("content").Elements("chunk"))
