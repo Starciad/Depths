@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Mathematics;
+using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Tiles;
 
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +14,7 @@ namespace Depths.Core.World
 
         internal DWorld(DAssetDatabase assetDatabase)
         {
-            this.Tilemap = new(assetDatabase, DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT));
+            this.Tilemap = new(DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT), assetDatabase);
         }
 
         internal void Update()

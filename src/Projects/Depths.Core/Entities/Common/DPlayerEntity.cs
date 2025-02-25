@@ -49,13 +49,13 @@ namespace Depths.Core.Entities.Common
 
         private bool isDead = false;
         private readonly byte backpackSize = 10;
-        private uint stairCount = 10;
+        private uint stairCount = uint.MaxValue;
         private uint money = 0;
         private readonly byte power = 1;
         private readonly byte attack = 1;
-        private byte energy = 50;
+        // private byte energy = 50;
 
-        private readonly byte maximumEnergy = 30;
+        // private readonly byte maximumEnergy = 30;
 
         private byte gravityFrameCounter = 0;
 
@@ -279,12 +279,12 @@ namespace Depths.Core.Entities.Common
 
             if (tile.Health <= 0)
             {
-                this.energy--;
+                //this.energy--;
 
-                if (this.energy == 0)
-                {
-                    Kill();
-                }
+                //if (this.energy == 0)
+                //{
+                //    Kill();
+                //}
 
                 DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_good_3"));
 

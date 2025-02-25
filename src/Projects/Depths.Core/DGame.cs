@@ -20,6 +20,12 @@ namespace Depths.Core
         private SpriteBatch spriteBatch;
 
         private DPlayerEntity playerEntity;
+        private DTruckEntity truckEntity;
+
+        private bool isCutsceneRunning;
+
+        private readonly Point cameraIdolPosition;
+        private readonly Point cameraLobbyPosition;
 
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
@@ -90,6 +96,10 @@ namespace Depths.Core
             this.TargetElapsedTime = TimeSpan.FromSeconds(1f / DVideoConstants.GAME_FRAME_RATE);
             this.IsMouseVisible = false;
             this.IsFixedTimeStep = true;
+
+            // Others
+            this.cameraIdolPosition = new();
+            this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
         }
 
         protected override void Initialize()
@@ -119,8 +129,15 @@ namespace Depths.Core
                 entity.Position = new(this.world.Tilemap.Size.Width / 2, 0);
             });
 
+            this.truckEntity = (DTruckEntity)this.entityManager.InstantiateEntity("Truck", (DEntity entity) =>
+            {
+                entity.Position = new(this.world.Tilemap.Size.Width / 2, 10);
+            });
+
             this.guiDatabase.Initialize(this.textManager, this.playerEntity);
             this.guiManager.Open("HUD");
+
+            this.cameraManager.Position = this.cameraLobbyPosition.ToVector2();
         }
 
         protected override void Update(GameTime gameTime)
@@ -129,13 +146,16 @@ namespace Depths.Core
             this.musicManager.Update(gameTime);
             this.guiManager.Update();
 
-            if (!this.worldTransitionManager.IsTransitioning())
+            if (!this.isCutsceneRunning)
             {
-                this.entityManager.Update(gameTime);
-                this.world.Update();
-            }
+                if (!this.worldTransitionManager.IsTransitioning())
+                {
+                    this.entityManager.Update(gameTime);
+                    this.world.Update();
+                }
 
-            this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.playerEntity.Position));
+                this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.playerEntity.Position));
+            }
 
             base.Update(gameTime);
         }

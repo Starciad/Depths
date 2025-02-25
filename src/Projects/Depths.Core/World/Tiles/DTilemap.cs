@@ -152,7 +152,7 @@ namespace Depths.Core.World.Tiles
             },
         };
 
-        internal DTilemap(DAssetDatabase assetDatabase, DSize2 size)
+        internal DTilemap(DSize2 size, DAssetDatabase assetDatabase)
         {
             this.assetDatabase = assetDatabase;
 
