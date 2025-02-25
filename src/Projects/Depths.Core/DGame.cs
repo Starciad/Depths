@@ -25,6 +25,7 @@ namespace Depths.Core
         private readonly DMusicDatabase musicDatabase;
         private readonly DEntityDatabase entityDatabase;
         private readonly DWorldDatabase worldDatabase;
+        private readonly DGUIDatabase guiDatabase;
 
         private readonly DGraphicsManager graphicsManager;
         private readonly DInputManager inputManager;
@@ -33,6 +34,7 @@ namespace Depths.Core
         private readonly DEntityManager entityManager;
         private readonly DCameraManager cameraManager;
         private readonly DWorldTransitionManager worldTransitionManager;
+        private readonly DGUIManager guiManager;
 
         private readonly DWorld world;
         private readonly DGameGenerator gameGenerator;
@@ -54,6 +56,7 @@ namespace Depths.Core
             this.musicDatabase = new(this.assetDatabase);
             this.entityDatabase = new(this.assetDatabase);
             this.worldDatabase = new(this.assetDatabase);
+            this.guiDatabase = new();
 
             // Managers
             this.inputManager = new();
@@ -62,6 +65,7 @@ namespace Depths.Core
             this.entityManager = new(this.entityDatabase);
             this.cameraManager = new(this.graphicsManager);
             this.worldTransitionManager = new(this.assetDatabase, this.cameraManager);
+            this.guiManager = new(this.guiDatabase);
 
             // Core
             this.world = new(this.assetDatabase);
@@ -93,6 +97,7 @@ namespace Depths.Core
             this.assetDatabase.Initialize(this.Content);
             this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager);
             this.graphicsManager.Initialize();
+            this.guiDatabase.Initialize();
             this.textManager.Initialize();
 
             base.Initialize();
@@ -120,6 +125,7 @@ namespace Depths.Core
         {
             this.inputManager.Update();
             this.musicManager.Update(gameTime);
+            this.guiManager.Update();
 
             if (!this.worldTransitionManager.IsTransitioning())
             {
@@ -134,13 +140,32 @@ namespace Depths.Core
 
         protected override void Draw(GameTime gameTime)
         {
-            #region RENDERING (SCREEN)
-            this.GraphicsDevice.SetRenderTarget(this.graphicsManager.ScreenRenderTarget);
-            this.GraphicsDevice.Clear(DColorPalette.LightGreen);
+            #region RENDERING (COMPONENTS)
+            // WORLD
+            this.GraphicsDevice.SetRenderTarget(this.graphicsManager.WorldRenderTarget);
+            this.GraphicsDevice.Clear(Color.Transparent);
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, this.cameraManager.GetViewMatrix());
             this.world.Draw(this.spriteBatch);
             this.entityManager.Draw(gameTime, this.spriteBatch);
+            this.spriteBatch.End();
+
+            // GUI
+            this.GraphicsDevice.SetRenderTarget(this.graphicsManager.GuiRenderTarget);
+            this.GraphicsDevice.Clear(Color.Transparent);
+
+            this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
+            this.guiManager.Draw(this.spriteBatch);
+            this.spriteBatch.End();
+            #endregion
+
+            #region RENDERING (SCREEN)
+            this.GraphicsDevice.SetRenderTarget(this.graphicsManager.ScreenRenderTarget);
+            this.GraphicsDevice.Clear(DColorPalette.LightGreen);
+
+            this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
+            this.spriteBatch.Draw(this.graphicsManager.WorldRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            this.spriteBatch.Draw(this.graphicsManager.GuiRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             this.spriteBatch.End();
             #endregion
 

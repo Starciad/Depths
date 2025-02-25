@@ -43,7 +43,7 @@ namespace Depths.Core.Entities.Common
 
         private bool isDead = false;
 
-        private byte backpackSize = 10;
+        private readonly byte backpackSize = 10;
         private uint stairCount = 10;
         private uint money = 0;
 

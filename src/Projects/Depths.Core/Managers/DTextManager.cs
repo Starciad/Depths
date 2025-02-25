@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Depths.Core.Managers
 {
@@ -34,13 +35,13 @@ namespace Depths.Core.Managers
             this.characterMap = GenerateCharacterMap();
         }
 
-        internal void DrawText(SpriteBatch spriteBatch, ReadOnlySpan<char> text, Point position, DFontType fontType, int spacing)
+        internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, Point position, DFontType fontType, int spacing)
         {
             Point currentPos = position;
 
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < value.Length; i++)
             {
-                DrawCharacter(spriteBatch, text[i], currentPos, fontType);
+                DrawCharacter(spriteBatch, value[i], currentPos, fontType);
                 currentPos.X += DFontConstants.WIDTH + spacing;
             }
         }

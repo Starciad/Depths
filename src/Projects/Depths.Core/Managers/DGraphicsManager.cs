@@ -12,14 +12,20 @@ namespace Depths.Core.Managers
         public GraphicsDevice GraphicsDevice => this.graphicsDeviceManager.GraphicsDevice;
         public Viewport Viewport => this.GraphicsDevice.Viewport;
         internal RenderTarget2D ScreenRenderTarget => this.screenRenderTarget;
+        internal RenderTarget2D WorldRenderTarget => this.worldRenderTarget;
+        internal RenderTarget2D GuiRenderTarget => this.guiRenderTarget;
 
         private RenderTarget2D screenRenderTarget;
+        private RenderTarget2D worldRenderTarget;
+        private RenderTarget2D guiRenderTarget;
 
         private readonly GraphicsDeviceManager graphicsDeviceManager = graphicsDeviceManager;
 
         internal void Initialize()
         {
             this.screenRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT);
+            this.worldRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT);
+            this.guiRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT);
         }
 
         internal Vector2 GetScreenScaleFactor()
