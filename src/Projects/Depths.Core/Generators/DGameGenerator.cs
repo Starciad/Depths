@@ -158,7 +158,7 @@ namespace Depths.Core.Generators
 
         private void GenerateBoxes()
         {
-            int total = DRandomMath.Range(80, 150);
+            int total = DRandomMath.Range(16, 32);
 
             if (this.stoneTiles.Count < total)
             {

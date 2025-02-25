@@ -14,6 +14,8 @@ namespace Depths.Core.Managers
     {
         private Texture2D lightFontTexture;
         private Texture2D darkFontTexture;
+        private Texture2D darkOutlineFontTexture;
+        private Texture2D lightOutlineFontTexture;
         private Dictionary<char, Rectangle> characterMap;
 
         private readonly DAssetDatabase assetDatabase;
@@ -27,6 +29,8 @@ namespace Depths.Core.Managers
         {
             this.lightFontTexture = this.assetDatabase.GetTexture("texture_font_1");
             this.darkFontTexture = this.assetDatabase.GetTexture("texture_font_2");
+            this.darkOutlineFontTexture = this.assetDatabase.GetTexture("texture_font_3");
+            this.lightOutlineFontTexture = this.assetDatabase.GetTexture("texture_font_4");
             this.characterMap = GenerateCharacterMap();
         }
 
@@ -69,6 +73,8 @@ namespace Depths.Core.Managers
             {
                 DFontType.Light => this.lightFontTexture,
                 DFontType.Dark => this.darkFontTexture,
+                DFontType.DarkOutline => this.darkOutlineFontTexture,
+                DFontType.LightOutline => this.lightOutlineFontTexture,
                 _ => null,
             };
         }

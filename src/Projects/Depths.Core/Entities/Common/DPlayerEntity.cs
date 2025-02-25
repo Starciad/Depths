@@ -5,13 +5,14 @@ using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.World;
+using Depths.Core.World.Ores;
 using Depths.Core.World.Tiles;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using SharpDX.Direct2D1.Effects;
+using System.Collections.Generic;
 
 namespace Depths.Core.Entities.Common
 {
@@ -42,6 +43,7 @@ namespace Depths.Core.Entities.Common
 
         private bool isDead = false;
 
+        private byte backpackSize = 10;
         private uint stairCount = 10;
         private uint money = 0;
 
@@ -60,6 +62,8 @@ namespace Depths.Core.Entities.Common
         private readonly DAssetDatabase assetDatabase;
         private readonly DInputManager inputManager;
         private readonly DMusicManager musicManager;
+
+        private readonly Queue<DOre> collectedMinerals = [];
 
         private readonly byte gravityDelayFrames = 5;
 
@@ -104,30 +108,22 @@ namespace Depths.Core.Entities.Common
 
         private Rectangle? GetCurrentSpriteRectangle()
         {
-            if (this.isDead)
-            {
-                return this.textureClipAreas[2];
-            }
-
-            return this.direction switch
-            {
-                DDirection.Right => (Rectangle?)this.textureClipAreas[0],
-                DDirection.Left => (Rectangle?)this.textureClipAreas[1],
-                _ => null,
-            };
+            return this.isDead
+                ? this.textureClipAreas[2]
+                : this.direction switch
+                {
+                    DDirection.Right => (Rectangle?)this.textureClipAreas[0],
+                    DDirection.Left => (Rectangle?)this.textureClipAreas[1],
+                    _ => null,
+                };
         }
 
         private bool CheckForSuffocation()
         {
             DTile tile = this.tilemap.GetTile(this.Position);
 
-            if ((tile.Type != DTileType.Empty && tile.Type != DTileType.Stair) ||
-                tile.IsSolid)
-            {
-                return true;
-            }
-
-            return false;
+            return (tile.Type != DTileType.Empty && tile.Type != DTileType.Stair) ||
+                tile.IsSolid;
         }
 
         private bool TryApplyGravityStep()
@@ -262,6 +258,11 @@ namespace Depths.Core.Entities.Common
 
         private void TryMineBlock(Point position)
         {
+            if (this.collectedMinerals.Count >= this.backpackSize)
+            {
+                return;
+            }
+
             DTile tile = this.tilemap.GetTile(position);
 
             if (tile == null || !tile.IsDestructible)
@@ -299,7 +300,7 @@ namespace Depths.Core.Entities.Common
             switch (tile.Type)
             {
                 case DTileType.Ore:
-                    this.money += tile.Ore.Value;
+                    this.collectedMinerals.Enqueue(tile.Ore);
                     break;
 
                 case DTileType.Box:
@@ -316,6 +317,7 @@ namespace Depths.Core.Entities.Common
                         default:
                             break;
                     }
+
                     break;
 
                 default:
