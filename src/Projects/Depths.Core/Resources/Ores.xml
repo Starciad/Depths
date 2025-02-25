@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ores>
+	<ore>
+		<name>Coal</name>
+		<spawn>
+			<layerRange minimum="1" maximum="4" />
+			<rarity>Common</rarity>
+		</spawn>
+		<properties>
+			<value>1</value>
+			<resistance>1</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Limestone</name>
+		<spawn>
+			<layerRange minimum="1" maximum="4" />
+			<rarity>Common</rarity>
+		</spawn>
+		<properties>
+			<value>1</value>
+			<resistance>1</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Quartz</name>
+		<spawn>
+			<layerRange minimum="1" maximum="3" />
+			<rarity>Common</rarity>
+		</spawn>
+		<properties>
+			<value>2</value>
+			<resistance>2</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Ambar</name>
+		<spawn>
+			<layerRange minimum="2" maximum="4" />
+			<rarity>Uncommon</rarity>
+		</spawn>
+		<properties>
+			<value>4</value>
+			<resistance>3</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Iron</name>
+		<spawn>
+			<layerRange minimum="2" maximum="6" />
+			<rarity>Uncommon</rarity>
+		</spawn>
+		<properties>
+			<value>3</value>
+			<resistance>3</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Sulfur</name>
+		<spawn>
+			<layerRange minimum="3" maximum="7" />
+			<rarity>Common</rarity>
+		</spawn>
+		<properties>
+			<value>3</value>
+			<resistance>2</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Emerald</name>
+		<spawn>
+			<layerRange minimum="4" maximum="7" />
+			<rarity>Rare</rarity>
+		</spawn>
+		<properties>
+			<value>7</value>
+			<resistance>5</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Gold</name>
+		<spawn>
+			<layerRange minimum="5" maximum="8" />
+			<rarity>Rare</rarity>
+		</spawn>
+		<properties>
+			<value>6</value>
+			<resistance>4</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Lapis Lazuli</name>
+		<spawn>
+			<layerRange minimum="6" maximum="9" />
+			<rarity>Rare</rarity>
+		</spawn>
+		<properties>
+			<value>5</value>
+			<resistance>4</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Sapphire</name>
+		<spawn>
+			<layerRange minimum="5" maximum="8" />
+			<rarity>VeryRare</rarity>
+		</spawn>
+		<properties>
+			<value>10</value>
+			<resistance>7</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Diamond</name>
+		<spawn>
+			<layerRange minimum="7" maximum="10" />
+			<rarity>VeryRare</rarity>
+		</spawn>
+		<properties>
+			<value>12</value>
+			<resistance>8</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Ruby</name>
+		<spawn>
+			<layerRange minimum="7" maximum="10" />
+			<rarity>ExtremelyRare</rarity>
+		</spawn>
+		<properties>
+			<value>15</value>
+			<resistance>9</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Onyx</name>
+		<spawn>
+			<layerRange minimum="9" maximum="10" />
+			<rarity>Legendary</rarity>
+		</spawn>
+		<properties>
+			<value>20</value>
+			<resistance>10</resistance>
+		</properties>
+	</ore>
+
+	<ore>
+		<name>Amethyst</name>
+		<spawn>
+			<layerRange minimum="9" maximum="10" />
+			<rarity>Legendary</rarity>
+		</spawn>
+		<properties>
+			<value>22</value>
+			<resistance>10</resistance>
+		</properties>
+	</ore>
+</ores>

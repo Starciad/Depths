@@ -55,7 +55,7 @@ namespace Depths.Core
             this.assetDatabase = new();
             this.musicDatabase = new(this.assetDatabase);
             this.entityDatabase = new(this.assetDatabase);
-            this.worldDatabase = new(this.assetDatabase);
+            this.worldDatabase = new();
             this.guiDatabase = new();
 
             // Managers

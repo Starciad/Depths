@@ -100,7 +100,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private void Player_OnCollectedOre(DOre ore)
         {
             ResetNotifyTextElement();
-            this.notifyTextElement.SetValue(ore.DisplayName);
+            this.notifyTextElement.SetValue(ore.Name);
         }
 
         private void Player_OnFullBackpack()

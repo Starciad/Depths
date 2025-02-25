@@ -2,8 +2,9 @@
 {
     internal enum DWorldChunkType : byte
     {
-        Surface = 0,
-        Underground = 1,
-        Depth = 2
+        None = 0,
+        Surface = 1,
+        Underground = 2,
+        Depth = 3
     }
 }
