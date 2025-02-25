@@ -28,8 +28,8 @@ namespace Depths.Core.GUISystem.Common.Elements
 
         internal void SetValue(string value)
         {
-            this.stringBuilderContent.Clear();
-            this.stringBuilderContent.Append(value);
+            _ = this.stringBuilderContent.Clear();
+            _ = this.stringBuilderContent.Append(value);
         }
     }
 }

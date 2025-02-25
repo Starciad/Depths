@@ -59,7 +59,7 @@ namespace Depths.Core.GUISystem
 
         internal void RemoveElement(DGUIElement value)
         {
-            this.elements.Remove(value);
+            _ = this.elements.Remove(value);
         }
 
         protected abstract void OnBuild();
