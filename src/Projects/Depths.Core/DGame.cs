@@ -20,9 +20,6 @@ namespace Depths.Core
     {
         private SpriteBatch spriteBatch;
 
-        private DPlayerEntity playerEntity;
-        private DTruckEntity truckEntity;
-
         private bool transitionIsDisabled = true;
         private bool isIdolCutsceneRunning = true;
         private bool isTruckCutsceneRunning = false;
@@ -60,6 +57,8 @@ namespace Depths.Core
 
         private readonly DWorld world;
         private readonly DGameWorldGenerator gameGenerator;
+
+        private readonly DGameInformation gameInformation;
 
         public DGame()
         {
@@ -121,6 +120,9 @@ namespace Depths.Core
 
             this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
+
+            // Infos
+            this.gameInformation = new();
         }
 
         protected override void Initialize()
@@ -145,27 +147,29 @@ namespace Depths.Core
             this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
             this.musicManager.PlayMusic();
 
-            this.playerEntity = (DPlayerEntity)this.entityManager.InstantiateEntity("Player", (DEntity entity) =>
+            this.gameInformation.PlayerEntity = (DPlayerEntity)this.entityManager.InstantiateEntity("Player", (DEntity entity) =>
             {
                 entity.Position = this.playerSpawnPosition;
             });
 
-            this.truckEntity = (DTruckEntity)this.entityManager.InstantiateEntity("Truck", (DEntity entity) =>
+            this.gameInformation.TruckEntity = (DTruckEntity)this.entityManager.InstantiateEntity("Truck", (DEntity entity) =>
             {
                 entity.Position = this.truckSpawnPosition;
             });
 
-            this.guiDatabase.Initialize(this.textManager, this.playerEntity);
+            this.guiDatabase.Initialize(this.textManager, this.gameInformation);
             this.guiManager.Open("HUD");
 
-            this.playerEntity.IsVisible = false;
-            this.playerEntity.Direction = DDirection.Left;
+            this.gameInformation.PlayerEntity.IsVisible = false;
+            this.gameInformation.PlayerEntity.Direction = DDirection.Left;
 
             this.cameraManager.Position = this.cameraIdolPosition.ToVector2();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            this.gameInformation.Update();
+
             UpdateManagers(gameTime);
             UpdateCutscenes();
             UpdateTransition(gameTime);
@@ -192,10 +196,10 @@ namespace Depths.Core
             {
                 this.cameraManager.Position = this.cameraLobbyPosition.ToVector2();
 
-                this.playerEntity.IsVisible = true;
+                this.gameInformation.PlayerEntity.IsVisible = true;
 
-                this.playerEntity.Position = this.playerLobbyPosition;
-                this.truckEntity.Position = this.truckLobbyPosition;
+                this.gameInformation.PlayerEntity.Position = this.playerLobbyPosition;
+                this.gameInformation.TruckEntity.Position = this.truckLobbyPosition;
 
                 this.isIdolCutsceneRunning = false;
                 this.isTruckCutsceneRunning = false;
@@ -247,13 +251,13 @@ namespace Depths.Core
 
             this.truckMovementCutsceneFrameCounter = 0;
 
-            if (this.truckEntity.Position.X > this.truckLobbyPosition.X)
+            if (this.gameInformation.TruckEntity.Position.X > this.truckLobbyPosition.X)
             {
-                this.truckEntity.Position += new Point(-1, 0);
+                this.gameInformation.TruckEntity.Position += new Point(-1, 0);
             }
             else
             {
-                this.playerEntity.IsVisible = true;
+                this.gameInformation.PlayerEntity.IsVisible = true;
                 this.isPlayerCutsceneRunning = true;
                 this.isTruckCutsceneRunning = false;
             }
@@ -275,9 +279,9 @@ namespace Depths.Core
 
             this.playerMovementCutsceneFrameCounter = 0;
 
-            if (this.playerEntity.Position.X > this.playerLobbyPosition.X)
+            if (this.gameInformation.PlayerEntity.Position.X > this.playerLobbyPosition.X)
             {
-                this.playerEntity.Position += new Point(-1, 0);
+                this.gameInformation.PlayerEntity.Position += new Point(-1, 0);
             }
             else
             {
@@ -298,7 +302,7 @@ namespace Depths.Core
                 this.world.Update();
             }
 
-            this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.playerEntity.Position));
+            this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.gameInformation.PlayerEntity.Position));
         }
 
         protected override void Draw(GameTime gameTime)

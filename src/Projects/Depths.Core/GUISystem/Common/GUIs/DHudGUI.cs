@@ -21,12 +21,12 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private readonly DGUITextElement notifyTextElement;
 
-        private readonly DPlayerEntity playerEntity;
+        private readonly DGameInformation gameInformation;
         private readonly DTextManager textManager;
 
-        internal DHudGUI(DTextManager textManager, DPlayerEntity playerEntity) : base()
+        internal DHudGUI(DTextManager textManager, DGameInformation gameInformation) : base()
         {
-            this.playerEntity = playerEntity;
+            this.gameInformation = gameInformation;
             this.textManager = textManager;
 
             this.notifyTextElement = new(this.textManager)
@@ -46,14 +46,20 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         internal override void Load()
         {
-            this.playerEntity.OnCollectedOre += Player_OnCollectedOre;
-            this.playerEntity.OnFullBackpack += Player_OnFullBackpack;
+            this.gameInformation.OnPlayerReachedTheSurface += GameInformation_PlayerReachedTheSurface;
+            this.gameInformation.OnPlayerReachedTheUnderground += GameInformation_PlayerReachedTheUnderground;
+            this.gameInformation.OnPlayerReachedTheDepth += GameInformation_PlayerReachedTheDepth;
+            this.gameInformation.PlayerEntity.OnCollectedOre += Player_OnCollectedOre;
+            this.gameInformation.PlayerEntity.OnFullBackpack += Player_OnFullBackpack;
         }
 
         internal override void Unload()
         {
-            this.playerEntity.OnCollectedOre -= Player_OnCollectedOre;
-            this.playerEntity.OnFullBackpack -= Player_OnFullBackpack;
+            this.gameInformation.OnPlayerReachedTheSurface -= GameInformation_PlayerReachedTheSurface;
+            this.gameInformation.OnPlayerReachedTheUnderground -= GameInformation_PlayerReachedTheUnderground;
+            this.gameInformation.OnPlayerReachedTheDepth -= GameInformation_PlayerReachedTheDepth;
+            this.gameInformation.PlayerEntity.OnCollectedOre -= Player_OnCollectedOre;
+            this.gameInformation.PlayerEntity.OnFullBackpack -= Player_OnFullBackpack;
         }
 
         internal override void Update()
@@ -95,6 +101,24 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.notifyTextVisibilityFrameCounter = 0;
             this.notifyTextElement.Position = new(DScreenConstants.GAME_WIDTH / 2, DScreenConstants.GAME_HEIGHT / 2);
             this.notifyTextElement.IsVisible = true;
+        }
+
+        private void GameInformation_PlayerReachedTheSurface()
+        {
+            ResetNotifyTextElement();
+            this.notifyTextElement.SetValue("Surface");
+        }
+
+        private void GameInformation_PlayerReachedTheUnderground()
+        {
+            ResetNotifyTextElement();
+            this.notifyTextElement.SetValue("Underground");
+        }
+
+        private void GameInformation_PlayerReachedTheDepth()
+        {
+            ResetNotifyTextElement();
+            this.notifyTextElement.SetValue("Depth");
         }
 
         private void Player_OnCollectedOre(DOre ore)

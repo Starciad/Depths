@@ -48,7 +48,10 @@ namespace Depths.Core.Entities.Common
 
         private DDirection direction = DDirection.Right;
 
+        private bool isOnDepth;
+        private bool isOnSurface;
         private bool isDead;
+
         private readonly byte backpackSize = 10;
         private uint stairCount = uint.MaxValue;
         private uint money = 0;
