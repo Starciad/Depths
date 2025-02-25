@@ -39,20 +39,22 @@ namespace Depths.Core.Entities.Common
     {
         internal bool IsDead => this.isDead;
 
+        internal delegate void FullBackpack();
+        internal delegate void CollectedOre(DOre ore);
+
+        internal event FullBackpack OnFullBackpack;
+        internal event CollectedOre OnCollectedOre;
+
         private DDirection direction = DDirection.Right;
 
         private bool isDead = false;
-
-        private readonly byte backpackSize = 10;
+        private byte backpackSize = 10;
         private uint stairCount = 10;
         private uint money = 0;
+        private byte power = 1;
+        private byte attack = 1;
+        private byte energy = 50;
 
-        private readonly byte currentHealth = 3;
-        private readonly byte power = 1;
-        private readonly byte attack = 1;
-        private byte energy = 30;
-
-        private readonly byte maximumHealth = 3;
         private readonly byte maximumEnergy = 30;
 
         private byte gravityFrameCounter = 0;
@@ -84,7 +86,7 @@ namespace Depths.Core.Entities.Common
 
         internal override void Update(GameTime gameTime)
         {
-            if (!this.isDead && (CheckForSuffocation() || this.currentHealth == 0))
+            if (!this.isDead && (CheckForSuffocation()))
             {
                 Kill();
                 return;
@@ -258,11 +260,6 @@ namespace Depths.Core.Entities.Common
 
         private void TryMineBlock(Point position)
         {
-            if (this.collectedMinerals.Count >= this.backpackSize)
-            {
-                return;
-            }
-
             DTile tile = this.tilemap.GetTile(position);
 
             if (tile == null || !tile.IsDestructible)
@@ -300,8 +297,16 @@ namespace Depths.Core.Entities.Common
             switch (tile.Type)
             {
                 case DTileType.Ore:
-                    this.collectedMinerals.Enqueue(tile.Ore);
-                    break;
+                    if (this.collectedMinerals.Count < this.backpackSize)
+                    {
+                        this.collectedMinerals.Enqueue(tile.Ore);
+                        this.OnCollectedOre?.Invoke(tile.Ore);
+                    }
+                    else
+                    {
+                        this.OnFullBackpack?.Invoke();
+                    }
+                        break;
 
                 case DTileType.Box:
                     switch (DRandomMath.Range(0, 1))

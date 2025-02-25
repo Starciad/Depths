@@ -1,4 +1,5 @@
 ﻿using Depths.Core.Enums.Fonts;
+using Depths.Core.Enums.Text;
 using Depths.Core.Managers;
 
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,7 @@ namespace Depths.Core.GUISystem.Common.Elements
     internal sealed class DGUITextElement : DGUIElement
     {
         internal DFontType FontType { get; set; }
+        internal DTextAlignment TextAlignment { get; set; }
         internal int Spacing { get; set; }
 
         private readonly StringBuilder stringBuilderContent;
@@ -23,7 +25,7 @@ namespace Depths.Core.GUISystem.Common.Elements
 
         internal override void Draw(SpriteBatch spriteBatch)
         {
-            this.textManager.DrawText(spriteBatch, this.stringBuilderContent, this.Position, this.FontType, this.Spacing);
+            this.textManager.DrawText(spriteBatch, this.stringBuilderContent, this.Position, this.FontType, this.Spacing, this.TextAlignment);
         }
 
         internal void SetValue(string value)

@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
+using Depths.Core.Enums.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,9 +35,18 @@ namespace Depths.Core.Managers
             this.characterMap = GenerateCharacterMap();
         }
 
-        internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, Point position, DFontType fontType, int spacing)
+        internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, Point position, DFontType fontType, int spacing, DTextAlignment alignment)
         {
-            Point currentPos = position;
+            int totalWidth = value.Length * (DFontConstants.WIDTH + spacing) - spacing;
+
+            Point startPosition = alignment switch
+            {
+                DTextAlignment.Center => new(position.X - totalWidth / 2, position.Y),
+                DTextAlignment.Right => new(position.X - totalWidth, position.Y),
+                _ => position
+            };
+
+            Point currentPos = startPosition;
 
             for (int i = 0; i < value.Length; i++)
             {

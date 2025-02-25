@@ -1,5 +1,7 @@
-﻿using Depths.Core.GUISystem;
+﻿using Depths.Core.Entities.Common;
+using Depths.Core.GUISystem;
 using Depths.Core.GUISystem.Common.GUIs;
+using Depths.Core.Managers;
 
 using System.Collections.Generic;
 
@@ -9,9 +11,14 @@ namespace Depths.Core.Databases
     {
         private readonly Dictionary<string, DGUI> guis = [];
 
-        internal void Initialize()
+        internal void Initialize(DTextManager textManager, DPlayerEntity playerEntity)
         {
-            this.guis.Add("HUD", new DHudGUI());
+            this.guis.Add("HUD", new DHudGUI(textManager, playerEntity));
+
+            foreach (DGUI gui in this.guis.Values)
+            {
+                gui.Initialize();
+            }
         }
 
         internal DGUI GetGUIByIdentifier(string identifier)

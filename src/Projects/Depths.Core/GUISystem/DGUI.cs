@@ -6,9 +6,6 @@ namespace Depths.Core.GUISystem
 {
     internal abstract class DGUI
     {
-        internal bool IsVisible { get; set; }
-        internal bool IsActive { get; set; }
-
         private readonly List<DGUIElement> elements = [];
 
         internal void Initialize()
@@ -16,13 +13,8 @@ namespace Depths.Core.GUISystem
             OnBuild();
         }
 
-        internal void Update()
+        internal virtual void Update()
         {
-            if (!this.IsActive)
-            {
-                return;
-            }
-
             foreach (DGUIElement element in this.elements)
             {
                 if (element == null || !element.IsActive)
@@ -34,13 +26,8 @@ namespace Depths.Core.GUISystem
             }
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             foreach (DGUIElement element in this.elements)
             {
                 if (element == null || !element.IsVisible)

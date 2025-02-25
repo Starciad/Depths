@@ -97,7 +97,6 @@ namespace Depths.Core
             this.assetDatabase.Initialize(this.Content);
             this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager);
             this.graphicsManager.Initialize();
-            this.guiDatabase.Initialize();
             this.textManager.Initialize();
 
             base.Initialize();
@@ -119,6 +118,9 @@ namespace Depths.Core
             {
                 entity.Position = new(this.world.Tilemap.Size.Width / 2, 0);
             });
+
+            this.guiDatabase.Initialize(this.textManager, this.playerEntity);
+            this.guiManager.Open("HUD");
         }
 
         protected override void Update(GameTime gameTime)
