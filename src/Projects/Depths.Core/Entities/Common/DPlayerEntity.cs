@@ -37,8 +37,15 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DPlayerEntity : DEntity
     {
+        public byte Attack { get => this.attack; set => this.attack = value; }
+        public byte BackpackSize { get => this.backpackSize; set => this.backpackSize = value; }
         internal DDirection Direction { get => this.direction; set => this.direction = value; }
+        public byte Energy { get => this.energy; set => this.energy = value; }
         internal bool IsDead => this.isDead;
+        public byte MaximumEnergy { get => this.maximumEnergy; set => this.maximumEnergy = value; }
+        public uint Money { get => this.money; set => this.money = value; }
+        public byte Power { get => this.power; set => this.power = value; }
+        public uint StairCount { get => this.stairCount; set => this.stairCount = value; }
 
         internal delegate void FullBackpack();
         internal delegate void CollectedOre(DOre ore);
@@ -48,20 +55,15 @@ namespace Depths.Core.Entities.Common
 
         private DDirection direction = DDirection.Right;
 
-        private bool isOnDepth;
-        private bool isOnSurface;
-        private bool isDead;
-
-        private readonly byte backpackSize = 10;
-        private uint stairCount = uint.MaxValue;
-        private uint money = 0;
-        private readonly byte power = 1;
-        private readonly byte attack = 1;
-        // private byte energy = 50;
-
-        // private readonly byte maximumEnergy = 30;
-
+        private byte attack = 1;
+        private byte backpackSize = 10;
+        private byte energy = 30;
         private byte gravityFrameCounter = 0;
+        private bool isDead;
+        private byte maximumEnergy = 30;
+        private uint money = 0;
+        private byte power = 1;
+        private uint stairCount = 10;
 
         private readonly Texture2D texture;
         private readonly DTilemap tilemap;
@@ -288,12 +290,12 @@ namespace Depths.Core.Entities.Common
 
             if (tile.Health <= 0)
             {
-                //this.energy--;
+                this.energy--;
 
-                //if (this.energy == 0)
-                //{
-                //    Kill();
-                //}
+                if (this.energy == 0)
+                {
+                    Kill();
+                }
 
                 DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_good_3"));
 

@@ -107,12 +107,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             ResetNotifyTextElement();
             this.notifyTextElement.SetValue("Surface");
+
+            this.gameInformation.PlayerEntity.Energy = this.gameInformation.PlayerEntity.MaximumEnergy;
         }
 
         private void GameInformation_PlayerReachedTheUnderground()
         {
             ResetNotifyTextElement();
-            this.notifyTextElement.SetValue("Underground");
+            this.notifyTextElement.SetValue("Cave");
         }
 
         private void GameInformation_PlayerReachedTheDepth()
