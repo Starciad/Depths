@@ -11,7 +11,7 @@ T0 - Empty
 T1 - Dirt
 T2 - Stone
 T3 - Stair
-T4 - Movable Block
+T4 - Box
 T5 - Spike Trap
 T6 - Arrow Trap
 T7 - Wall

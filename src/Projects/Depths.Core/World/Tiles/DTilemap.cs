@@ -189,9 +189,21 @@ namespace Depths.Core.World.Tiles
                     UpdateTileHealth(tile, position);
                     UpdateTileGravity(tile, position);
 
-                    if (tile.Type == DTileType.BoulderTrap && this.boulderTrapFrameCounter > this.boulderTrapFrameDelay)
+                    switch (tile.Type)
                     {
-                        UpdateBolderTrap(tile, position);
+                        case DTileType.SpikeTrap:
+                            UpdateSpikeTrap(position);
+                            break;
+
+                        case DTileType.BoulderTrap:
+                            if (this.boulderTrapFrameCounter > this.boulderTrapFrameDelay)
+                            {
+                                UpdateBolderTrap(tile, position);
+                            }
+                            break;
+
+                        default:
+                            break;
                     }
                 }
             }
@@ -219,7 +231,7 @@ namespace Depths.Core.World.Tiles
                 return;
             }
 
-            DTile tileBelow = this.tiles[position.X, position.Y + 1];
+            DTile tileBelow = GetTile(new(position.X, position.Y + 1));
 
             if (tileBelow == null)
             {
@@ -237,6 +249,14 @@ namespace Depths.Core.World.Tiles
         {
             DTile leftTile = GetTile(new(position.X - 1, position.Y));
             DTile rightTile = GetTile(new(position.X + 1, position.Y));
+            DTile bottomTile = GetTile(new(position.X, position.Y + 1));
+
+            if (bottomTile != null && !bottomTile.IsSolid)
+            {
+                bottomTile.Copy(tile);
+                SetTile(position, DTileType.Empty);
+                return;
+            }
 
             switch (tile.Direction)
             {
@@ -268,6 +288,24 @@ namespace Depths.Core.World.Tiles
 
                 default:
                     break;
+            }
+        }
+
+        private void UpdateSpikeTrap(Point position)
+        {
+            DTile tileBelow = this.tiles[position.X, position.Y + 1];
+
+            if (tileBelow == null)
+            {
+                return;
+            }
+
+            if (tileBelow.Type != DTileType.Dirt ||
+                tileBelow.Type != DTileType.Stone ||
+                tileBelow.Type != DTileType.Ore ||
+                tileBelow.Type != DTileType.Wall)
+            {
+                SetTile(position, DTileType.Empty);
             }
         }
 
