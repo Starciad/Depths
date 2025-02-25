@@ -45,12 +45,18 @@ namespace Depths.Core.Managers
 
         internal void Open(string identifier)
         {
-            this.openGuis.Add(this.guiDatabase.GetGUIByIdentifier(identifier));
+            DGUI gui = this.guiDatabase.GetGUIByIdentifier(identifier);
+
+            gui.Load();
+            this.openGuis.Add(gui);
         }
 
         internal void Close(string identifier)
         {
-            _ = this.openGuis.Remove(this.guiDatabase.GetGUIByIdentifier(identifier));
+            DGUI gui = this.guiDatabase.GetGUIByIdentifier(identifier);
+
+            gui.Unload();
+            _ = this.openGuis.Remove(gui);
         }
     }
 }

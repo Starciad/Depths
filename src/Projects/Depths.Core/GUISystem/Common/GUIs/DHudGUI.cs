@@ -37,13 +37,23 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 Spacing = 1
             };
 
-            this.playerEntity.OnCollectedOre += Player_OnCollectedOre;
-            this.playerEntity.OnFullBackpack += Player_OnFullBackpack;
         }
 
         protected override void OnBuild()
         {
             AddElement(this.notifyTextElement);
+        }
+
+        internal override void Load()
+        {
+            this.playerEntity.OnCollectedOre += Player_OnCollectedOre;
+            this.playerEntity.OnFullBackpack += Player_OnFullBackpack;
+        }
+
+        internal override void Unload()
+        {
+            this.playerEntity.OnCollectedOre -= Player_OnCollectedOre;
+            this.playerEntity.OnFullBackpack -= Player_OnFullBackpack;
         }
 
         internal override void Update()
@@ -96,7 +106,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private void Player_OnFullBackpack()
         {
             ResetNotifyTextElement();
-            this.notifyTextElement.SetValue("Full Bag");
+            this.notifyTextElement.SetValue("Full Bag!");
         }
     }
 }

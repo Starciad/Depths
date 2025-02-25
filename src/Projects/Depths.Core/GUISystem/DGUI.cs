@@ -13,6 +13,16 @@ namespace Depths.Core.GUISystem
             OnBuild();
         }
 
+        internal virtual void Load()
+        {
+            return;
+        }
+
+        internal virtual void Unload()
+        {
+            return;
+        }
+
         internal virtual void Update()
         {
             foreach (DGUIElement element in this.elements)
