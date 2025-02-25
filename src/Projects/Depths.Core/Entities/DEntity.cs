@@ -10,15 +10,56 @@ namespace Depths.Core.Entities
         internal DEntityDescriptor Descriptor { get; private set; }
         internal Point Position { get; set; }
 
+        internal bool IsActive { get; set; }
+        internal bool IsVisible { get; set; }
+
         internal DEntity(DEntityDescriptor descriptor)
         {
             this.Descriptor = descriptor;
+
+            this.IsActive = true;
+            this.IsVisible = true;
         }
 
-        internal virtual void Initialize() { return; }
-        internal virtual void Update(GameTime gameTime) { return; }
-        internal virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) { return; }
-        internal virtual void Destroy() { return; }
-        public virtual void Reset() { return; }
+        internal void Initialize()
+        {
+            OnInitialize();
+        }
+
+        internal void Update(GameTime gameTime)
+        {
+            if (!this.IsActive)
+            {
+                return;
+            }
+
+            OnUpdate(gameTime);
+        }
+
+        internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            if (!this.IsVisible)
+            {
+                return;
+            }
+
+            OnDraw(gameTime, spriteBatch);
+        }
+
+        internal void Destroy()
+        {
+            OnDestroy();
+        }
+
+        public void Reset()
+        {
+            OnReset();
+        }
+
+        protected virtual void OnInitialize() { return; }
+        protected virtual void OnUpdate(GameTime gameTime) { return; }
+        protected virtual void OnDraw(GameTime gameTime, SpriteBatch spriteBatch) { return; }
+        protected virtual void OnDestroy() { return; }
+        protected virtual void OnReset() { return; }
     }
 }

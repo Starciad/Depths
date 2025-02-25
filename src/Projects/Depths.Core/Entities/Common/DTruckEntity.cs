@@ -1,5 +1,4 @@
 ﻿using Depths.Core.Enums.General;
-using Depths.Core.Mathematics;
 using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
@@ -22,7 +21,7 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DTruckEntity : DEntity
     {
-        private DDirection direction = DDirection.Left;
+        private readonly DDirection direction = DDirection.Left;
 
         private readonly Texture2D texture;
 
@@ -38,7 +37,7 @@ namespace Depths.Core.Entities.Common
             this.texture = descriptor.Texture;
         }
 
-        internal override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.texture, this.Position.ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }

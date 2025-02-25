@@ -1,7 +1,6 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Mathematics;
-using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Tiles;
 
 using Microsoft.Xna.Framework.Graphics;

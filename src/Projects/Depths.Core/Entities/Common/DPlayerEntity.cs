@@ -37,6 +37,7 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DPlayerEntity : DEntity
     {
+        internal DDirection Direction { get => this.direction; set => this.direction = value; }
         internal bool IsDead => this.isDead;
 
         internal delegate void FullBackpack();
@@ -47,7 +48,7 @@ namespace Depths.Core.Entities.Common
 
         private DDirection direction = DDirection.Right;
 
-        private bool isDead = false;
+        private bool isDead;
         private readonly byte backpackSize = 10;
         private uint stairCount = uint.MaxValue;
         private uint money = 0;
@@ -84,7 +85,7 @@ namespace Depths.Core.Entities.Common
             this.musicManager = musicManager;
         }
 
-        internal override void Update(GameTime gameTime)
+        protected override void OnUpdate(GameTime gameTime)
         {
             if (!this.isDead && CheckForSuffocation())
             {
@@ -103,8 +104,13 @@ namespace Depths.Core.Entities.Common
             }
         }
 
-        internal override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            if (!this.IsVisible)
+            {
+                return;
+            }
+
             spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 

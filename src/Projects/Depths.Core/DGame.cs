@@ -3,6 +3,7 @@ using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
+using Depths.Core.Enums.General;
 using Depths.Core.Generators;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
@@ -23,16 +24,20 @@ namespace Depths.Core
         private DTruckEntity truckEntity;
 
         private bool transitionIsDisabled = true;
-        private bool isIdolIntroCutsceneRunning = true;
-        private bool isTruckIntroCutsceneRunning = false;
+        private bool isIdolCutsceneRunning = true;
+        private bool isTruckCutsceneRunning = false;
+        private bool isPlayerCutsceneRunning = false;
 
-        private byte idolIntroCutsceneFrameCounter = 0;
-        private byte truckMovementIntroCutsceneFrameCounter = 0;
+        private byte idolCutsceneFrameCounter = 0;
+        private byte truckMovementCutsceneFrameCounter = 0;
+        private byte playerMovementCutsceneFrameCounter = 0;
 
-        private readonly byte idolIntroCutsceneFrameDelay = 32;
-        private readonly byte truckMovementIntroCutsceneFrameDelay = 1;
+        private readonly byte idolCutsceneFrameDelay = 32;
+        private readonly byte truckMovementCutsceneFrameDelay = 1;
+        private readonly byte playerMovementCutsceneFrameDelay = 8;
 
         private readonly Point playerSpawnPosition;
+        private readonly Point playerLobbyPosition;
         private readonly Point truckSpawnPosition;
         private readonly Point truckLobbyPosition;
         private readonly Point cameraIdolPosition;
@@ -110,8 +115,9 @@ namespace Depths.Core
 
             // Positions
             this.playerSpawnPosition = new(this.world.Tilemap.Size.Width / 2, 4);
-            this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new Point(0, 10);
-            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2) + DWorldConstants.TILES_PER_CHUNK_WIDTH / 2, 0)) + new Point(-10, 10);
+            this.playerLobbyPosition = new((this.world.Tilemap.Size.Width / 2) - 4, 4);
+            this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new Point(0, 10);
+            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new Point(-10, 10);
 
             this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
@@ -152,6 +158,9 @@ namespace Depths.Core
             this.guiDatabase.Initialize(this.textManager, this.playerEntity);
             this.guiManager.Open("HUD");
 
+            this.playerEntity.IsVisible = false;
+            this.playerEntity.Direction = DDirection.Left;
+
             this.cameraManager.Position = this.cameraIdolPosition.ToVector2();
         }
 
@@ -173,7 +182,7 @@ namespace Depths.Core
 
         private void UpdateCutscenes()
         {
-            if (!this.isIdolIntroCutsceneRunning && !this.isTruckIntroCutsceneRunning)
+            if (!this.isIdolCutsceneRunning && !this.isTruckCutsceneRunning && !this.isPlayerCutsceneRunning)
             {
                 return;
             }
@@ -183,26 +192,33 @@ namespace Depths.Core
             {
                 this.cameraManager.Position = this.cameraLobbyPosition.ToVector2();
 
+                this.playerEntity.IsVisible = true;
+
+                this.playerEntity.Position = this.playerLobbyPosition;
                 this.truckEntity.Position = this.truckLobbyPosition;
 
-                this.isIdolIntroCutsceneRunning = false;
-                this.isTruckIntroCutsceneRunning = false;
+                this.isIdolCutsceneRunning = false;
+                this.isTruckCutsceneRunning = false;
+                this.isPlayerCutsceneRunning = false;
+
+                this.transitionIsDisabled = false;
             }
 
             UpdateIdolCutscene();
             UpdateTruckCutscene();
+            UpdatePlayerCutscene();
         }
 
         private void UpdateIdolCutscene()
         {
-            if (!this.isIdolIntroCutsceneRunning)
+            if (!this.isIdolCutsceneRunning)
             {
                 return;
             }
 
-            if (this.idolIntroCutsceneFrameCounter < this.idolIntroCutsceneFrameDelay)
+            if (this.idolCutsceneFrameCounter < this.idolCutsceneFrameDelay)
             {
-                this.idolIntroCutsceneFrameCounter++;
+                this.idolCutsceneFrameCounter++;
                 return;
             }
 
@@ -210,26 +226,26 @@ namespace Depths.Core
 
             if (this.cameraManager.Position == this.cameraLobbyPosition.ToVector2())
             {
-                this.isTruckIntroCutsceneRunning = true;
-                this.isIdolIntroCutsceneRunning = false;
+                this.isTruckCutsceneRunning = true;
+                this.isIdolCutsceneRunning = false;
             }
         }
 
         private void UpdateTruckCutscene()
         {
-            if (!this.isTruckIntroCutsceneRunning || this.isIdolIntroCutsceneRunning)
+            if (!this.isTruckCutsceneRunning || this.isIdolCutsceneRunning)
             {
                 return;
             }
 
-            this.truckMovementIntroCutsceneFrameCounter++;
+            this.truckMovementCutsceneFrameCounter++;
 
-            if (this.truckMovementIntroCutsceneFrameCounter < this.truckMovementIntroCutsceneFrameDelay)
+            if (this.truckMovementCutsceneFrameCounter < this.truckMovementCutsceneFrameDelay)
             {
                 return;
             }
 
-            this.truckMovementIntroCutsceneFrameCounter = 0;
+            this.truckMovementCutsceneFrameCounter = 0;
 
             if (this.truckEntity.Position.X > this.truckLobbyPosition.X)
             {
@@ -237,7 +253,35 @@ namespace Depths.Core
             }
             else
             {
-                this.isTruckIntroCutsceneRunning = false;
+                this.playerEntity.IsVisible = true;
+                this.isPlayerCutsceneRunning = true;
+                this.isTruckCutsceneRunning = false;
+            }
+        }
+
+        private void UpdatePlayerCutscene()
+        {
+            if (!this.isPlayerCutsceneRunning || this.isTruckCutsceneRunning || this.isIdolCutsceneRunning)
+            {
+                return;
+            }
+
+            this.playerMovementCutsceneFrameCounter++;
+
+            if (this.playerMovementCutsceneFrameCounter < this.playerMovementCutsceneFrameDelay)
+            {
+                return;
+            }
+
+            this.playerMovementCutsceneFrameCounter = 0;
+
+            if (this.playerEntity.Position.X > this.playerLobbyPosition.X)
+            {
+                this.playerEntity.Position += new Point(-1, 0);
+            }
+            else
+            {
+                this.isPlayerCutsceneRunning = false;
             }
         }
 
