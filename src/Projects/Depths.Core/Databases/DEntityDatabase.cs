@@ -24,7 +24,7 @@ namespace Depths.Core.Databases
             RegisterEntityDescriptor(new DTruckEntityDescriptor("Truck", this.assetDatabase.GetTexture("texture_entity_2"), world));
         }
 
-        internal void RegisterEntityDescriptor(DEntityDescriptor descriptor)
+        private void RegisterEntityDescriptor(DEntityDescriptor descriptor)
         {
             this.registeredDescriptors.Add(descriptor.Identifier, descriptor);
         }

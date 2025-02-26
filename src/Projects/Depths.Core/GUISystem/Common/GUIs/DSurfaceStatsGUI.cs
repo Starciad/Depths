@@ -2,9 +2,7 @@
 using Depths.Core.Databases;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Depths.Core.World.Ores;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
@@ -20,33 +18,36 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private sbyte currentYGuiPanelPosition;
 
-        private DGUIState state;
+        private DGUIState state = DGUIState.Disable;
 
-        private byte updateFrameCounter;
+        private byte movementUpdateFrameCounter = 0;
+        private byte oreUpdateFrameCounter = 0;
+        private byte leavingUpdateFrameCounter = 0;
+
         private byte moneyRaised = 0;
+        private byte countedMinerals = 0;
 
         private readonly DGUIImageElement panelElement;
         private readonly DGUITextElement moneyTextElement;
         private readonly DGUITextElement oreCountingTextElement;
 
-        private readonly Texture2D guiTexture;
-
-        private readonly DAssetDatabase assetDatabase;
-        private readonly DTextManager textManager;
         private readonly DGameInformation gameInformation;
 
         private readonly byte updateFrameDelay = 2;
+        private readonly byte oreUpdateFrameDelay = 3;
+        private readonly byte leavingUpdateFrameDelay = 8;
 
         private readonly byte yStartingPosition;
         private readonly sbyte yMiddlePosition;
         private readonly sbyte yFinalPosition;
 
         private readonly byte movementSpeed = 2;
-        
-        internal DSurfaceStatsGUI(DAssetDatabase assetDatabase, DTextManager textManager, DGameInformation gameInformation) : base()
+
+        private readonly DGUIManager guiManager;
+
+        internal DSurfaceStatsGUI(string identifier, DAssetDatabase assetDatabase, DTextManager textManager, DGUIManager guiManager, DGameInformation gameInformation) : base(identifier)
         {
-            this.assetDatabase = assetDatabase;
-            this.textManager = textManager;
+            this.guiManager = guiManager;
             this.gameInformation = gameInformation;
 
             this.panelElement = new()
@@ -57,7 +58,15 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             this.moneyTextElement = new(textManager)
             {
-                Position = new(17, 36),
+                IsVisible = false,
+                Position = new(17, 37),
+            };
+
+            this.oreCountingTextElement = new(textManager)
+            {
+                IsVisible = false,
+                Position = new(60, 37),
+                Spacing = -1,
             };
 
             this.panelElement.SetTexture(assetDatabase.GetTexture("texture_gui_1"));
@@ -71,13 +80,19 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             AddElement(this.panelElement);
             AddElement(this.moneyTextElement);
+            AddElement(this.oreCountingTextElement);
         }
 
         internal override void Load()
         {
             this.currentYGuiPanelPosition = (sbyte)this.yStartingPosition;
             this.moneyRaised = 0;
+            this.countedMinerals = 0;
             this.state = DGUIState.Appearing;
+
+            this.movementUpdateFrameCounter = 0;
+            this.oreUpdateFrameCounter = 0;
+            this.leavingUpdateFrameCounter = 0;
         }
 
         internal override void Unload()
@@ -92,43 +107,55 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void UpdateAnimations()
         {
-            this.updateFrameCounter++;
+            this.movementUpdateFrameCounter++;
 
-            if (this.updateFrameCounter < this.updateFrameDelay)
+            if (this.movementUpdateFrameCounter < this.updateFrameDelay)
             {
                 return;
             }
 
-            this.updateFrameCounter = 0;
+            this.movementUpdateFrameCounter = 0;
 
             switch (this.state)
             {
                 case DGUIState.Disable:
                     this.panelElement.IsVisible = false;
+                    this.moneyTextElement.IsVisible = false;
+                    this.oreCountingTextElement.IsVisible = false;
                     break;
 
                 case DGUIState.Appearing:
                     this.panelElement.IsVisible = true;
+                    this.moneyTextElement.IsVisible = false;
+                    this.oreCountingTextElement.IsVisible = false;
                     UpdateAppearanceAnimation();
                     break;
 
                 case DGUIState.Showing:
                     this.panelElement.IsVisible = true;
+                    this.moneyTextElement.IsVisible = true;
+                    this.oreCountingTextElement.IsVisible = true;
                     UpdateScoreAnimation();
                     break;
 
                 case DGUIState.Leaving:
                     this.panelElement.IsVisible = true;
+                    this.moneyTextElement.IsVisible = false;
+                    this.oreCountingTextElement.IsVisible = false;
                     UpdateDisappearanceAnimation();
                     break;
 
                 default:
                     this.panelElement.IsVisible = false;
+                    this.moneyTextElement.IsVisible = false;
+                    this.oreCountingTextElement.IsVisible = false;
                     break;
             }
 
             this.panelElement.Position = new(0, this.currentYGuiPanelPosition);
+
             this.moneyTextElement.SetValue(this.moneyRaised.ToString());
+            this.oreCountingTextElement.SetValue(this.countedMinerals.ToString("D2"));
         }
 
         private void UpdateAppearanceAnimation()
@@ -145,12 +172,44 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void UpdateScoreAnimation()
         {
+            this.oreUpdateFrameCounter++;
+
+            if (this.oreUpdateFrameCounter < this.oreUpdateFrameDelay)
+            {
+                return;
+            }
+
+            this.oreUpdateFrameCounter = 0;
+
+            if (this.gameInformation.PlayerEntity.CollectedMinerals.TryDequeue(out DOre ore))
+            {
+                this.moneyRaised += ore.Value;
+                this.countedMinerals++;
+                this.gameInformation.PlayerEntity.Money += ore.Value;
+                return;
+            }
+
+            if (this.leavingUpdateFrameCounter < this.leavingUpdateFrameDelay)
+            {
+                this.leavingUpdateFrameCounter++;
+                return;
+            }
+
             this.state = DGUIState.Leaving;
         }
 
         private void UpdateDisappearanceAnimation()
         {
-            // this.state = DGUIState.Disable;
+            if (this.currentYGuiPanelPosition != this.yFinalPosition)
+            {
+                this.currentYGuiPanelPosition -= (sbyte)this.movementSpeed;
+                return;
+            }
+
+            this.currentYGuiPanelPosition = this.yFinalPosition;
+            this.state = DGUIState.Disable;
+
+            this.guiManager.Close(this.Identifier);
         }
     }
 }

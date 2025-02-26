@@ -25,7 +25,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private readonly DGUIManager guiManager;
         private readonly DGameInformation gameInformation;
 
-        internal DHudGUI(DTextManager textManager, DGUIManager guiManager, DGameInformation gameInformation) : base()
+        internal DHudGUI(string identifier, DTextManager textManager, DGUIManager guiManager, DGameInformation gameInformation) : base(identifier)
         {
             this.textManager = textManager;
             this.guiManager = guiManager;

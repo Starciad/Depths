@@ -6,7 +6,14 @@ namespace Depths.Core.GUISystem
 {
     internal abstract class DGUI
     {
+        internal string Identifier { get; private set; }
+
         private readonly List<DGUIElement> elements = [];
+
+        internal DGUI(string identifier)
+        {
+            this.Identifier = identifier;
+        }
 
         internal void Initialize()
         {

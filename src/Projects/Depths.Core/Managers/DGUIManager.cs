@@ -19,8 +19,10 @@ namespace Depths.Core.Managers
 
         internal void Update()
         {
-            foreach (DGUI gui in this.openGuis)
+            for (int i = 0; i < this.openGuis.Count; i++)
             {
+                DGUI gui = this.openGuis[i];
+
                 if (gui == null)
                 {
                     continue;
@@ -32,8 +34,10 @@ namespace Depths.Core.Managers
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            foreach (DGUI gui in this.openGuis)
+            for (int i = 0; i < this.openGuis.Count; i++)
             {
+                DGUI gui = this.openGuis[i];
+
                 if (gui == null)
                 {
                     continue;
@@ -46,6 +50,11 @@ namespace Depths.Core.Managers
         internal void Open(string identifier)
         {
             DGUI gui = this.guiDatabase.GetGUIByIdentifier(identifier);
+
+            if (this.openGuis.Contains(gui))
+            {
+                return;
+            }
 
             gui.Load();
             this.openGuis.Add(gui);
