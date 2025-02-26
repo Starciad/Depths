@@ -15,7 +15,7 @@
 
 	<ore>
 		<name>Limestone</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_2</icon>
 		<spawn>
 			<layerRange minimum="1" maximum="4" />
 			<rarity>Common</rarity>
@@ -28,7 +28,7 @@
 
 	<ore>
 		<name>Quartz</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_3</icon>
 		<spawn>
 			<layerRange minimum="1" maximum="3" />
 			<rarity>Common</rarity>
@@ -41,7 +41,7 @@
 
 	<ore>
 		<name>Ambar</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_4</icon>
 		<spawn>
 			<layerRange minimum="2" maximum="4" />
 			<rarity>Uncommon</rarity>
@@ -54,7 +54,7 @@
 
 	<ore>
 		<name>Iron</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_5</icon>
 		<spawn>
 			<layerRange minimum="2" maximum="6" />
 			<rarity>Uncommon</rarity>
@@ -67,7 +67,7 @@
 
 	<ore>
 		<name>Sulfur</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_6</icon>
 		<spawn>
 			<layerRange minimum="3" maximum="7" />
 			<rarity>Common</rarity>
@@ -80,7 +80,7 @@
 
 	<ore>
 		<name>Emerald</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_7</icon>
 		<spawn>
 			<layerRange minimum="4" maximum="7" />
 			<rarity>Rare</rarity>
@@ -93,7 +93,7 @@
 
 	<ore>
 		<name>Gold</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_8</icon>
 		<spawn>
 			<layerRange minimum="5" maximum="8" />
 			<rarity>Rare</rarity>
@@ -105,8 +105,8 @@
 	</ore>
 
 	<ore>
-		<name>Lapis Lazuli</name>
-		<icon>texture_ore_1</icon>
+		<name>Lazuli</name>
+		<icon>texture_ore_9</icon>
 		<spawn>
 			<layerRange minimum="6" maximum="9" />
 			<rarity>Rare</rarity>
@@ -119,7 +119,7 @@
 
 	<ore>
 		<name>Sapphire</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_10</icon>
 		<spawn>
 			<layerRange minimum="5" maximum="8" />
 			<rarity>VeryRare</rarity>
@@ -132,7 +132,7 @@
 
 	<ore>
 		<name>Diamond</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_11</icon>
 		<spawn>
 			<layerRange minimum="7" maximum="10" />
 			<rarity>VeryRare</rarity>
@@ -145,7 +145,7 @@
 
 	<ore>
 		<name>Ruby</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_12</icon>
 		<spawn>
 			<layerRange minimum="7" maximum="10" />
 			<rarity>ExtremelyRare</rarity>
@@ -158,7 +158,7 @@
 
 	<ore>
 		<name>Onyx</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_13</icon>
 		<spawn>
 			<layerRange minimum="9" maximum="10" />
 			<rarity>Legendary</rarity>
@@ -171,7 +171,7 @@
 
 	<ore>
 		<name>Amethyst</name>
-		<icon>texture_ore_1</icon>
+		<icon>texture_ore_14</icon>
 		<spawn>
 			<layerRange minimum="9" maximum="10" />
 			<rarity>Legendary</rarity>
