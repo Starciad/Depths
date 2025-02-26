@@ -29,7 +29,11 @@
 
 	<!-- RESOURCES -->
 	<ItemGroup>
-		<None Update="Resources\generator\chunks.xml">
+		<None Update="Resources\Chunks.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+		<None Update="Resources\Ores.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

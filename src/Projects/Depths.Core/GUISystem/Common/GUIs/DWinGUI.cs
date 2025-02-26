@@ -1,6 +1,6 @@
 ﻿namespace Depths.Core.GUISystem.Common.GUIs
 {
-    internal sealed class DItemStoreGUI
+    internal sealed class DWinGUI
     {
 
     }

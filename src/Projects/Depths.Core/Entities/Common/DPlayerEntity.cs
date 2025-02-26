@@ -176,6 +176,13 @@ namespace Depths.Core.Entities.Common
 
         private void HandleHorizontalMovement()
         {
+            DTile tileBelow = this.tilemap.GetTile(new(this.Position.X, this.Position.Y + 1));
+
+            if (tileBelow == null || tileBelow.Type == DTileType.Empty)
+            {
+                return;
+            }
+
             sbyte deltaX = 0;
             DDirection targetDirection = DDirection.None;
 

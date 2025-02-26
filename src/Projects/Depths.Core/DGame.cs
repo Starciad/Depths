@@ -114,9 +114,9 @@ namespace Depths.Core
 
             // Positions
             this.playerSpawnPosition = new(this.world.Tilemap.Size.Width / 2, 4);
-            this.playerLobbyPosition = new((this.world.Tilemap.Size.Width / 2) - 4, 4);
+            this.playerLobbyPosition = new((this.world.Tilemap.Size.Width / 2) - 3, 4);
             this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new Point(0, 10);
-            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new Point(-10, 10);
+            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new Point(-6, 10);
 
             this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));

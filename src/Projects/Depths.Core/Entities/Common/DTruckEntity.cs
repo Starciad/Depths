@@ -26,10 +26,10 @@ namespace Depths.Core.Entities.Common
         private readonly Texture2D texture;
 
         private readonly Rectangle[] textureClipAreas = [
-            new(new(0, 0), new(48, 25)), // Left [1]
-            new(new(0, 25), new(48, 25)), // Left [2]
-            new(new(48, 0), new(48, 25)), // Right [1]
-            new(new(48, 25), new(48, 25)), // Right [2]
+            new(new(0, 0), new(45, 25)), // Left [1]
+            new(new(0, 25), new(45, 25)), // Left [2]
+            new(new(48, 0), new(45, 25)), // Right [1]
+            new(new(48, 25), new(45, 25)), // Right [2]
         ];
 
         internal DTruckEntity(DEntityDescriptor descriptor) : base(descriptor)
