@@ -11,12 +11,12 @@ namespace Depths.Core.Databases
         internal IEnumerable<DOre> Ores => this.ores;
         internal IEnumerable<DWorldChunk> Chunks => this.chunks;
 
-        private readonly DOre[] ores;
-        private readonly DWorldChunk[] chunks;
+        private DOre[] ores;
+        private DWorldChunk[] chunks;
 
-        internal DWorldDatabase()
+        internal void Initialize(DAssetDatabase assetDatabase)
         {
-            this.ores = DOreLoader.Initialize();
+            this.ores = DOreLoader.Initialize(assetDatabase);
             this.chunks = DChunkLoader.Initialize();
         }
     }

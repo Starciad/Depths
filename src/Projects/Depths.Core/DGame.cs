@@ -130,6 +130,7 @@ namespace Depths.Core
             this.assetDatabase.Initialize(this.Content);
             this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager);
             this.graphicsManager.Initialize();
+            this.worldDatabase.Initialize(this.assetDatabase);
             this.textManager.Initialize();
 
             base.Initialize();

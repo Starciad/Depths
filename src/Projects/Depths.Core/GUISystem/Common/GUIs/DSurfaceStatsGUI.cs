@@ -4,6 +4,8 @@ using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
 using Depths.Core.World.Ores;
 
+using System;
+
 namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed class DSurfaceStatsGUI : DGUI
@@ -26,8 +28,10 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private byte moneyRaised = 0;
         private byte countedMinerals = 0;
+        private byte currentOreIndex = 0;
 
         private readonly DGUIImageElement panelElement;
+        private readonly DGUIImageElement[] oreIconElements;
         private readonly DGUITextElement moneyTextElement;
         private readonly DGUITextElement oreCountingTextElement;
 
@@ -69,6 +73,21 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 Spacing = -1,
             };
 
+            this.oreIconElements = new DGUIImageElement[5];
+
+            for (byte i = 0; i < this.oreIconElements.Length; i++)
+            {
+                DGUIImageElement oreIconElement = new()
+                {
+                    IsVisible = false,
+                    Position = new(11 + i * (DSpriteConstants.ORE_ICON_SIZE + 2), 16)
+                };
+                
+                oreIconElement.SetTexture(assetDatabase.GetTexture("texture_ore_1"));
+
+                this.oreIconElements[i] = oreIconElement;
+            }
+
             this.panelElement.SetTexture(assetDatabase.GetTexture("texture_gui_1"));
 
             this.yStartingPosition = DScreenConstants.GAME_HEIGHT;
@@ -81,18 +100,28 @@ namespace Depths.Core.GUISystem.Common.GUIs
             AddElement(this.panelElement);
             AddElement(this.moneyTextElement);
             AddElement(this.oreCountingTextElement);
+
+            for (byte i = 0; i < this.oreIconElements.Length; i++)
+            {
+                AddElement(this.oreIconElements[i]);
+            }
         }
 
         internal override void Load()
         {
             this.currentYGuiPanelPosition = (sbyte)this.yStartingPosition;
+            
             this.moneyRaised = 0;
             this.countedMinerals = 0;
+            this.currentOreIndex = 0;
+
             this.state = DGUIState.Appearing;
 
             this.movementUpdateFrameCounter = 0;
             this.oreUpdateFrameCounter = 0;
             this.leavingUpdateFrameCounter = 0;
+
+            HideAllOreIcons();
         }
 
         internal override void Unload()
@@ -186,6 +215,27 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 this.moneyRaised += ore.Value;
                 this.countedMinerals++;
                 this.gameInformation.PlayerEntity.Money += ore.Value;
+
+                // Calculates the index adjusted to the size of the array (visibility cycle)
+                byte index = Convert.ToByte(this.currentOreIndex % (byte)this.oreIconElements.Length);
+
+                // If the index is 0, it means we have reached a multiple of the array size and we must reset
+                if (index == 0)
+                {
+                    // Makes all elements invisible
+                    HideAllOreIcons();
+
+                    // Keep only the first one visible
+                    this.oreIconElements[0].IsVisible = true;
+                }
+                else
+                {
+                    // Sets the icon in the correct slot and makes it visible
+                    this.oreIconElements[index].SetTexture(ore.IconTexture);
+                    this.oreIconElements[index].IsVisible = true;
+                }
+
+                this.currentOreIndex++;
                 return;
             }
 
@@ -195,6 +245,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 return;
             }
 
+            HideAllOreIcons();
             this.state = DGUIState.Leaving;
         }
 
@@ -210,6 +261,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.state = DGUIState.Disable;
 
             this.guiManager.Close(this.Identifier);
+        }
+
+        private void HideAllOreIcons()
+        {
+            foreach (DGUIImageElement oreIconElement in this.oreIconElements)
+            {
+                oreIconElement.IsVisible = false;
+            }
         }
     }
 }

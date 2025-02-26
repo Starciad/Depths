@@ -256,7 +256,8 @@ namespace Depths.Core.Entities.Common
 
         private void HandlePlaceLadder()
         {
-            if (this.inputManager.KeyboardState.IsKeyDown(Keys.K))
+            if (this.inputManager.KeyboardState.IsKeyDown(Keys.K) &&
+               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.K))
             {
                 DTile tile = this.tilemap.GetTile(this.Position);
 
