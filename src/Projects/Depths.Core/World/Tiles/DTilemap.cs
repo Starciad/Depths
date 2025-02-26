@@ -1,7 +1,5 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Entities;
-using Depths.Core.Entities.Common;
 using Depths.Core.Enums.General;
 using Depths.Core.Enums.World;
 using Depths.Core.Helpers;

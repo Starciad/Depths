@@ -1,5 +1,4 @@
-﻿using Depths.Core.Entities;
-using Depths.Core.Enums.General;
+﻿using Depths.Core.Enums.General;
 using Depths.Core.Enums.World;
 using Depths.Core.World.Ores;
 

@@ -8,28 +8,35 @@ namespace Depths.Core
 {
     internal sealed class DGameInformation
     {
-        internal bool TransitionIsDisabled { get; set; } = true;
+        internal DPlayerEntity PlayerEntity { get; private set; }
+        internal DTruckEntity TruckEntity { get; private set; }
+
+        internal bool TransitionIsDisabled { get; set; }
 
         internal bool IsCutsceneRunning => this.IsIdolCutsceneRunning || this.IsTruckCutsceneRunning || this.IsPlayerCutsceneRunning;
-        internal bool IsIdolCutsceneRunning { get; set; } = true;
-        internal bool IsTruckCutsceneRunning { get; set; } = false;
-        internal bool IsPlayerCutsceneRunning { get; set; } = false;
+        internal bool IsIdolCutsceneRunning { get; set; }
+        internal bool IsTruckCutsceneRunning { get; set; }
+        internal bool IsPlayerCutsceneRunning { get; set; }
 
         internal bool IsGameFocused { get; set; }
         internal bool IsGamePaused { get; set; }
         internal bool IsGameCrucialMenuOpen { get; set; }
 
-        internal DPlayerEntity PlayerEntity { get; set; }
-        internal DTruckEntity TruckEntity { get; set; }
+        internal bool IsWorldActive { get; set; }
+        internal bool IsWorldVisible { get; set; }
 
         internal bool IsPlayerOnSurface { get; private set; }
         internal bool IsPlayerInUnderground { get; private set; }
         internal bool IsPlayerInDepth { get; private set; }
 
+        internal delegate void GameStarted();
+        internal delegate void GameOver();
         internal delegate void PlayerReachedTheDepth();
         internal delegate void PlayerReachedTheUnderground();
         internal delegate void PlayerReachedTheSurface();
 
+        internal event GameStarted OnGameStarted;
+        internal event GameOver OnGameOver;
         internal event PlayerReachedTheDepth OnPlayerReachedTheDepth;
         internal event PlayerReachedTheUnderground OnPlayerReachedTheUnderground;
         internal event PlayerReachedTheSurface OnPlayerReachedTheSurface;
@@ -39,6 +46,25 @@ namespace Depths.Core
             this.IsPlayerOnSurface = true;
             this.IsPlayerInUnderground = false;
             this.IsPlayerInDepth = false;
+        }
+
+        internal void SetPlayerEntity(DPlayerEntity playerEntity)
+        {
+            this.PlayerEntity = playerEntity;
+            this.PlayerEntity.OnDied += () =>
+            {
+                this.OnGameOver?.Invoke();
+            };
+        }
+
+        internal void SetTruckEntity(DTruckEntity truckEntity)
+        {
+            this.TruckEntity = truckEntity;
+        }
+
+        internal void Start()
+        {
+            this.OnGameStarted?.Invoke();
         }
 
         internal void Update()

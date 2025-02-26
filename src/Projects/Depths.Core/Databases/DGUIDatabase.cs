@@ -14,6 +14,8 @@ namespace Depths.Core.Databases
         {
             RegisterGUI(new DHudGUI("HUD", textManager, guiManager, gameInformation));
             RegisterGUI(new DSurfaceStatsGUI("Surface Stats", assetDatabase, textManager, guiManager, gameInformation));
+            RegisterGUI(new DGameOverGUI("Game Over", assetDatabase, guiManager, gameInformation));
+            RegisterGUI(new DGameStatsGUI("Game Stats", guiManager, gameInformation));
 
             foreach (DGUI gui in this.guis.Values)
             {

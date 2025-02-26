@@ -3,7 +3,6 @@ using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
-using Depths.Core.Enums.General;
 using Depths.Core.Generators;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
@@ -139,35 +138,66 @@ namespace Depths.Core
 
         protected override void BeginRun()
         {
-            this.gameGenerator.Initialize();
-
-            this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
-            this.musicManager.PlayMusic();
-
-            this.gameInformation.PlayerEntity = (DPlayerEntity)this.entityManager.InstantiateEntity("Player", (DEntity entity) =>
-            {
-                entity.Position = this.playerSpawnPosition;
-            });
-
-            this.gameInformation.TruckEntity = (DTruckEntity)this.entityManager.InstantiateEntity("Truck", (DEntity entity) =>
-            {
-                entity.Position = this.truckSpawnPosition;
-            });
+            this.gameInformation.SetPlayerEntity((DPlayerEntity)this.entityManager.InstantiateEntity("Player", null));
+            this.gameInformation.SetTruckEntity((DTruckEntity)this.entityManager.InstantiateEntity("Truck", null));
 
             this.guiDatabase.Initialize(this.assetDatabase, this.textManager, this.guiManager, this.gameInformation);
-            this.guiManager.Open("HUD");
+            
+            this.gameInformation.OnGameStarted += () =>
+            {
+                this.gameGenerator.Initialize();
 
-            this.gameInformation.PlayerEntity.IsVisible = false;
-            this.gameInformation.PlayerEntity.HorizontalDirectionDelta = -1;
+                // ======================= //
 
-            this.cameraManager.Position = this.cameraIdolPosition.ToVector2();
+                this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
+                this.musicManager.PlayMusic();
+
+                this.cameraManager.Position = this.cameraIdolPosition.ToVector2();
+
+                this.gameInformation.PlayerEntity.IsVisible = false;
+
+                this.gameInformation.PlayerEntity.Position = this.playerSpawnPosition;
+                this.gameInformation.TruckEntity.Position = this.truckSpawnPosition;
+
+                this.gameInformation.IsIdolCutsceneRunning = true;
+                this.gameInformation.IsTruckCutsceneRunning = false;
+                this.gameInformation.IsPlayerCutsceneRunning = false;
+
+                this.gameInformation.TransitionIsDisabled = true;
+
+                // ======================= //
+
+                this.gameInformation.PlayerEntity.Position = this.playerSpawnPosition;
+                this.gameInformation.TruckEntity.Position = this.truckSpawnPosition;
+
+                this.gameInformation.IsWorldActive = true;
+                this.gameInformation.IsWorldVisible = true;
+
+                this.gameInformation.PlayerEntity.IsVisible = false;
+                this.gameInformation.PlayerEntity.HorizontalDirectionDelta = -1;
+
+                this.gameInformation.IsWorldActive = true;
+                this.gameInformation.IsWorldVisible = true;
+
+                this.guiManager.Open("HUD");
+            };
+
+            this.gameInformation.OnGameOver += () =>
+            {
+                this.gameInformation.IsWorldActive = false;
+
+                this.guiManager.Open("Game Over");
+            };
+
+            this.gameInformation.Start();
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (!this.gameInformation.IsGameFocused)
             {
-                goto BASE_UPDATE;
+                base.Update(gameTime);
+                return;
             }
 
             this.gameInformation.Update();
@@ -177,10 +207,11 @@ namespace Depths.Core
 
             if (this.gameInformation.IsGamePaused)
             {
-                goto BASE_UPDATE;
+                base.Update(gameTime);
+                return;
             }
 
-            if (this.gameInformation.IsGameCrucialMenuOpen || !this.worldTransitionManager.IsTransitioning())
+            if (this.gameInformation.IsWorldActive && !this.gameInformation.IsGameCrucialMenuOpen && !this.worldTransitionManager.IsTransitioning())
             {
                 this.entityManager.Update(gameTime);
                 this.world.Update();
@@ -189,8 +220,6 @@ namespace Depths.Core
             UpdateCutscenes();
             UpdateTransition();
 
-        BASE_UPDATE:
-            ;
             base.Update(gameTime);
         }
 
@@ -230,9 +259,8 @@ namespace Depths.Core
                 return;
             }
 
-            if (this.idolCutsceneFrameCounter < this.idolCutsceneFrameDelay)
+            if (++this.idolCutsceneFrameCounter < this.idolCutsceneFrameDelay)
             {
-                this.idolCutsceneFrameCounter++;
                 return;
             }
 
@@ -252,9 +280,7 @@ namespace Depths.Core
                 return;
             }
 
-            this.truckMovementCutsceneFrameCounter++;
-
-            if (this.truckMovementCutsceneFrameCounter < this.truckMovementCutsceneFrameDelay)
+            if (++this.truckMovementCutsceneFrameCounter < this.truckMovementCutsceneFrameDelay)
             {
                 return;
             }
@@ -280,9 +306,7 @@ namespace Depths.Core
                 return;
             }
 
-            this.playerMovementCutsceneFrameCounter++;
-
-            if (this.playerMovementCutsceneFrameCounter < this.playerMovementCutsceneFrameDelay)
+            if (++this.playerMovementCutsceneFrameCounter < this.playerMovementCutsceneFrameDelay)
             {
                 return;
             }
@@ -317,8 +341,13 @@ namespace Depths.Core
             this.GraphicsDevice.Clear(Color.Transparent);
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, this.cameraManager.GetViewMatrix());
-            this.world.Draw(this.spriteBatch);
-            this.entityManager.Draw(gameTime, this.spriteBatch);
+
+            if (this.gameInformation.IsWorldVisible)
+            {
+                this.world.Draw(this.spriteBatch);
+                this.entityManager.Draw(gameTime, this.spriteBatch);
+            }
+
             this.spriteBatch.End();
 
             // GUI

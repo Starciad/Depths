@@ -35,18 +35,17 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private readonly DGUITextElement moneyTextElement;
         private readonly DGUITextElement oreCountingTextElement;
 
-        private readonly DGameInformation gameInformation;
-
         private readonly byte updateFrameDelay = 2;
         private readonly byte oreUpdateFrameDelay = 3;
         private readonly byte leavingUpdateFrameDelay = 8;
 
-        private readonly byte yStartingPosition;
-        private readonly sbyte yMiddlePosition;
-        private readonly sbyte yFinalPosition;
+        private readonly byte yStartingPosition = DScreenConstants.GAME_HEIGHT;
+        private readonly byte yMiddlePosition = 0;
+        private readonly sbyte yFinalPosition = -DScreenConstants.GAME_HEIGHT;
 
         private readonly byte movementSpeed = 2;
 
+        private readonly DGameInformation gameInformation;
         private readonly DGUIManager guiManager;
 
         internal DSurfaceStatsGUI(string identifier, DAssetDatabase assetDatabase, DTextManager textManager, DGUIManager guiManager, DGameInformation gameInformation) : base(identifier)
@@ -87,10 +86,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
             }
 
             this.panelElement.SetTexture(assetDatabase.GetTexture("texture_gui_1"));
-
-            this.yStartingPosition = DScreenConstants.GAME_HEIGHT;
-            this.yMiddlePosition = 0;
-            this.yFinalPosition = -DScreenConstants.GAME_HEIGHT;
         }
 
         protected override void OnBuild()
@@ -122,11 +117,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
             HideAllOreIconElements();
         }
 
-        internal override void Unload()
-        {
-
-        }
-
         internal override void Update()
         {
             UpdateAnimations();
@@ -134,9 +124,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void UpdateAnimations()
         {
-            this.movementUpdateFrameCounter++;
-
-            if (this.movementUpdateFrameCounter < this.updateFrameDelay)
+            if (++this.movementUpdateFrameCounter < this.updateFrameDelay)
             {
                 return;
             }
@@ -193,15 +181,13 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 return;
             }
 
-            this.currentYGuiPanelPosition = this.yMiddlePosition;
+            this.currentYGuiPanelPosition = (sbyte)this.yMiddlePosition;
             this.state = DGUIState.Showing;
         }
 
         private void UpdateScoreAnimation()
         {
-            this.oreUpdateFrameCounter++;
-
-            if (this.oreUpdateFrameCounter < this.oreUpdateFrameDelay)
+            if (++this.oreUpdateFrameCounter < this.oreUpdateFrameDelay)
             {
                 return;
             }
@@ -238,9 +224,8 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 return;
             }
 
-            if (this.leavingUpdateFrameCounter < this.leavingUpdateFrameDelay)
+            if (++this.leavingUpdateFrameCounter < this.leavingUpdateFrameDelay)
             {
-                this.leavingUpdateFrameCounter++;
                 return;
             }
 

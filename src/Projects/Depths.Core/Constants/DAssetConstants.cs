@@ -6,7 +6,7 @@
         internal const byte TEXTURE_FONT_LENGTH = 4;
         internal const byte TEXTURE_TILE_LENGTH = 10;
         internal const byte TEXTURE_ORE_LENGTH = 14;
-        internal const byte TEXTURE_GUI_LENGTH = 1;
+        internal const byte TEXTURE_GUI_LENGTH = 2;
 
         internal const byte BLIP_SOUND_LENGTH = 14;
         internal const byte GOOD_SOUND_LENGTH = 3;

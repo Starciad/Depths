@@ -49,6 +49,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.gameInformation.OnPlayerReachedTheSurface += GameInformation_PlayerReachedTheSurface;
             this.gameInformation.OnPlayerReachedTheUnderground += GameInformation_PlayerReachedTheUnderground;
             this.gameInformation.OnPlayerReachedTheDepth += GameInformation_PlayerReachedTheDepth;
+            this.gameInformation.PlayerEntity.OnEnergyDepleted += Player_OnEnergyDepleted;
             this.gameInformation.PlayerEntity.OnCollectedOre += Player_OnCollectedOre;
             this.gameInformation.PlayerEntity.OnFullBackpack += Player_OnFullBackpack;
         }
@@ -126,6 +127,12 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             ResetNotifyTextElement();
             this.notifyTextElement.SetValue("Depth");
+        }
+
+        private void Player_OnEnergyDepleted()
+        {
+            ResetNotifyTextElement();
+            this.notifyTextElement.SetValue("Exhausted!");
         }
 
         private void Player_OnCollectedOre(DOre ore)

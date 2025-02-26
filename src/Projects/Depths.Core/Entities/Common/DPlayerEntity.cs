@@ -52,10 +52,12 @@ namespace Depths.Core.Entities.Common
         public uint StairCount { get => this.stairCount; set => this.stairCount = value; }
         public Queue<DOre> CollectedMinerals => this.collectedMinerals;
 
+        internal delegate void Died();
         internal delegate void EnergyDepleted();
         internal delegate void FullBackpack();
         internal delegate void CollectedOre(DOre ore);
 
+        internal event Died OnDied;
         internal event EnergyDepleted OnEnergyDepleted;
         internal event FullBackpack OnFullBackpack;
         internal event CollectedOre OnCollectedOre;
@@ -149,9 +151,7 @@ namespace Depths.Core.Entities.Common
 
         private bool TryApplyGravityStep()
         {
-            this.gravityFrameCounter++;
-
-            if (this.gravityFrameCounter < this.gravityDelayFrames)
+            if (++this.gravityFrameCounter < this.gravityDelayFrames)
             {
                 return false;
             }
@@ -323,7 +323,7 @@ namespace Depths.Core.Entities.Common
             if (tile != null && tile.Type == DTileType.Empty && this.robotCount > 0)
             {
                 this.robotCount--;
-                this.entityManager.InstantiateEntity("Robot", (DEntity entity) =>
+                _ = this.entityManager.InstantiateEntity("Robot", (DEntity entity) =>
                 {
                     entity.Position = this.Position;
                 });
@@ -351,11 +351,18 @@ namespace Depths.Core.Entities.Common
 
             if (tile.Health <= 0)
             {
-                this.energy--;
-
-                if (this.energy == 0)
+                switch (--this.energy)
                 {
-                    Kill();
+                    case 0:
+                        Kill();
+                        break;
+
+                    case 1:
+                        this.OnEnergyDepleted?.Invoke();
+                        break;
+
+                    default:
+                        break;
                 }
 
                 DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_good_3"));
@@ -371,9 +378,16 @@ namespace Depths.Core.Entities.Common
 
         private void Kill()
         {
+            if (this.isDead)
+            {
+                return;
+            }
+
             this.isDead = true;
             this.musicManager.StopMusic();
             DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_negative_1"));
+
+            this.OnDied?.Invoke();
         }
 
         internal void CollectOre(DOre ore)
