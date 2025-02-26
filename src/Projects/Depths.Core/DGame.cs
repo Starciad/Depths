@@ -157,7 +157,7 @@ namespace Depths.Core
                 entity.Position = this.truckSpawnPosition;
             });
 
-            this.guiDatabase.Initialize(this.textManager, this.gameInformation);
+            this.guiDatabase.Initialize(this.assetDatabase, this.textManager, this.guiManager, this.gameInformation);
             this.guiManager.Open("HUD");
 
             this.gameInformation.PlayerEntity.IsVisible = false;

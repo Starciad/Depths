@@ -46,6 +46,7 @@ namespace Depths.Core.Entities.Common
         public uint Money { get => this.money; set => this.money = value; }
         public byte Power { get => this.power; set => this.power = value; }
         public uint StairCount { get => this.stairCount; set => this.stairCount = value; }
+        public Queue<DOre> CollectedMinerals => this.collectedMinerals;
 
         internal delegate void FullBackpack();
         internal delegate void CollectedOre(DOre ore);

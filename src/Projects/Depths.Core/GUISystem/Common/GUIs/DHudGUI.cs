@@ -21,13 +21,16 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private readonly DGUITextElement notifyTextElement;
 
-        private readonly DGameInformation gameInformation;
         private readonly DTextManager textManager;
+        private readonly DGUIManager guiManager;
+        private readonly DGameInformation gameInformation;
 
-        internal DHudGUI(DTextManager textManager, DGameInformation gameInformation) : base()
+        internal DHudGUI(DTextManager textManager, DGUIManager guiManager, DGameInformation gameInformation) : base()
         {
-            this.gameInformation = gameInformation;
             this.textManager = textManager;
+            this.guiManager = guiManager;
+
+            this.gameInformation = gameInformation;
 
             this.notifyTextElement = new(this.textManager)
             {
@@ -36,7 +39,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 TextAlignment = DTextAlignment.Center,
                 Spacing = 1
             };
-
         }
 
         protected override void OnBuild()
@@ -109,6 +111,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.notifyTextElement.SetValue("Surface");
 
             this.gameInformation.PlayerEntity.Energy = this.gameInformation.PlayerEntity.MaximumEnergy;
+
+            if (this.gameInformation.PlayerEntity.CollectedMinerals.Count > 0)
+            {
+                this.guiManager.Open("Surface Stats");
+            }
         }
 
         private void GameInformation_PlayerReachedTheUnderground()

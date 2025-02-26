@@ -11,6 +11,8 @@
         internal const string TEXTURE_ENTITY_ASSETS = "entities";
         internal const string TEXTURE_FONT_ASSETS = "fonts";
         internal const string TEXTURE_TILE_ASSETS = "tiles";
+        internal const string TEXTURE_GUI_ASSETS = "guis";
+        internal const string TEXTURE_ORE_ASSETS = "ores";
 
         internal const string SOUND_ASSETS = "sounds";
         internal const string BLIP_SOUND_ASSETS = "blips";

@@ -11,9 +11,10 @@ namespace Depths.Core.Databases
     {
         private readonly Dictionary<string, DGUI> guis = [];
 
-        internal void Initialize(DTextManager textManager, DGameInformation gameInformation)
+        internal void Initialize(DAssetDatabase assetDatabase, DTextManager textManager, DGUIManager guiManager, DGameInformation gameInformation)
         {
-            this.guis.Add("HUD", new DHudGUI(textManager, gameInformation));
+            this.guis.Add("HUD", new DHudGUI(textManager, guiManager, gameInformation));
+            this.guis.Add("Surface Stats", new DSurfaceStatsGUI(assetDatabase, textManager, gameInformation));
 
             foreach (DGUI gui in this.guis.Values)
             {

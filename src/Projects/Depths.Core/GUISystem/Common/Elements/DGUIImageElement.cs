@@ -7,23 +7,25 @@ namespace Depths.Core.GUISystem.Common.Elements
 {
     internal sealed class DGUIImageElement : DGUIElement
     {
-        internal Texture2D Texture { get; private set; }
+        internal Color Color { get; set; }
+        internal Vector2 Origin { get; set; }
+        internal float Rotation { get; set; }
+        internal Vector2 Scale { get; set; }
         internal DSize2 Size { get; private set; }
         internal Rectangle? TextureClipArea { get; set; }
-        internal Color Color { get; set; }
-        internal float Rotation { get; set; }
-        internal Vector2 Origin { get; set; }
-        internal Vector2 Scale { get; set; }
+        internal Texture2D Texture { get; private set; }
 
         internal DGUIImageElement() : base()
         {
-            this.Texture = null;
+            this.Color = Color.White;
+            this.Origin = Vector2.Zero;
+            this.Rotation = 0f;
+            this.Scale = Vector2.One;
             this.Size = DSize2.Empty;
             this.TextureClipArea = null;
-            this.Color = Color.White;
-            this.Rotation = 0f;
-            this.Origin = Vector2.Zero;
-            this.Scale = Vector2.One;
+            this.Texture = null;
+
+            this.IsVisible = true;
         }
 
         internal override void Draw(SpriteBatch spriteBatch)

@@ -41,6 +41,8 @@ namespace Depths.Core.Databases
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_ENTITY_LENGTH, "texture_entity_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_ENTITY_ASSETS));
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_FONT_LENGTH, "texture_font_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_FONT_ASSETS));
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_TILE_LENGTH, "texture_tile_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_TILE_ASSETS));
+            AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_ORE_LENGTH, "texture_ore_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_ORE_ASSETS));
+            AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_GUI_LENGTH, "texture_gui_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_GUI_ASSETS));
         }
 
         private void LoadSoundEffects(ContentManager contentManager)

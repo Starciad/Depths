@@ -21,6 +21,8 @@ namespace Depths.Core.GUISystem.Common.Elements
         {
             this.stringBuilderContent = new();
             this.textManager = textManager;
+
+            this.IsVisible = true;
         }
 
         internal override void Draw(SpriteBatch spriteBatch)
