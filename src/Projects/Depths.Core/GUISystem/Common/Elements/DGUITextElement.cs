@@ -12,7 +12,7 @@ namespace Depths.Core.GUISystem.Common.Elements
     {
         internal DFontType FontType { get; set; }
         internal DTextAlignment TextAlignment { get; set; }
-        internal int Spacing { get; set; }
+        internal sbyte Spacing { get; set; }
 
         private readonly StringBuilder stringBuilderContent;
         private readonly DTextManager textManager;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Depths.Core.Mathematics.Primitives;
+
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Depths.Core.GUISystem
@@ -8,7 +9,7 @@ namespace Depths.Core.GUISystem
         internal bool IsVisible { get; set; }
         internal bool IsActive { get; set; }
 
-        internal Point Position { get; set; }
+        internal DPoint Position { get; set; }
 
         internal virtual void Initialize() { return; }
         internal virtual void Update() { return; }

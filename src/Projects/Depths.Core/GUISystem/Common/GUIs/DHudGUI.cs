@@ -1,12 +1,10 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Entities.Common;
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
+using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Ores;
-
-using Microsoft.Xna.Framework;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
@@ -95,7 +93,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             this.notifyTextMovementFrameCounter = 0;
 
-            this.notifyTextElement.Position += new Point(0, -this.notifyTextSpeed);
+            this.notifyTextElement.Position += new DPoint(0, -this.notifyTextSpeed);
         }
 
         private void ResetNotifyTextElement()

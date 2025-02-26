@@ -4,14 +4,14 @@ using System;
 
 namespace Depths.Core.Mathematics.Primitives
 {
-    [Serializable]
     internal struct DSize2 : IEquatable<DSize2>
     {
         internal static readonly DSize2 Empty = new();
-        internal readonly bool IsEmpty => this.Width == 0 && this.Height == 0;
+        internal static readonly DSize2 Zero = new(0, 0);
+        internal static readonly DSize2 One = new(1, 1);
 
-        internal static DSize2 Zero => new(0, 0);
-        internal static DSize2 One => new(1, 1);
+        internal readonly bool IsEmpty => this.Width == 0 && this.Height == 0;
+        internal readonly float AspectRatio => this.Height == 0 ? 0 : (float)this.Width / this.Height;
 
         internal int Width;
         internal int Height;
@@ -27,94 +27,115 @@ namespace Depths.Core.Mathematics.Primitives
             this.Height = height;
         }
 
-        public static implicit operator DSize2(Point value)
+        public static implicit operator DSize2(DPoint value)
         {
-            return new DSize2(value.X, value.Y);
-        }
-        public static implicit operator Point(DSize2 value)
-        {
-            return new Point(value.Width, value.Height);
+            return new(value.X, value.Y);
         }
 
-        public static DSize2 operator +(DSize2 first, DSize2 second)
+        public static implicit operator DPoint(DSize2 value)
         {
-            return Add(first, second);
-        }
-        public static DSize2 operator -(DSize2 first, DSize2 second)
-        {
-            return Subtract(first, second);
-        }
-        public static DSize2 operator *(DSize2 size, int value)
-        {
-            return new DSize2(size.Width * value, size.Height * value);
-        }
-        public static DSize2 operator /(DSize2 size, int value)
-        {
-            return new DSize2(size.Width / value, size.Height / value);
+            return new(value.Width, value.Height);
         }
 
-        public static bool operator ==(DSize2 first, DSize2 second)
+        public static DSize2 operator +(DSize2 a, DSize2 b)
         {
-            return first.Equals(ref second);
-        }
-        public static bool operator !=(DSize2 first, DSize2 second)
-        {
-            return !(first == second);
+            return new(a.Width + b.Width, a.Height + b.Height);
         }
 
-        internal static DSize2 Add(DSize2 first, DSize2 second)
+        public static DSize2 operator -(DSize2 a, DSize2 b)
         {
-            DSize2 size;
-            size.Width = first.Width + second.Width;
-            size.Height = first.Height + second.Height;
-            return size;
-        }
-        internal static DSize2 Subtract(DSize2 first, DSize2 second)
-        {
-            DSize2 size;
-            size.Width = first.Width - second.Width;
-            size.Height = first.Height - second.Height;
-            return size;
+            return new(a.Width - b.Width, a.Height - b.Height);
         }
 
-        internal readonly Point ToPoint()
+        public static DSize2 operator *(DSize2 a, int b)
         {
-            return new Point(this.Width, this.Height);
+            return new(a.Width * b, a.Height * b);
         }
+
+        public static DSize2 operator /(DSize2 a, int b)
+        {
+            return new(a.Width / b, a.Height / b);
+        }
+
+        public static bool operator ==(DSize2 a, DSize2 b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(DSize2 a, DSize2 b)
+        {
+            return !a.Equals(b);
+        }
+
+        internal static DSize2 Add(DSize2 a, DSize2 b)
+        {
+            return new(a.Width + b.Width, a.Height + b.Height);
+        }
+
+        internal static DSize2 Subtract(DSize2 a, DSize2 b)
+        {
+            return new(a.Width - b.Width, a.Height - b.Height);
+        }
+
+        internal readonly DPoint ToPoint()
+        {
+            return new(this.Width, this.Height);
+        }
+
         internal readonly Vector2 ToVector2()
         {
-            return new Vector2(this.Width, this.Height);
+            return new(this.Width, this.Height);
         }
 
         public override readonly string ToString()
         {
-            return string.Concat(this.Width, 'x', this.Height);
+            return $"{this.Width}x{this.Height}";
         }
 
         public override readonly int GetHashCode()
         {
-            unchecked
-            {
-                return (this.Width.GetHashCode() * 397) ^ this.Height.GetHashCode();
-            }
+            return HashCode.Combine(this.Width, this.Height);
         }
 
-        internal readonly bool Equals(DSize2 size)
-        {
-            return Equals(ref size);
-        }
-        internal readonly bool Equals(ref DSize2 size)
-        {
-            return this.Width == size.Width && this.Height == size.Height;
-        }
         public override readonly bool Equals(object obj)
         {
-            return obj is DSize2 @int && Equals(@int);
+            return obj is DSize2 other && Equals(other);
         }
 
-        bool IEquatable<DSize2>.Equals(DSize2 other)
+        public readonly bool Equals(DSize2 other)
         {
-            throw new NotImplementedException();
+            return this.Width == other.Width && this.Height == other.Height;
+        }
+
+        public readonly DSize2 Abs()
+        {
+            return new(Math.Abs(this.Width), Math.Abs(this.Height));
+        }
+
+        public static DSize2 Min(DSize2 a, DSize2 b)
+        {
+            return new(Math.Min(a.Width, b.Width), Math.Min(a.Height, b.Height));
+        }
+
+        public static DSize2 Max(DSize2 a, DSize2 b)
+        {
+            return new(Math.Max(a.Width, b.Width), Math.Max(a.Height, b.Height));
+        }
+
+        public static DSize2 Clamp(DSize2 value, DSize2 min, DSize2 max)
+        {
+            return new DSize2(
+                Math.Clamp(value.Width, min.Width, max.Width),
+                Math.Clamp(value.Height, min.Height, max.Height)
+            );
+        }
+
+        public static DSize2 Lerp(DSize2 a, DSize2 b, float t)
+        {
+            return new DSize2(
+                (int)MathF.Round(a.Width + ((b.Width - a.Width) * t)),
+                (int)MathF.Round(a.Height + ((b.Height - a.Height) * t))
+            );
         }
     }
 }

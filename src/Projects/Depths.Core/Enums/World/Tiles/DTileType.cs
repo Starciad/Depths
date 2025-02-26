@@ -12,6 +12,5 @@
         ArrowTrap = 7,
         Wall = 8,
         BoulderTrap = 9,
-        ExplosiveTrap = 10,
     }
 }

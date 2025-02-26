@@ -1,12 +1,11 @@
 ﻿using Depths.Core.Constants;
-
-using Microsoft.Xna.Framework;
+using Depths.Core.Mathematics.Primitives;
 
 namespace Depths.Core.Mathematics
 {
     internal static class DTilemapMath
     {
-        internal static Point ToLocalPosition(Point position)
+        internal static DPoint ToLocalPosition(DPoint position)
         {
             return new(
                 position.X / DWorldConstants.TILE_SIZE,
@@ -14,7 +13,7 @@ namespace Depths.Core.Mathematics
             );
         }
 
-        internal static Point ToGlobalPosition(Point position)
+        internal static DPoint ToGlobalPosition(DPoint position)
         {
             return new(
                 position.X * DWorldConstants.TILE_SIZE,
@@ -22,7 +21,7 @@ namespace Depths.Core.Mathematics
             );
         }
 
-        internal static Point GetTotalTileCount(int chunkColumns, int chunkRows)
+        internal static DPoint GetTotalTileCount(byte chunkColumns, byte chunkRows)
         {
             return new(
                 chunkColumns * DWorldConstants.TILES_PER_CHUNK_WIDTH,

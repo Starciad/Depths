@@ -16,7 +16,6 @@ T5 - Spike Trap
 T6 - Arrow Trap
 T7 - Wall
 T8 - Boulder Trap
-T9 - Explosive Trap
 
 RANDOM
 

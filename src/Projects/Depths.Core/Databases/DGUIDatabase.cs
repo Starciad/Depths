@@ -1,5 +1,4 @@
-﻿using Depths.Core.Entities.Common;
-using Depths.Core.GUISystem;
+﻿using Depths.Core.GUISystem;
 using Depths.Core.GUISystem.Common.GUIs;
 using Depths.Core.Managers;
 

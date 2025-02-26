@@ -1,4 +1,5 @@
 ﻿using Depths.Core.Interfaces.Collections;
+using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,7 @@ namespace Depths.Core.Entities
     internal abstract class DEntity : IDPoolableObject
     {
         internal DEntityDescriptor Descriptor { get; private set; }
-        internal Point Position { get; set; }
+        internal DPoint Position { get; set; }
 
         internal bool IsActive { get; set; }
         internal bool IsVisible { get; set; }

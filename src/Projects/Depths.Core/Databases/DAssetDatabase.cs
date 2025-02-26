@@ -57,7 +57,7 @@ namespace Depths.Core.Databases
             AssetLoader(contentManager, DAssetType.SoundEffect, DAssetConstants.RING_SOUND_LENGTH, "sound_ring_", Path.Combine(DDirectoryConstants.SOUND_ASSETS, DDirectoryConstants.RING_SOUND_ASSETS));
         }
 
-        private void AssetLoader(ContentManager contentManager, DAssetType assetType, int length, string prefix, string path)
+        private void AssetLoader(ContentManager contentManager, DAssetType assetType, byte length, string prefix, string path)
         {
             uint targetId;
             string targetName;

@@ -1,4 +1,5 @@
-﻿using Depths.Core.Enums.General;
+﻿using Depths.Core.Entities;
+using Depths.Core.Enums.General;
 using Depths.Core.Enums.World.Tiles;
 using Depths.Core.World.Ores;
 
@@ -15,6 +16,10 @@ namespace Depths.Core.World.Tiles
         internal byte Resistance { get; set; }
         internal DTileType Type { get; set; }
         internal DUpdateCycleFlag UpdateCycleFlag { get; set; }
+
+        internal Destroyed OnDestroyed { get; set; }
+
+        internal delegate void Destroyed(DEntity author);
 
         internal void Copy(DTile tile)
         {

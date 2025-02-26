@@ -7,6 +7,7 @@ using Depths.Core.Enums.General;
 using Depths.Core.Generators;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
+using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
@@ -20,11 +21,6 @@ namespace Depths.Core
     {
         private SpriteBatch spriteBatch;
 
-        private bool transitionIsDisabled = true;
-        private bool isIdolCutsceneRunning = true;
-        private bool isTruckCutsceneRunning = false;
-        private bool isPlayerCutsceneRunning = false;
-
         private byte idolCutsceneFrameCounter = 0;
         private byte truckMovementCutsceneFrameCounter = 0;
         private byte playerMovementCutsceneFrameCounter = 0;
@@ -33,12 +29,12 @@ namespace Depths.Core
         private readonly byte truckMovementCutsceneFrameDelay = 1;
         private readonly byte playerMovementCutsceneFrameDelay = 8;
 
-        private readonly Point playerSpawnPosition;
-        private readonly Point playerLobbyPosition;
-        private readonly Point truckSpawnPosition;
-        private readonly Point truckLobbyPosition;
-        private readonly Point cameraIdolPosition;
-        private readonly Point cameraLobbyPosition;
+        private readonly DPoint playerSpawnPosition;
+        private readonly DPoint playerLobbyPosition;
+        private readonly DPoint truckSpawnPosition;
+        private readonly DPoint truckLobbyPosition;
+        private readonly DPoint cameraIdolPosition;
+        private readonly DPoint cameraLobbyPosition;
 
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
@@ -115,8 +111,8 @@ namespace Depths.Core
             // Positions
             this.playerSpawnPosition = new(this.world.Tilemap.Size.Width / 2, 4);
             this.playerLobbyPosition = new((this.world.Tilemap.Size.Width / 2) - 3, 4);
-            this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new Point(0, 10);
-            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new Point(-6, 10);
+            this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new DPoint(0, 10);
+            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new DPoint(-6, 10);
 
             this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
@@ -128,7 +124,7 @@ namespace Depths.Core
         protected override void Initialize()
         {
             this.assetDatabase.Initialize(this.Content);
-            this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager);
+            this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager, this.gameInformation);
             this.graphicsManager.Initialize();
             this.worldDatabase.Initialize(this.assetDatabase);
             this.textManager.Initialize();
@@ -169,25 +165,38 @@ namespace Depths.Core
 
         protected override void Update(GameTime gameTime)
         {
+            if (!this.gameInformation.IsGameFocused)
+            {
+                goto BASE_UPDATE;
+            }
+
             this.gameInformation.Update();
-
-            UpdateManagers(gameTime);
-            UpdateCutscenes();
-            UpdateTransition(gameTime);
-
-            base.Update(gameTime);
-        }
-
-        private void UpdateManagers(GameTime gameTime)
-        {
             this.inputManager.Update();
-            this.musicManager.Update(gameTime);
             this.guiManager.Update();
+            this.musicManager.Update(gameTime);
+
+            if (this.gameInformation.IsGamePaused)
+            {
+                goto BASE_UPDATE;
+            }
+
+            if (this.gameInformation.IsGameCrucialMenuOpen || !this.worldTransitionManager.IsTransitioning())
+            {
+                this.entityManager.Update(gameTime);
+                this.world.Update();
+            }
+
+            UpdateCutscenes();
+            UpdateTransition();
+
+        BASE_UPDATE:
+            ;
+            base.Update(gameTime);
         }
 
         private void UpdateCutscenes()
         {
-            if (!this.isIdolCutsceneRunning && !this.isTruckCutsceneRunning && !this.isPlayerCutsceneRunning)
+            if (!this.gameInformation.IsIdolCutsceneRunning && !this.gameInformation.IsTruckCutsceneRunning && !this.gameInformation.IsPlayerCutsceneRunning)
             {
                 return;
             }
@@ -202,11 +211,11 @@ namespace Depths.Core
                 this.gameInformation.PlayerEntity.Position = this.playerLobbyPosition;
                 this.gameInformation.TruckEntity.Position = this.truckLobbyPosition;
 
-                this.isIdolCutsceneRunning = false;
-                this.isTruckCutsceneRunning = false;
-                this.isPlayerCutsceneRunning = false;
+                this.gameInformation.IsIdolCutsceneRunning = false;
+                this.gameInformation.IsTruckCutsceneRunning = false;
+                this.gameInformation.IsPlayerCutsceneRunning = false;
 
-                this.transitionIsDisabled = false;
+                this.gameInformation.TransitionIsDisabled = false;
             }
 
             UpdateIdolCutscene();
@@ -216,7 +225,7 @@ namespace Depths.Core
 
         private void UpdateIdolCutscene()
         {
-            if (!this.isIdolCutsceneRunning)
+            if (!this.gameInformation.IsIdolCutsceneRunning)
             {
                 return;
             }
@@ -227,18 +236,18 @@ namespace Depths.Core
                 return;
             }
 
-            this.transitionIsDisabled = false;
+            this.gameInformation.TransitionIsDisabled = false;
 
             if (this.cameraManager.Position == this.cameraLobbyPosition.ToVector2())
             {
-                this.isTruckCutsceneRunning = true;
-                this.isIdolCutsceneRunning = false;
+                this.gameInformation.IsTruckCutsceneRunning = true;
+                this.gameInformation.IsIdolCutsceneRunning = false;
             }
         }
 
         private void UpdateTruckCutscene()
         {
-            if (!this.isTruckCutsceneRunning || this.isIdolCutsceneRunning)
+            if (!this.gameInformation.IsTruckCutsceneRunning || this.gameInformation.IsIdolCutsceneRunning)
             {
                 return;
             }
@@ -254,19 +263,19 @@ namespace Depths.Core
 
             if (this.gameInformation.TruckEntity.Position.X > this.truckLobbyPosition.X)
             {
-                this.gameInformation.TruckEntity.Position += new Point(-1, 0);
+                this.gameInformation.TruckEntity.Position += new DPoint(-1, 0);
             }
             else
             {
                 this.gameInformation.PlayerEntity.IsVisible = true;
-                this.isPlayerCutsceneRunning = true;
-                this.isTruckCutsceneRunning = false;
+                this.gameInformation.IsPlayerCutsceneRunning = true;
+                this.gameInformation.IsTruckCutsceneRunning = false;
             }
         }
 
         private void UpdatePlayerCutscene()
         {
-            if (!this.isPlayerCutsceneRunning || this.isTruckCutsceneRunning || this.isIdolCutsceneRunning)
+            if (!this.gameInformation.IsPlayerCutsceneRunning || this.gameInformation.IsTruckCutsceneRunning || this.gameInformation.IsIdolCutsceneRunning)
             {
                 return;
             }
@@ -282,25 +291,19 @@ namespace Depths.Core
 
             if (this.gameInformation.PlayerEntity.Position.X > this.playerLobbyPosition.X)
             {
-                this.gameInformation.PlayerEntity.Position += new Point(-1, 0);
+                this.gameInformation.PlayerEntity.Position += new DPoint(-1, 0);
             }
             else
             {
-                this.isPlayerCutsceneRunning = false;
+                this.gameInformation.IsPlayerCutsceneRunning = false;
             }
         }
 
-        private void UpdateTransition(GameTime gameTime)
+        private void UpdateTransition()
         {
-            if (this.transitionIsDisabled)
+            if (this.gameInformation.TransitionIsDisabled)
             {
                 return;
-            }
-
-            if (!this.worldTransitionManager.IsTransitioning())
-            {
-                this.entityManager.Update(gameTime);
-                this.world.Update();
             }
 
             this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.gameInformation.PlayerEntity.Position));
@@ -347,6 +350,23 @@ namespace Depths.Core
             #endregion
 
             base.Draw(gameTime);
+        }
+
+        protected override void OnActivated(object sender, EventArgs args)
+        {
+            base.OnActivated(sender, args);
+            this.gameInformation.IsGameFocused = true;
+        }
+
+        protected override void OnDeactivated(object sender, EventArgs args)
+        {
+            base.OnDeactivated(sender, args);
+            this.gameInformation.IsGameFocused = false;
+        }
+
+        protected override void OnExiting(object sender, ExitingEventArgs args)
+        {
+            base.OnExiting(sender, args);
         }
     }
 }

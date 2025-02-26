@@ -2,6 +2,7 @@
 using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
+using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,27 +36,27 @@ namespace Depths.Core.Managers
             this.characterMap = GenerateCharacterMap();
         }
 
-        internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, Point position, DFontType fontType, int spacing, DTextAlignment alignment)
+        internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, DPoint position, DFontType fontType, sbyte spacing, DTextAlignment alignment)
         {
             int totalWidth = (value.Length * (DFontConstants.WIDTH + spacing)) - spacing;
 
-            Point startPosition = alignment switch
+            DPoint startPosition = alignment switch
             {
                 DTextAlignment.Center => new(position.X - (totalWidth / 2), position.Y),
                 DTextAlignment.Right => new(position.X - totalWidth, position.Y),
                 _ => position
             };
 
-            Point currentPos = startPosition;
+            DPoint currentPos = startPosition;
 
-            for (int i = 0; i < value.Length; i++)
+            for (byte i = 0; i < value.Length; i++)
             {
                 DrawCharacter(spriteBatch, value[i], currentPos, fontType);
                 currentPos.X += DFontConstants.WIDTH + spacing;
             }
         }
 
-        internal void DrawCharacter(SpriteBatch spriteBatch, char character, Point position, DFontType fontType)
+        internal void DrawCharacter(SpriteBatch spriteBatch, char character, DPoint position, DFontType fontType)
         {
             if (!this.characterMap.TryGetValue(character, out Rectangle sourceRectangle))
             {
@@ -69,7 +70,7 @@ namespace Depths.Core.Managers
         {
             Dictionary<char, Rectangle> map = [];
 
-            for (int i = 0; i < DFontConstants.MAPPED_CHARACTERS.Length; i++)
+            for (byte i = 0; i < DFontConstants.MAPPED_CHARACTERS.Length; i++)
             {
                 map[DFontConstants.MAPPED_CHARACTERS[i]] = new(new(DFontConstants.WIDTH * i, 0), new(DFontConstants.WIDTH, DFontConstants.HEIGHT));
             }

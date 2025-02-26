@@ -1,6 +1,8 @@
 ﻿using Depths.Core.Audio;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Extensions;
+using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 
@@ -8,10 +10,10 @@ namespace Depths.Core.Managers
 {
     internal sealed class DWorldTransitionManager
     {
-        private Point targetPosition;
+        private DPoint targetPosition;
         private bool isTransitioning;
 
-        private readonly int transitionSpeed = 2;
+        private readonly byte transitionSpeed = 3;
         private readonly DAssetDatabase assetDatabase;
         private readonly DCameraManager cameraManager;
 
@@ -20,10 +22,10 @@ namespace Depths.Core.Managers
             this.assetDatabase = assetDatabase;
             this.cameraManager = cameraManager;
 
-            this.targetPosition = cameraManager.Position.ToPoint();
+            this.targetPosition = cameraManager.Position.ToDPoint();
         }
 
-        internal void Update(Point playerPosition)
+        internal void Update(DPoint playerPosition)
         {
             if (this.isTransitioning)
             {
@@ -38,21 +40,21 @@ namespace Depths.Core.Managers
             }
         }
 
-        private bool HasPlayerMovedToNewScreen(Point playerPosition)
+        private bool HasPlayerMovedToNewScreen(DPoint playerPosition)
         {
-            int cameraX = this.cameraManager.Position.ToPoint().X;
-            int cameraWorldY = -this.cameraManager.Position.ToPoint().Y;
+            int cameraX = this.cameraManager.Position.ToDPoint().X;
+            int cameraWorldY = -this.cameraManager.Position.ToDPoint().Y;
 
             return playerPosition.X < cameraX || playerPosition.X >= cameraX + DScreenConstants.GAME_WIDTH ||
                    playerPosition.Y < cameraWorldY || playerPosition.Y >= cameraWorldY + DScreenConstants.GAME_HEIGHT;
         }
 
-        private void StartTransition(Point playerPosition)
+        private void StartTransition(DPoint playerPosition)
         {
             int newX = playerPosition.X / DScreenConstants.GAME_WIDTH * DScreenConstants.GAME_WIDTH;
             int newY = playerPosition.Y / (DScreenConstants.GAME_HEIGHT + 1) * (DScreenConstants.GAME_HEIGHT + 1);
 
-            this.targetPosition = new Point(newX, -newY);
+            this.targetPosition = new DPoint(newX, -newY);
             this.isTransitioning = true;
         }
 

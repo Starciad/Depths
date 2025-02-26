@@ -1,9 +1,8 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Enums.World.Chunks;
 using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Tiles;
-
-using Microsoft.Xna.Framework;
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace Depths.Core.World.Chunks
         private readonly DWorldChunkType type;
         private readonly string[,] content;
 
-        private static readonly Dictionary<string, Action<DTilemap, Point>> tileActions = new()
+        private static readonly Dictionary<string, Action<DTilemap, DPoint>> tileActions = new()
         {
             #region TILES
             ["T0"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Empty),
@@ -29,7 +28,6 @@ namespace Depths.Core.World.Chunks
             ["T6"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),
             ["T7"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Wall),
             ["T8"] = (tilemap, position) => tilemap.SetTile(position, DTileType.BoulderTrap),
-            ["T9"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ExplosiveTrap),
             #endregion
 
             #region RANDOM
@@ -43,7 +41,7 @@ namespace Depths.Core.World.Chunks
             this.content = content;
         }
 
-        internal void ApplyToTilemap(Point chunkPosition, DTilemap tilemap)
+        internal void ApplyToTilemap(DPoint chunkPosition, DTilemap tilemap)
         {
             uint baseY = (uint)chunkPosition.Y * DWorldConstants.TILES_PER_CHUNK_HEIGHT;
             uint baseX = (uint)chunkPosition.X * DWorldConstants.TILES_PER_CHUNK_WIDTH;
@@ -52,14 +50,14 @@ namespace Depths.Core.World.Chunks
             {
                 for (uint x = 0; x < DWorldConstants.TILES_PER_CHUNK_WIDTH; x++)
                 {
-                    PlaceTile(this.content[x, y], tilemap, new((int)(baseX + x), (int)(baseY + y)));
+                    PlaceTile(this.content[x, y], tilemap, new((byte)(baseX + x), (byte)(baseY + y)));
                 }
             }
         }
 
-        private static void PlaceTile(string tileCode, DTilemap tilemap, Point position)
+        private static void PlaceTile(string tileCode, DTilemap tilemap, DPoint position)
         {
-            if (tileActions.TryGetValue(tileCode, out Action<DTilemap, Point> action))
+            if (tileActions.TryGetValue(tileCode, out Action<DTilemap, DPoint> action))
             {
                 action(tilemap, position);
             }

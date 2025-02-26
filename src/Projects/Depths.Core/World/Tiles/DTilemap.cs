@@ -1,5 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Entities;
+using Depths.Core.Entities.Common;
 using Depths.Core.Enums.General;
 using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Helpers;
@@ -72,6 +74,18 @@ namespace Depths.Core.World.Tiles
                 tile.IsDestructible = true;
                 tile.Ore = null;
                 tile.Resistance = 0;
+                tile.OnDestroyed = (DEntity author) =>
+                {
+                    switch (author)
+                    {
+                        case DPlayerEntity player:
+                            player.CollectedMinerals.Enqueue(tile.Ore);
+                            break;
+
+                        default:
+                            break;
+                    }
+                };
             },
 
             [DTileType.Stair] = (DTile tile) =>
@@ -139,17 +153,6 @@ namespace Depths.Core.World.Tiles
                 tile.Ore = null;
                 tile.Resistance = 0;
             },
-
-            [DTileType.ExplosiveTrap] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = 1;
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
         };
 
         internal DTilemap(DSize2 size, DAssetDatabase assetDatabase)
@@ -159,9 +162,9 @@ namespace Depths.Core.World.Tiles
             this.size = size;
             this.tiles = new DTile[size.Width, size.Height];
 
-            for (int y = 0; y < size.Height; y++)
+            for (byte y = 0; y < size.Height; y++)
             {
-                for (int x = 0; x < size.Width; x++)
+                for (byte x = 0; x < size.Width; x++)
                 {
                     this.tiles[x, y] = new DTile();
                 }
@@ -172,11 +175,11 @@ namespace Depths.Core.World.Tiles
         {
             this.boulderTrapFrameCounter++;
 
-            for (int y = 0; y < this.size.Height; y++)
+            for (byte y = 0; y < this.size.Height; y++)
             {
-                for (int x = 0; x < this.size.Width; x++)
+                for (byte x = 0; x < this.size.Width; x++)
                 {
-                    Point position = new(x, y);
+                    DPoint position = new(x, y);
                     DTile tile = GetTile(position);
 
                     if (tile.UpdateCycleFlag == this.updateCycleFlag)
@@ -217,7 +220,7 @@ namespace Depths.Core.World.Tiles
             this.updateCycleFlag = this.updateCycleFlag.GetNextCycle();
         }
 
-        private void UpdateTileHealth(DTile tile, Point position)
+        private void UpdateTileHealth(DTile tile, DPoint position)
         {
             if (tile.Health == 0 && tile.IsDestructible)
             {
@@ -225,7 +228,7 @@ namespace Depths.Core.World.Tiles
             }
         }
 
-        private void UpdateTileGravity(DTile tile, Point position)
+        private void UpdateTileGravity(DTile tile, DPoint position)
         {
             if (!tile.HasGravity)
             {
@@ -246,7 +249,7 @@ namespace Depths.Core.World.Tiles
             }
         }
 
-        private void UpdateBolderTrap(DTile tile, Point position)
+        private void UpdateBolderTrap(DTile tile, DPoint position)
         {
             DTile leftTile = GetTile(new(position.X - 1, position.Y));
             DTile rightTile = GetTile(new(position.X + 1, position.Y));
@@ -292,7 +295,7 @@ namespace Depths.Core.World.Tiles
             }
         }
 
-        private void UpdateSpikeTrap(Point position)
+        private void UpdateSpikeTrap(DPoint position)
         {
             DTile tileBelow = this.tiles[position.X, position.Y + 1];
 
@@ -312,9 +315,9 @@ namespace Depths.Core.World.Tiles
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            for (int y = 0; y < this.size.Height; y++)
+            for (byte y = 0; y < this.size.Height; y++)
             {
-                for (int x = 0; x < this.size.Width; x++)
+                for (byte x = 0; x < this.size.Width; x++)
                 {
                     DTile tile = GetTile(new(x, y));
                     Texture2D texture = GetTileTexture(tile.Type);
@@ -329,7 +332,7 @@ namespace Depths.Core.World.Tiles
             }
         }
 
-        internal void SetTile(Point position, DTileType type)
+        internal void SetTile(DPoint position, DTileType type)
         {
             DTile tile = GetTile(position);
 
@@ -342,7 +345,7 @@ namespace Depths.Core.World.Tiles
             this.tileTypes[type]?.Invoke(tile);
         }
 
-        internal DTile GetTile(Point position)
+        internal DTile GetTile(DPoint position)
         {
             return !IsInsideBounds(position) ? null : this.tiles[position.X, position.Y];
         }
@@ -361,12 +364,11 @@ namespace Depths.Core.World.Tiles
                 DTileType.ArrowTrap => this.assetDatabase.GetTexture("texture_tile_7"),
                 DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_8"),
                 DTileType.BoulderTrap => this.assetDatabase.GetTexture("texture_tile_9"),
-                DTileType.ExplosiveTrap => this.assetDatabase.GetTexture("texture_tile_10"),
                 _ => null,
             };
         }
 
-        internal bool IsInsideBounds(Point position)
+        internal bool IsInsideBounds(DPoint position)
         {
             return position.X >= 0 && position.X < this.size.Width &&
                    position.Y >= 0 && position.Y < this.size.Height;

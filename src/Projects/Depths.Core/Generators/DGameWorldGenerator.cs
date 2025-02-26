@@ -12,8 +12,6 @@ using Depths.Core.World.Chunks;
 using Depths.Core.World.Ores;
 using Depths.Core.World.Tiles;
 
-using Microsoft.Xna.Framework;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +29,8 @@ namespace Depths.Core.Generators
         private DTilemap worldTilemap;
         private DSize2 worldSize;
 
-        private readonly List<(Point Position, DTile Tile)> stoneTiles = [];
-        private readonly List<(Point Position, DTile Tile)> emptyTiles = [];
+        private readonly List<(DPoint Position, DTile Tile)> stoneTiles = [];
+        private readonly List<(DPoint Position, DTile Tile)> emptyTiles = [];
 
         internal void Initialize()
         {
@@ -57,10 +55,10 @@ namespace Depths.Core.Generators
             IEnumerable<DWorldChunk> surfaceChunks = this.WorldDatabase.Chunks
                 .Where(chunk => chunk.Type == DWorldChunkType.Surface);
 
-            for (int x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
+            for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
             {
                 DWorldChunk randomChunk = surfaceChunks.GetRandomItem();
-                randomChunk.ApplyToTilemap(new Point(x, 0), this.worldTilemap);
+                randomChunk.ApplyToTilemap(new DPoint(x, 0), this.worldTilemap);
             }
         }
 
@@ -69,12 +67,12 @@ namespace Depths.Core.Generators
             IEnumerable<DWorldChunk> undergroundChunks = this.WorldDatabase.Chunks
                 .Where(chunk => chunk.Type == DWorldChunkType.Underground);
 
-            for (int y = 1; y < DWorldConstants.WORLD_HEIGHT - 1; y++)
+            for (byte y = 1; y < DWorldConstants.WORLD_HEIGHT - 1; y++)
             {
-                for (int x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
+                for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
                 {
                     DWorldChunk randomChunk = undergroundChunks.GetRandomItem();
-                    randomChunk.ApplyToTilemap(new Point(x, y), this.worldTilemap);
+                    randomChunk.ApplyToTilemap(new DPoint(x, y), this.worldTilemap);
                 }
             }
         }
@@ -84,23 +82,23 @@ namespace Depths.Core.Generators
             IEnumerable<DWorldChunk> depthChunks = this.WorldDatabase.Chunks
                 .Where(chunk => chunk.Type == DWorldChunkType.Depth);
 
-            for (int x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
+            for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
             {
                 DWorldChunk randomChunk = depthChunks.GetRandomItem();
-                randomChunk.ApplyToTilemap(new Point(x, DWorldConstants.WORLD_HEIGHT - 1), this.worldTilemap);
+                randomChunk.ApplyToTilemap(new DPoint(x, DWorldConstants.WORLD_HEIGHT - 1), this.worldTilemap);
             }
         }
 
         private void CollectUndergroundTiles()
         {
             int startY = DWorldConstants.TILES_PER_CHUNK_HEIGHT;
-            int endY = this.worldSize.Height - DWorldConstants.TILES_PER_CHUNK_HEIGHT;
+            int endY = Convert.ToUInt16(this.worldSize.Height - DWorldConstants.TILES_PER_CHUNK_HEIGHT);
 
             for (int y = startY; y < endY; y++)
             {
                 for (int x = 0; x < this.worldSize.Width; x++)
                 {
-                    Point position = new(x, y);
+                    DPoint position = new(x, y);
                     DTile tile = this.worldTilemap.GetTile(position);
 
                     if (tile == null)
@@ -113,9 +111,11 @@ namespace Depths.Core.Generators
                         case DTileType.Empty:
                             this.emptyTiles.Add((position, tile));
                             break;
+
                         case DTileType.Stone:
                             this.stoneTiles.Add((position, tile));
                             break;
+
                         default:
                             break;
                     }
@@ -138,8 +138,8 @@ namespace Depths.Core.Generators
                 byte orePlacementCount = (byte)DRandomMath.Range(50, 150);
 
                 // Filter stone tiles to only include those in the ore's allowed chunk range.
-                List<(Point Position, DTile Tile)> validStoneTiles = [];
-                foreach ((Point Position, DTile Tile) stoneTile in this.stoneTiles)
+                List<(DPoint Position, DTile Tile)> validStoneTiles = [];
+                foreach ((DPoint Position, DTile Tile) stoneTile in this.stoneTiles)
                 {
                     byte tileChunk = GetChunkIndex(stoneTile.Position);
 
@@ -165,7 +165,8 @@ namespace Depths.Core.Generators
                     }
 
                     // Pick a random valid stone tile.
-                    (Point Position, DTile Tile) selectedTile = validStoneTiles.GetRandomItem();
+                    (DPoint Position, DTile Tile) selectedTile = validStoneTiles.GetRandomItem();
+
                     bool removedFromGlobal = this.stoneTiles.Remove(selectedTile);
                     bool removedFromLocal = validStoneTiles.Remove(selectedTile);
 
@@ -189,15 +190,16 @@ namespace Depths.Core.Generators
 
         private void GenerateBoxes()
         {
-            int boxCount = DRandomMath.Range(16, 32);
+            byte boxCount = (byte)DRandomMath.Range(16, 32);
+
             if (this.stoneTiles.Count < boxCount)
             {
                 return;
             }
 
-            for (int i = 0; i < boxCount; i++)
+            for (byte i = 0; i < boxCount; i++)
             {
-                (Point Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
+                (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
                 bool removed = this.stoneTiles.Remove(tileEntry);
                 if (!removed)
                 {
@@ -210,15 +212,16 @@ namespace Depths.Core.Generators
 
         private void GenerateDirt()
         {
-            int dirtCount = DRandomMath.Range(100, 200);
+            byte dirtCount = (byte)DRandomMath.Range(100, 255);
+
             if (this.stoneTiles.Count < dirtCount)
             {
                 return;
             }
 
-            for (int i = 0; i < dirtCount; i++)
+            for (byte i = 0; i < dirtCount; i++)
             {
-                (Point Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
+                (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
                 bool removed = this.stoneTiles.Remove(tileEntry);
                 if (!removed)
                 {
@@ -231,16 +234,19 @@ namespace Depths.Core.Generators
 
         private void GenerateWalls()
         {
-            int wallCount = DRandomMath.Range(100, 200);
+            byte wallCount = (byte)DRandomMath.Range(100, 255);
+
             if (this.stoneTiles.Count < wallCount)
             {
                 return;
             }
 
-            for (int i = 0; i < wallCount; i++)
+            for (byte i = 0; i < wallCount; i++)
             {
-                (Point Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
+                (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
+
                 bool removed = this.stoneTiles.Remove(tileEntry);
+
                 if (!removed)
                 {
                     continue;
@@ -258,48 +264,51 @@ namespace Depths.Core.Generators
 
         private void GenerateStoneTraps()
         {
-            int trapCount = DRandomMath.Range(30, 60);
+            byte trapCount = (byte)DRandomMath.Range(30, 60);
             if (this.stoneTiles.Count < trapCount)
             {
                 return;
             }
 
-            for (int i = 0; i < trapCount; i++)
+            for (byte i = 0; i < trapCount; i++)
             {
-                (Point Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
+                (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
                 bool removed = this.stoneTiles.Remove(tileEntry);
+
                 if (!removed)
                 {
                     continue;
                 }
 
-                int trapType = DRandomMath.Range(0, 1);
+                byte trapType = (byte)DRandomMath.Range(0, 1);
                 if (trapType == 0)
                 {
                     this.worldTilemap.SetTile(tileEntry.Position, DTileType.BoulderTrap);
                 }
                 else if (trapType == 1)
                 {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.ExplosiveTrap);
+                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.SpikeTrap);
                 }
             }
         }
 
         private void GenerateVoidTraps()
         {
-            int trapCount = DRandomMath.Range(30, 60);
+            byte trapCount = (byte)DRandomMath.Range(30, 60);
+
             if (this.emptyTiles.Count < trapCount)
             {
                 return;
             }
 
-            for (int i = 0; i < trapCount; i++)
+            for (byte i = 0; i < trapCount; i++)
             {
-                (Point Position, DTile Tile) tileEntry = this.emptyTiles.GetRandomItem();
-                Point belowPosition = new(tileEntry.Position.X, tileEntry.Position.Y + 1);
+                (DPoint Position, DTile Tile) tileEntry = this.emptyTiles.GetRandomItem();
+                DPoint belowPosition = new(tileEntry.Position.X, tileEntry.Position.Y + 1);
                 DTile tileBelow = this.worldTilemap.GetTile(belowPosition);
 
-                int trapType = DRandomMath.Range(0, 2);
+                byte trapType = (byte)DRandomMath.Range(0, 2);
+
                 if (trapType == 0)
                 {
                     if (tileBelow != null && tileBelow.Type != DTileType.Empty)
@@ -329,23 +338,23 @@ namespace Depths.Core.Generators
         private void GenerateMapBorders()
         {
             // Set vertical borders (left and right)
-            for (int y = 0; y < this.worldSize.Height; y++)
+            for (byte y = 0; y < this.worldSize.Height; y++)
             {
-                this.worldTilemap.SetTile(new Point(0, y), DTileType.Wall);
-                this.worldTilemap.SetTile(new Point(this.worldSize.Width - 1, y), DTileType.Wall);
+                this.worldTilemap.SetTile(new DPoint(0, y), DTileType.Wall);
+                this.worldTilemap.SetTile(new DPoint(this.worldSize.Width - 1, y), DTileType.Wall);
             }
 
             // Set horizontal bottom border
-            for (int x = 0; x < this.worldSize.Width; x++)
+            for (byte x = 0; x < this.worldSize.Width; x++)
             {
-                this.worldTilemap.SetTile(new Point(x, this.worldSize.Height - 1), DTileType.Wall);
+                this.worldTilemap.SetTile(new DPoint(x, this.worldSize.Height - 1), DTileType.Wall);
             }
         }
 
         // =============================== //
         // Utilities
 
-        private static byte GetChunkIndex(Point tilePosition)
+        private static byte GetChunkIndex(DPoint tilePosition)
         {
             // Each chunk is 12 tiles wide. We use 1-indexing for chunk numbers.
             return Convert.ToByte((tilePosition.X / DWorldConstants.TILES_PER_CHUNK_WIDTH) + 1);

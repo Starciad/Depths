@@ -19,7 +19,7 @@ namespace Depths.Core.Managers
 
         internal void Update()
         {
-            for (int i = 0; i < this.openGuis.Count; i++)
+            for (byte i = 0; i < this.openGuis.Count; i++)
             {
                 DGUI gui = this.openGuis[i];
 
@@ -34,7 +34,7 @@ namespace Depths.Core.Managers
 
         internal void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < this.openGuis.Count; i++)
+            for (byte i = 0; i < this.openGuis.Count; i++)
             {
                 DGUI gui = this.openGuis[i];
 

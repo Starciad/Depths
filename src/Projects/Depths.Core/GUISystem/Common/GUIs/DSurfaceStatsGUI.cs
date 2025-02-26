@@ -57,7 +57,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.panelElement = new()
             {
                 IsVisible = false,
-                Position = new(0, yStartingPosition),
+                Position = new(0, this.yStartingPosition),
             };
 
             this.moneyTextElement = new(textManager)
@@ -80,9 +80,9 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 DGUIImageElement oreIconElement = new()
                 {
                     IsVisible = false,
-                    Position = new(11 + i * (DSpriteConstants.ORE_ICON_SIZE + 2), 16)
+                    Position = new(11 + (i * (DSpriteConstants.ORE_ICON_SIZE + 2)), 16)
                 };
-                
+
                 oreIconElement.SetTexture(assetDatabase.GetTexture("texture_ore_1"));
 
                 this.oreIconElements[i] = oreIconElement;
@@ -110,7 +110,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         internal override void Load()
         {
             this.currentYGuiPanelPosition = (sbyte)this.yStartingPosition;
-            
+
             this.moneyRaised = 0;
             this.countedMinerals = 0;
             this.currentOreIndex = 0;

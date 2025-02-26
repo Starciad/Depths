@@ -1,4 +1,5 @@
-﻿using Depths.Core.Mathematics.Primitives;
+﻿using Depths.Core.Extensions;
+using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,7 +37,7 @@ namespace Depths.Core.GUISystem.Common.Elements
         internal void SetTexture(Texture2D value)
         {
             this.Texture = value;
-            this.Size = new(this.Texture.Width, this.Texture.Height);
+            this.Size = this.Texture.GetSize();
         }
     }
 }

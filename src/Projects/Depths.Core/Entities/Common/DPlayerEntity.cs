@@ -4,6 +4,7 @@ using Depths.Core.Enums.General;
 using Depths.Core.Enums.World.Tiles;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
+using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World;
 using Depths.Core.World.Ores;
 using Depths.Core.World.Tiles;
@@ -21,23 +22,25 @@ namespace Depths.Core.Entities.Common
         private readonly DAssetDatabase assetDatabase;
         private readonly DInputManager inputManager;
         private readonly DMusicManager musicManager;
+        private readonly DGameInformation gameInformation;
 
-        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager) : base(identifier, texture, world)
+        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(identifier, texture, world)
         {
             this.assetDatabase = assetDatabase;
             this.inputManager = inputManager;
             this.musicManager = musicManager;
+            this.gameInformation = gameInformation;
         }
 
         internal override DEntity CreateEntity()
         {
-            return new DPlayerEntity(this, this.assetDatabase, this.inputManager, this.musicManager);
+            return new DPlayerEntity(this, this.assetDatabase, this.inputManager, this.musicManager, this.gameInformation);
         }
     }
 
     internal sealed class DPlayerEntity : DEntity
     {
-        public byte Attack { get => this.attack; set => this.attack = value; }
+        public byte Damage { get => this.damage; set => this.damage = value; }
         public byte BackpackSize { get => this.backpackSize; set => this.backpackSize = value; }
         internal DDirection Direction { get => this.direction; set => this.direction = value; }
         public byte Energy { get => this.energy; set => this.energy = value; }
@@ -56,7 +59,7 @@ namespace Depths.Core.Entities.Common
 
         private DDirection direction = DDirection.Right;
 
-        private byte attack = 1;
+        private byte damage = 1;
         private byte backpackSize = 10;
         private byte energy = 30;
         private byte gravityFrameCounter = 0;
@@ -71,6 +74,7 @@ namespace Depths.Core.Entities.Common
         private readonly DAssetDatabase assetDatabase;
         private readonly DInputManager inputManager;
         private readonly DMusicManager musicManager;
+        private readonly DGameInformation gameInformation;
 
         private readonly Queue<DOre> collectedMinerals = [];
 
@@ -82,13 +86,14 @@ namespace Depths.Core.Entities.Common
             new(new(0, 14), new(7)), // Death Sprite
         ];
 
-        internal DPlayerEntity(DEntityDescriptor descriptor, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager) : base(descriptor)
+        internal DPlayerEntity(DEntityDescriptor descriptor, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(descriptor)
         {
             this.texture = descriptor.Texture;
             this.tilemap = descriptor.World.Tilemap;
             this.assetDatabase = assetDatabase;
             this.inputManager = inputManager;
             this.musicManager = musicManager;
+            this.gameInformation = gameInformation;
         }
 
         protected override void OnUpdate(GameTime gameTime)
@@ -151,7 +156,7 @@ namespace Depths.Core.Entities.Common
 
             this.gravityFrameCounter = 0;
 
-            Point checkPointBottom = new(this.Position.X, this.Position.Y + 1);
+            DPoint checkPointBottom = new(this.Position.X, this.Position.Y + 1);
 
             DTile currentTile = this.tilemap.GetTile(this.Position);
             DTile bottomTile = this.tilemap.GetTile(checkPointBottom);
@@ -169,6 +174,11 @@ namespace Depths.Core.Entities.Common
 
         private void HandleInput()
         {
+            if (this.gameInformation.IsCutsceneRunning)
+            {
+                return;
+            }
+
             HandleHorizontalMovement();
             HandleVerticalMovement();
             HandlePlaceLadder();
@@ -208,7 +218,7 @@ namespace Depths.Core.Entities.Common
                     return;
                 }
 
-                Point checkPointFront = new(this.Position.X + deltaX, this.Position.Y);
+                DPoint checkPointFront = new(this.Position.X + deltaX, this.Position.Y);
 
                 if (!IsCollidingAt(checkPointFront))
                 {
@@ -239,7 +249,7 @@ namespace Depths.Core.Entities.Common
 
             if (deltaY != 0)
             {
-                Point checkPointFront = new(this.Position.X, this.Position.Y + deltaY);
+                DPoint checkPointFront = new(this.Position.X, this.Position.Y + deltaY);
 
                 DTile currentTile = this.tilemap.GetTile(this.Position);
                 DTile frontTile = this.tilemap.GetTile(checkPointFront);
@@ -278,7 +288,7 @@ namespace Depths.Core.Entities.Common
             }
         }
 
-        private void TryMineBlock(Point position)
+        private void TryMineBlock(DPoint position)
         {
             DTile tile = this.tilemap.GetTile(position);
 
@@ -290,7 +300,7 @@ namespace Depths.Core.Entities.Common
             if (this.power > tile.Resistance)
             {
                 DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_hit_6"));
-                tile.Health -= this.attack;
+                tile.Health -= this.damage;
             }
             else
             {
@@ -351,7 +361,7 @@ namespace Depths.Core.Entities.Common
             }
         }
 
-        private bool IsCollidingAt(Point position)
+        private bool IsCollidingAt(DPoint position)
         {
             DTile tile = this.tilemap.GetTile(position);
 

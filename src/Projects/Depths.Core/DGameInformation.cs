@@ -1,7 +1,6 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Entities.Common;
-
-using Microsoft.Xna.Framework;
+using Depths.Core.Mathematics.Primitives;
 
 using System;
 
@@ -9,6 +8,17 @@ namespace Depths.Core
 {
     internal sealed class DGameInformation
     {
+        internal bool TransitionIsDisabled { get; set; } = true;
+
+        internal bool IsCutsceneRunning => this.IsIdolCutsceneRunning || this.IsTruckCutsceneRunning || this.IsPlayerCutsceneRunning;
+        internal bool IsIdolCutsceneRunning { get; set; } = true;
+        internal bool IsTruckCutsceneRunning { get; set; } = false;
+        internal bool IsPlayerCutsceneRunning { get; set; } = false;
+
+        internal bool IsGameFocused { get; set; }
+        internal bool IsGamePaused { get; set; }
+        internal bool IsGameCrucialMenuOpen { get; set; }
+
         internal DPlayerEntity PlayerEntity { get; set; }
         internal DTruckEntity TruckEntity { get; set; }
 
@@ -43,7 +53,7 @@ namespace Depths.Core
                 return;
             }
 
-            Point position = this.PlayerEntity.Position;
+            DPoint position = this.PlayerEntity.Position;
 
             // Surface
             if (CheckIfPlayerYAxisIsInRange(position.Y, new(new(0), new(DWorldConstants.TILES_PER_CHUNK_HEIGHT))))
@@ -74,7 +84,7 @@ namespace Depths.Core
             }
 
             // Depth
-            if (CheckIfPlayerYAxisIsInRange(position.Y, new(new((DWorldConstants.WORLD_HEIGHT-  1) * DWorldConstants.TILES_PER_CHUNK_HEIGHT), new(DWorldConstants.WORLD_HEIGHT * DWorldConstants.TILES_PER_CHUNK_HEIGHT))))
+            if (CheckIfPlayerYAxisIsInRange(position.Y, new(new((DWorldConstants.WORLD_HEIGHT - 1) * DWorldConstants.TILES_PER_CHUNK_HEIGHT), new(DWorldConstants.WORLD_HEIGHT * DWorldConstants.TILES_PER_CHUNK_HEIGHT))))
             {
                 if (!this.IsPlayerInDepth)
                 {
@@ -90,12 +100,7 @@ namespace Depths.Core
 
         private static bool CheckIfPlayerYAxisIsInRange(int yPosition, Range yRange)
         {
-            if (yPosition >= yRange.Start.Value && yPosition < yRange.End.Value)
-            {
-                return true;
-            }
-
-            return false;
+            return yPosition >= yRange.Start.Value && yPosition < yRange.End.Value;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Depths.Core.Audio.Music
         internal bool IsRepeating { get; set; } = false;
         internal bool IsPlaying { get; private set; } = false;
 
-        private int currentNoteIndex = 0;
+        private byte currentNoteIndex = 0;
         private float noteTimer = 0f;
 
         private readonly DMusicNote[] notes = noteSequence;

@@ -41,7 +41,7 @@ namespace Depths.Core.Managers
 
         internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < this.instantiatedEntities.Count; i++)
+            for (byte i = 0; i < this.instantiatedEntities.Count; i++)
             {
                 DEntity entity = this.instantiatedEntities[i];
 
