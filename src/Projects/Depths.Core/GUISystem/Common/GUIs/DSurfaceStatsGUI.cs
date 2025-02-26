@@ -83,8 +83,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     Position = new(11 + (i * (DSpriteConstants.ORE_ICON_SIZE + 2)), 16)
                 };
 
-                oreIconElement.SetTexture(assetDatabase.GetTexture("texture_ore_1"));
-
                 this.oreIconElements[i] = oreIconElement;
             }
 
@@ -121,7 +119,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.oreUpdateFrameCounter = 0;
             this.leavingUpdateFrameCounter = 0;
 
-            HideAllOreIcons();
+            HideAllOreIconElements();
         }
 
         internal override void Unload()
@@ -220,10 +218,12 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 byte index = Convert.ToByte(this.currentOreIndex % (byte)this.oreIconElements.Length);
 
                 // If the index is 0, it means we have reached a multiple of the array size and we must reset
+                this.oreIconElements[index].SetTexture(ore.IconTexture);
+
                 if (index == 0)
                 {
                     // Makes all elements invisible
-                    HideAllOreIcons();
+                    HideAllOreIconElements();
 
                     // Keep only the first one visible
                     this.oreIconElements[0].IsVisible = true;
@@ -231,7 +231,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 else
                 {
                     // Sets the icon in the correct slot and makes it visible
-                    this.oreIconElements[index].SetTexture(ore.IconTexture);
                     this.oreIconElements[index].IsVisible = true;
                 }
 
@@ -245,7 +244,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 return;
             }
 
-            HideAllOreIcons();
+            HideAllOreIconElements();
             this.state = DGUIState.Leaving;
         }
 
@@ -263,7 +262,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.guiManager.Close(this.Identifier);
         }
 
-        private void HideAllOreIcons()
+        private void HideAllOreIconElements()
         {
             foreach (DGUIImageElement oreIconElement in this.oreIconElements)
             {

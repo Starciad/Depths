@@ -11,9 +11,9 @@ namespace Depths.Core.World
     {
         internal DTilemap Tilemap { get; private set; }
 
-        internal DWorld(DAssetDatabase assetDatabase)
+        internal DWorld(DAssetDatabase assetDatabase, DGameInformation gameInformation)
         {
-            this.Tilemap = new(DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT), assetDatabase);
+            this.Tilemap = new(DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT), assetDatabase, gameInformation);
         }
 
         internal void Update()

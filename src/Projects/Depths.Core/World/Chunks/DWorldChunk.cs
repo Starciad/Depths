@@ -1,6 +1,5 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Enums.World.Chunks;
-using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Enums.World;
 using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Tiles;
 
@@ -28,6 +27,7 @@ namespace Depths.Core.World.Chunks
             ["T6"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),
             ["T7"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Wall),
             ["T8"] = (tilemap, position) => tilemap.SetTile(position, DTileType.BoulderTrap),
+            ["T9"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Platform),
             #endregion
 
             #region RANDOM

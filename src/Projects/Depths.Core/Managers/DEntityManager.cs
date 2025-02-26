@@ -28,20 +28,22 @@ namespace Depths.Core.Managers
 
         internal void Update(GameTime gameTime)
         {
-            this.instantiatedEntities.ForEach(entity =>
+            for (int i = 0; i < this.instantiatedEntities.Count; i++)
             {
+                DEntity entity = this.instantiatedEntities[i];
+
                 if (entity == null)
                 {
                     return;
                 }
 
                 entity.Update(gameTime);
-            });
+            }
         }
 
         internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            for (byte i = 0; i < this.instantiatedEntities.Count; i++)
+            for (int i = 0; i < this.instantiatedEntities.Count; i++)
             {
                 DEntity entity = this.instantiatedEntities[i];
 

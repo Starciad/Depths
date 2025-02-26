@@ -1,4 +1,4 @@
-﻿namespace Depths.Core.Enums.World.Chunks
+﻿namespace Depths.Core.Enums.World
 {
     internal enum DWorldChunkType : byte
     {

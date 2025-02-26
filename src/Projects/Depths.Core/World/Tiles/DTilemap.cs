@@ -3,7 +3,7 @@ using Depths.Core.Databases;
 using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
 using Depths.Core.Enums.General;
-using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Enums.World;
 using Depths.Core.Helpers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
@@ -30,132 +30,8 @@ namespace Depths.Core.World.Tiles
 
         private readonly DAssetDatabase assetDatabase;
 
-        private readonly Dictionary<DTileType, Action<DTile>> tileTypes = new()
-        {
-            [DTileType.Empty] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = 0;
-                tile.IsSolid = false;
-                tile.IsDestructible = false;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.Dirt] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = 1;
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.Stone] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = (byte)DRandomMath.Range(2, 3);
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.Ore] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = (byte)DRandomMath.Range(4, 5);
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-                tile.OnDestroyed = (DEntity author) =>
-                {
-                    switch (author)
-                    {
-                        case DPlayerEntity player:
-                            player.CollectedMinerals.Enqueue(tile.Ore);
-                            break;
-
-                        default:
-                            break;
-                    }
-                };
-            },
-
-            [DTileType.Stair] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = true;
-                tile.Health = 0;
-                tile.IsSolid = false;
-                tile.IsDestructible = false;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.Box] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = true;
-                tile.Health = 2;
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.SpikeTrap] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = true;
-                tile.Health = 0;
-                tile.IsSolid = false;
-                tile.IsDestructible = false;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.ArrowTrap] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = true;
-                tile.Health = 1;
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.Wall] = (DTile tile) =>
-            {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = 0;
-                tile.IsSolid = true;
-                tile.IsDestructible = false;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-
-            [DTileType.BoulderTrap] = (DTile tile) =>
-            {
-                tile.Direction = DRandomMath.Chance(50, 100) ? DDirection.Left : DDirection.Right;
-                tile.HasGravity = true;
-                tile.Health = 5;
-                tile.IsSolid = true;
-                tile.IsDestructible = true;
-                tile.Ore = null;
-                tile.Resistance = 0;
-            },
-        };
-
-        internal DTilemap(DSize2 size, DAssetDatabase assetDatabase)
+        private readonly Dictionary<DTileType, Action<DTile>> tileTypes;
+        internal DTilemap(DSize2 size, DAssetDatabase assetDatabase, DGameInformation gameInformation)
         {
             this.assetDatabase = assetDatabase;
 
@@ -169,6 +45,149 @@ namespace Depths.Core.World.Tiles
                     this.tiles[x, y] = new DTile();
                 }
             }
+
+            this.tileTypes = new()
+            {
+                [DTileType.Empty] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = false;
+                    tile.Health = 0;
+                    tile.IsSolid = false;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.Dirt] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = false;
+                    tile.Health = 1;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.Stone] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = false;
+                    tile.Health = (byte)DRandomMath.Range(2, 3);
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.Ore] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = false;
+                    tile.Health = (byte)DRandomMath.Range(4, 5);
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                    tile.OnDestroyed = () =>
+                    {
+                        gameInformation.PlayerEntity.CollectOre(tile.Ore);
+                    };
+                },
+
+                [DTileType.Stair] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = true;
+                    tile.Health = 0;
+                    tile.IsSolid = false;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.Box] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = true;
+                    tile.Health = 2;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                    tile.OnDestroyed = () =>
+                    {
+                        switch (DRandomMath.Range(0, 1))
+                        {
+                            case 0:
+                                gameInformation.PlayerEntity.Money += (uint)DRandomMath.Range(1, 5);
+                                break;
+
+                            case 1:
+                                gameInformation.PlayerEntity.StairCount += (uint)DRandomMath.Range(3, 6);
+                                break;
+
+                            default:
+                                break;
+                        }
+                    };
+                },
+
+                [DTileType.SpikeTrap] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = true;
+                    tile.Health = 0;
+                    tile.IsSolid = false;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.ArrowTrap] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = true;
+                    tile.Health = 1;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.Wall] = (DTile tile) =>
+                {
+                    tile.Direction = DDirection.None;
+                    tile.HasGravity = false;
+                    tile.Health = 0;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.BoulderTrap] = (DTile tile) =>
+                {
+                    tile.Direction = DRandomMath.Chance(50, 100) ? DDirection.Left : DDirection.Right;
+                    tile.HasGravity = true;
+                    tile.Health = 5;
+                    tile.IsSolid = true;
+                    tile.IsDestructible = true;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+
+                [DTileType.Platform] = (DTile tile) =>
+                {
+                    tile.HasGravity = false;
+                    tile.Health = 0;
+                    tile.IsSolid = false;
+                    tile.IsDestructible = false;
+                    tile.Ore = null;
+                    tile.Resistance = 0;
+                },
+            };
         }
 
         internal void Update()
@@ -224,6 +243,7 @@ namespace Depths.Core.World.Tiles
         {
             if (tile.Health == 0 && tile.IsDestructible)
             {
+                tile.OnDestroyed?.Invoke();
                 SetTile(position, DTileType.Empty);
             }
         }
@@ -364,6 +384,7 @@ namespace Depths.Core.World.Tiles
                 DTileType.ArrowTrap => this.assetDatabase.GetTexture("texture_tile_7"),
                 DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_8"),
                 DTileType.BoulderTrap => this.assetDatabase.GetTexture("texture_tile_9"),
+                DTileType.Platform => this.assetDatabase.GetTexture("texture_tile_10"),
                 _ => null,
             };
         }

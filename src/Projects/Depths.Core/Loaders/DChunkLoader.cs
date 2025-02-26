@@ -1,5 +1,5 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Enums.World.Chunks;
+using Depths.Core.Enums.World;
 using Depths.Core.IO;
 using Depths.Core.World.Chunks;
 

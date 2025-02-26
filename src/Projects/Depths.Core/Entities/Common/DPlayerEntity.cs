@@ -1,7 +1,7 @@
 ﻿using Depths.Core.Audio;
+using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Enums.General;
-using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Enums.World;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
@@ -11,7 +11,6 @@ using Depths.Core.World.Tiles;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 using System.Collections.Generic;
 
@@ -20,13 +19,15 @@ namespace Depths.Core.Entities.Common
     internal sealed class DPlayerEntityDescriptor : DEntityDescriptor
     {
         private readonly DAssetDatabase assetDatabase;
+        private readonly DEntityManager entityManager;
         private readonly DInputManager inputManager;
         private readonly DMusicManager musicManager;
         private readonly DGameInformation gameInformation;
 
-        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(identifier, texture, world)
+        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DAssetDatabase assetDatabase, DEntityManager entityManager, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(identifier, texture, world)
         {
             this.assetDatabase = assetDatabase;
+            this.entityManager = entityManager;
             this.inputManager = inputManager;
             this.musicManager = musicManager;
             this.gameInformation = gameInformation;
@@ -34,7 +35,7 @@ namespace Depths.Core.Entities.Common
 
         internal override DEntity CreateEntity()
         {
-            return new DPlayerEntity(this, this.assetDatabase, this.inputManager, this.musicManager, this.gameInformation);
+            return new DPlayerEntity(this, this.assetDatabase, this.entityManager, this.inputManager, this.musicManager, this.gameInformation);
         }
     }
 
@@ -42,7 +43,7 @@ namespace Depths.Core.Entities.Common
     {
         public byte Damage { get => this.damage; set => this.damage = value; }
         public byte BackpackSize { get => this.backpackSize; set => this.backpackSize = value; }
-        internal DDirection Direction { get => this.direction; set => this.direction = value; }
+        internal sbyte HorizontalDirectionDelta { get => this.horizontalDirectionDelta; set => this.horizontalDirectionDelta = value; }
         public byte Energy { get => this.energy; set => this.energy = value; }
         internal bool IsDead => this.isDead;
         public byte MaximumEnergy { get => this.maximumEnergy; set => this.maximumEnergy = value; }
@@ -51,13 +52,15 @@ namespace Depths.Core.Entities.Common
         public uint StairCount { get => this.stairCount; set => this.stairCount = value; }
         public Queue<DOre> CollectedMinerals => this.collectedMinerals;
 
+        internal delegate void EnergyDepleted();
         internal delegate void FullBackpack();
         internal delegate void CollectedOre(DOre ore);
 
+        internal event EnergyDepleted OnEnergyDepleted;
         internal event FullBackpack OnFullBackpack;
         internal event CollectedOre OnCollectedOre;
 
-        private DDirection direction = DDirection.Right;
+        private sbyte horizontalDirectionDelta = -1;
 
         private byte damage = 1;
         private byte backpackSize = 10;
@@ -68,10 +71,13 @@ namespace Depths.Core.Entities.Common
         private uint money = 0;
         private byte power = 1;
         private uint stairCount = 10;
+        private uint plataformCount = 10;
+        private uint robotCount = 10;
 
         private readonly Texture2D texture;
         private readonly DTilemap tilemap;
         private readonly DAssetDatabase assetDatabase;
+        private readonly DEntityManager entityManager;
         private readonly DInputManager inputManager;
         private readonly DMusicManager musicManager;
         private readonly DGameInformation gameInformation;
@@ -86,11 +92,12 @@ namespace Depths.Core.Entities.Common
             new(new(0, 14), new(7)), // Death Sprite
         ];
 
-        internal DPlayerEntity(DEntityDescriptor descriptor, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(descriptor)
+        internal DPlayerEntity(DEntityDescriptor descriptor, DAssetDatabase assetDatabase, DEntityManager entityManager, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(descriptor)
         {
             this.texture = descriptor.Texture;
             this.tilemap = descriptor.World.Tilemap;
             this.assetDatabase = assetDatabase;
+            this.entityManager = entityManager;
             this.inputManager = inputManager;
             this.musicManager = musicManager;
             this.gameInformation = gameInformation;
@@ -117,11 +124,6 @@ namespace Depths.Core.Entities.Common
 
         protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (!this.IsVisible)
-            {
-                return;
-            }
-
             spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 
@@ -129,10 +131,10 @@ namespace Depths.Core.Entities.Common
         {
             return this.isDead
                 ? this.textureClipAreas[2]
-                : this.direction switch
+                : this.horizontalDirectionDelta switch
                 {
-                    DDirection.Right => (Rectangle?)this.textureClipAreas[0],
-                    DDirection.Left => (Rectangle?)this.textureClipAreas[1],
+                    1 => (Rectangle?)this.textureClipAreas[0],
+                    -1 => (Rectangle?)this.textureClipAreas[1],
                     _ => null,
                 };
         }
@@ -141,7 +143,7 @@ namespace Depths.Core.Entities.Common
         {
             DTile tile = this.tilemap.GetTile(this.Position);
 
-            return (tile.Type != DTileType.Empty && tile.Type != DTileType.Stair) ||
+            return (tile.Type != DTileType.Empty && tile.Type != DTileType.Platform && tile.Type != DTileType.Stair) ||
                 tile.IsSolid;
         }
 
@@ -163,6 +165,7 @@ namespace Depths.Core.Entities.Common
 
             if ((currentTile != null && currentTile.Type == DTileType.Stair) ||
                 (bottomTile != null && bottomTile.Type == DTileType.Stair) ||
+                (bottomTile != null && bottomTile.Type == DTileType.Platform) ||
                 IsCollidingAt(checkPointBottom))
             {
                 return false;
@@ -179,14 +182,14 @@ namespace Depths.Core.Entities.Common
                 return;
             }
 
-            HandleHorizontalMovement();
-            HandleVerticalMovement();
-            HandlePlaceLadder();
+            HandleHorizontalMovementInput();
+            HandleVerticalMovementInput();
+            HandlingItemPositioningInput();
         }
 
-        private void HandleHorizontalMovement()
+        private void HandleHorizontalMovementInput()
         {
-            DTile tileBelow = this.tilemap.GetTile(new(this.Position.X, this.Position.Y + 1));
+            DTile tileBelow = this.tilemap.GetTile(new DPoint(this.Position.X, this.Position.Y + 1));
 
             if (tileBelow == null || tileBelow.Type == DTileType.Empty)
             {
@@ -194,97 +197,136 @@ namespace Depths.Core.Entities.Common
             }
 
             sbyte deltaX = 0;
-            DDirection targetDirection = DDirection.None;
-
-            if (this.inputManager.KeyboardState.IsKeyDown(Keys.A) &&
-               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.A))
+            if (this.inputManager.Started(DKeyMappingConstant.Left))
             {
                 deltaX = -1;
-                targetDirection = DDirection.Left;
             }
-
-            if (this.inputManager.KeyboardState.IsKeyDown(Keys.D) &&
-               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.D))
+            else if (this.inputManager.Started(DKeyMappingConstant.Right))
             {
                 deltaX = 1;
-                targetDirection = DDirection.Right;
             }
 
-            if (deltaX != 0)
+            if (deltaX == 0)
             {
-                if (targetDirection != this.direction)
-                {
-                    this.direction = targetDirection;
-                    return;
-                }
+                return;
+            }
 
-                DPoint checkPointFront = new(this.Position.X + deltaX, this.Position.Y);
+            if (deltaX != this.horizontalDirectionDelta)
+            {
+                this.horizontalDirectionDelta = deltaX;
+                return;
+            }
 
-                if (!IsCollidingAt(checkPointFront))
-                {
-                    this.Position = checkPointFront;
-                }
-                else
-                {
-                    TryMineBlock(checkPointFront);
-                }
+            DPoint checkPointFront = new(this.Position.X + deltaX, this.Position.Y);
+            if (!IsCollidingAt(checkPointFront))
+            {
+                this.Position = checkPointFront;
+            }
+            else
+            {
+                TryMineBlock(checkPointFront);
             }
         }
 
-        private void HandleVerticalMovement()
+        private void HandleVerticalMovementInput()
         {
             sbyte deltaY = 0;
 
-            if (this.inputManager.KeyboardState.IsKeyDown(Keys.W) &&
-               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.W))
+            if (this.inputManager.Started(DKeyMappingConstant.Up))
             {
                 deltaY = -1;
             }
-
-            if (this.inputManager.KeyboardState.IsKeyDown(Keys.S) &&
-               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.S))
+            else if (this.inputManager.Started(DKeyMappingConstant.Down))
             {
                 deltaY = 1;
             }
 
-            if (deltaY != 0)
+            if (deltaY == 0)
             {
-                DPoint checkPointFront = new(this.Position.X, this.Position.Y + deltaY);
+                return;
+            }
 
-                DTile currentTile = this.tilemap.GetTile(this.Position);
-                DTile frontTile = this.tilemap.GetTile(checkPointFront);
+            DPoint checkPointFront = new(this.Position.X, this.Position.Y + deltaY);
+            DTile currentTile = this.tilemap.GetTile(this.Position);
+            DTile frontTile = this.tilemap.GetTile(checkPointFront);
 
-                if ((currentTile != null && currentTile.Type == DTileType.Stair) ||
-                    (frontTile != null && frontTile.Type == DTileType.Stair))
+            if (deltaY == 1 && frontTile?.Type == DTileType.Platform)
+            {
+                this.Position = checkPointFront;
+                return;
+            }
+
+            if ((currentTile?.Type == DTileType.Stair) || (frontTile?.Type == DTileType.Stair))
+            {
+                if (!IsCollidingAt(checkPointFront))
                 {
-                    if (!IsCollidingAt(checkPointFront))
-                    {
-                        this.Position = checkPointFront;
-                        return;
-                    }
+                    this.Position = checkPointFront;
+                    return;
                 }
+            }
 
-                if (IsCollidingAt(checkPointFront))
-                {
-                    TryMineBlock(checkPointFront);
-                }
+            if (IsCollidingAt(checkPointFront))
+            {
+                TryMineBlock(checkPointFront);
             }
         }
 
-        private void HandlePlaceLadder()
+        private void HandlingItemPositioningInput()
         {
-            if (this.inputManager.KeyboardState.IsKeyDown(Keys.K) &&
-               !this.inputManager.PreviousKeyboardState.IsKeyDown(Keys.K))
+            HandlePlaceStairInput();
+            HandlePlacePlataformInput();
+            HandlePlaceRobotInput();
+        }
+
+        private void HandlePlaceStairInput()
+        {
+            if (!this.inputManager.Started(DKeyMappingConstant.PlaceStair))
             {
-                DTile tile = this.tilemap.GetTile(this.Position);
+                return;
+            }
 
-                if (tile == null || tile.Type != DTileType.Empty || this.stairCount <= 0)
-                {
-                    return;
-                }
+            DTile tile = this.tilemap.GetTile(this.Position);
 
+            if (tile?.Type == DTileType.Platform || (tile != null && tile.Type == DTileType.Empty && this.stairCount > 0))
+            {
                 this.stairCount--;
                 this.tilemap.SetTile(this.Position, DTileType.Stair);
+            }
+        }
+
+        private void HandlePlacePlataformInput()
+        {
+            if (!this.inputManager.Started(DKeyMappingConstant.PlacePlataform))
+            {
+                return;
+            }
+
+            DPoint targetPosition = new(this.Position.X + this.horizontalDirectionDelta, this.Position.Y + 1);
+            DTile deltaTile = this.tilemap.GetTile(targetPosition);
+
+            if ((deltaTile?.Type == DTileType.Empty || deltaTile?.Type == DTileType.Stair) && this.plataformCount > 0)
+            {
+                this.plataformCount--;
+                this.tilemap.SetTile(targetPosition, DTileType.Platform);
+            }
+        }
+
+        private void HandlePlaceRobotInput()
+        {
+            if (!this.inputManager.Started(DKeyMappingConstant.PlaceRobot))
+            {
+                return;
+            }
+
+            DTile tile = this.tilemap.GetTile(this.Position);
+
+            if (tile != null && tile.Type == DTileType.Empty && this.robotCount > 0)
+            {
+                this.robotCount--;
+                this.entityManager.InstantiateEntity("Robot", (DEntity entity) =>
+                {
+                    entity.Position = this.Position;
+                });
             }
         }
 
@@ -317,47 +359,6 @@ namespace Depths.Core.Entities.Common
                 }
 
                 DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_good_3"));
-
-                GetTileRewards(tile);
-            }
-        }
-
-        private void GetTileRewards(DTile tile)
-        {
-            switch (tile.Type)
-            {
-                case DTileType.Ore:
-                    if (this.collectedMinerals.Count < this.backpackSize)
-                    {
-                        this.collectedMinerals.Enqueue(tile.Ore);
-                        this.OnCollectedOre?.Invoke(tile.Ore);
-                    }
-                    else
-                    {
-                        this.OnFullBackpack?.Invoke();
-                    }
-
-                    break;
-
-                case DTileType.Box:
-                    switch (DRandomMath.Range(0, 1))
-                    {
-                        case 0:
-                            this.money += (uint)DRandomMath.Range(1, 5);
-                            break;
-
-                        case 1:
-                            this.stairCount += (uint)DRandomMath.Range(3, 6);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    break;
-
-                default:
-                    break;
             }
         }
 
@@ -373,6 +374,19 @@ namespace Depths.Core.Entities.Common
             this.isDead = true;
             this.musicManager.StopMusic();
             DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_negative_1"));
+        }
+
+        internal void CollectOre(DOre ore)
+        {
+            if (this.collectedMinerals.Count < this.backpackSize)
+            {
+                this.OnCollectedOre?.Invoke(ore);
+                this.collectedMinerals.Enqueue(ore);
+            }
+            else
+            {
+                this.OnFullBackpack?.Invoke();
+            }
         }
     }
 }

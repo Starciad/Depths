@@ -1,4 +1,4 @@
-﻿namespace Depths.Core.Enums.World.Tiles
+﻿namespace Depths.Core.Enums.World
 {
     internal enum DTileType : byte
     {
@@ -12,5 +12,6 @@
         ArrowTrap = 7,
         Wall = 8,
         BoulderTrap = 9,
+        Platform = 10
     }
 }

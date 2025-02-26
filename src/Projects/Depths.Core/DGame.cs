@@ -84,8 +84,11 @@ namespace Depths.Core
             this.worldTransitionManager = new(this.assetDatabase, this.cameraManager);
             this.guiManager = new(this.guiDatabase);
 
+            // Infos
+            this.gameInformation = new();
+
             // Core
-            this.world = new(this.assetDatabase);
+            this.world = new(this.assetDatabase, this.gameInformation);
             this.gameGenerator = new()
             {
                 AssetDatabase = this.assetDatabase,
@@ -116,15 +119,12 @@ namespace Depths.Core
 
             this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
-
-            // Infos
-            this.gameInformation = new();
         }
 
         protected override void Initialize()
         {
             this.assetDatabase.Initialize(this.Content);
-            this.entityDatabase.Initialize(this.world, this.assetDatabase, this.inputManager, this.musicManager, this.gameInformation);
+            this.entityDatabase.Initialize(this.world, this.assetDatabase, this.entityManager, this.inputManager, this.musicManager, this.gameInformation);
             this.graphicsManager.Initialize();
             this.worldDatabase.Initialize(this.assetDatabase);
             this.textManager.Initialize();
@@ -158,7 +158,7 @@ namespace Depths.Core
             this.guiManager.Open("HUD");
 
             this.gameInformation.PlayerEntity.IsVisible = false;
-            this.gameInformation.PlayerEntity.Direction = DDirection.Left;
+            this.gameInformation.PlayerEntity.HorizontalDirectionDelta = -1;
 
             this.cameraManager.Position = this.cameraIdolPosition.ToVector2();
         }

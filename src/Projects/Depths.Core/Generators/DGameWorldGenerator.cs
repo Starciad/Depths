@@ -1,7 +1,6 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Enums.World.Chunks;
-using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Enums.World;
 using Depths.Core.Extensions;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;

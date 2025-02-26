@@ -24,5 +24,23 @@ namespace Depths.Core.Managers
             this.mouseState = Mouse.GetState();
             this.keyboardState = Keyboard.GetState();
         }
+
+        internal bool Started(Keys key)
+        {
+            return this.keyboardState.IsKeyDown(key) &&
+                  !this.previousKeyboardState.IsKeyDown(key);
+        }
+
+        internal bool Performed(Keys key)
+        {
+            return this.keyboardState.IsKeyDown(key) &&
+                   this.previousKeyboardState.IsKeyDown(key);
+        }
+
+        internal bool Canceled(Keys key)
+        {
+            return !this.keyboardState.IsKeyDown(key) &&
+                   this.previousKeyboardState.IsKeyDown(key);
+        }
     }
 }

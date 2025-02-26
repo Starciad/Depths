@@ -18,10 +18,11 @@ namespace Depths.Core.Databases
             this.assetDatabase = assetDatabase;
         }
 
-        internal void Initialize(DWorld world, DAssetDatabase assetDatabase, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation)
+        internal void Initialize(DWorld world, DAssetDatabase assetDatabase, DEntityManager entityManager, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation)
         {
-            RegisterEntityDescriptor(new DPlayerEntityDescriptor("Player", this.assetDatabase.GetTexture("texture_entity_1"), world, assetDatabase, inputManager, musicManager, gameInformation));
+            RegisterEntityDescriptor(new DPlayerEntityDescriptor("Player", this.assetDatabase.GetTexture("texture_entity_1"), world, assetDatabase, entityManager, inputManager, musicManager, gameInformation));
             RegisterEntityDescriptor(new DTruckEntityDescriptor("Truck", this.assetDatabase.GetTexture("texture_entity_2"), world));
+            RegisterEntityDescriptor(new DRobotEntityDescriptor("Robot", this.assetDatabase.GetTexture("texture_entity_3"), world, entityManager, gameInformation));
         }
 
         private void RegisterEntityDescriptor(DEntityDescriptor descriptor)

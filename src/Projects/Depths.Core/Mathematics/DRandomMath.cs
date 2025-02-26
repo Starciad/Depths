@@ -15,12 +15,6 @@ namespace Depths.Core.Mathematics
         {
             return (sbyte)_random.Next(min, max + 1);
         }
-
-        internal static int Range(int min, int max)
-        {
-            return _random.Next(min, max + 1);
-        }
-
         internal static short Range(short min, short max)
         {
             return (short)_random.Next(min, max + 1);
@@ -29,6 +23,11 @@ namespace Depths.Core.Mathematics
         internal static ushort Range(ushort min, ushort max)
         {
             return (ushort)_random.Next(min, max + 1);
+        }
+
+        internal static int Range(int min, int max)
+        {
+            return _random.Next(min, max + 1);
         }
 
         internal static uint Range(uint min, uint max)
@@ -71,11 +70,6 @@ namespace Depths.Core.Mathematics
             return Range((sbyte)0, max);
         }
 
-        internal static int Range(int max)
-        {
-            return Range(0, max);
-        }
-
         internal static short Range(short max)
         {
             return Range((short)0, max);
@@ -84,6 +78,11 @@ namespace Depths.Core.Mathematics
         internal static ushort Range(ushort max)
         {
             return Range((ushort)0, max);
+        }
+
+        internal static int Range(int max)
+        {
+            return Range(0, max);
         }
 
         internal static uint Range(uint max)

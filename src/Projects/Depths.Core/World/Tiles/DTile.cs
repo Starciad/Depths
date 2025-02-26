@@ -1,6 +1,6 @@
 ﻿using Depths.Core.Entities;
 using Depths.Core.Enums.General;
-using Depths.Core.Enums.World.Tiles;
+using Depths.Core.Enums.World;
 using Depths.Core.World.Ores;
 
 namespace Depths.Core.World.Tiles
@@ -19,7 +19,7 @@ namespace Depths.Core.World.Tiles
 
         internal Destroyed OnDestroyed { get; set; }
 
-        internal delegate void Destroyed(DEntity author);
+        internal delegate void Destroyed();
 
         internal void Copy(DTile tile)
         {
