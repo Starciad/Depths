@@ -40,11 +40,6 @@
 		<PackageReference Include="nkast.Xna.Framework.Content.Pipeline.Builder" Version="4.0.9001" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.11" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.11" PrivateAssets="all" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<KniContentReference Include="..\..\Depths.Core\Assets\Assets.mgcb" />
 	</ItemGroup>

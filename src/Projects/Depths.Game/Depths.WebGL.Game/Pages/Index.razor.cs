@@ -1,6 +1,6 @@
-using Microsoft.JSInterop;
-
 using Depths.Core;
+
+using Microsoft.JSInterop;
 
 using System.Threading.Tasks;
 
@@ -16,7 +16,7 @@ namespace Depths.Game.Pages
 
             if (firstRender)
             {
-                await this.JsRuntime.InvokeAsync<object>("initRenderJS", DotNetObjectReference.Create(this));
+                _ = await this.JsRuntime.InvokeAsync<object>("initRenderJS", DotNetObjectReference.Create(this));
             }
         }
 

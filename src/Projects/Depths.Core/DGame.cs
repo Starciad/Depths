@@ -383,6 +383,7 @@ namespace Depths.Core
             base.Draw(gameTime);
         }
 
+#if DESKTOP
         protected override void OnActivated(object sender, EventArgs args)
         {
             base.OnActivated(sender, args);
@@ -399,5 +400,6 @@ namespace Depths.Core
         {
             base.OnExiting(sender, args);
         }
+#endif
     }
 }

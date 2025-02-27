@@ -47,6 +47,10 @@ namespace Depths.Core
             this.IsPlayerOnSurface = true;
             this.IsPlayerInUnderground = false;
             this.IsPlayerInDepth = false;
+
+            this.IsGameFocused = true;
+            this.IsGamePaused = false;
+            this.IsGameCrucialMenuOpen = false;
         }
 
         internal void SetPlayerEntity(DPlayerEntity playerEntity)

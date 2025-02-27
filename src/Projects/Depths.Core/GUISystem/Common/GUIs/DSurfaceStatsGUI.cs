@@ -114,7 +114,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.oreUpdateFrameCounter = 0;
             this.leavingUpdateFrameCounter = 0;
 
+            this.gameInformation.IsWorldActive = false;
+
             HideAllOreIconElements();
+        }
+
+        internal override void Unload()
+        {
+            this.gameInformation.IsWorldActive = true;
         }
 
         internal override void Update()

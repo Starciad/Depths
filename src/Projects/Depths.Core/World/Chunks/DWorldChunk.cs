@@ -10,10 +10,29 @@ namespace Depths.Core.World.Chunks
 {
     internal sealed class DWorldChunk
     {
-        internal DWorldChunkType Type => this.type;
+        internal required DWorldChunkType Type { get; init; }
+        internal required string[,] Mapping
+        {
+            get => this.mapping;
 
-        private readonly DWorldChunkType type;
-        private readonly string[,] content;
+            init
+            {
+                string[,] matrix = new string[DWorldConstants.TILES_PER_CHUNK_WIDTH, DWorldConstants.TILES_PER_CHUNK_HEIGHT];
+
+                // Allocate elements from the string array to the chunk's 2d array.
+                for (byte y = 0; y < DWorldConstants.TILES_PER_CHUNK_HEIGHT; y++)
+                {
+                    for (byte x = 0; x < DWorldConstants.TILES_PER_CHUNK_WIDTH; x++)
+                    {
+                        matrix[x, y] = value[y, x];
+                    }
+                }
+
+                this.mapping = matrix;
+            }
+        }
+
+        private string[,] mapping;
 
         private static readonly Dictionary<string, Action<DTilemap, DPoint>> tileActions = new()
         {
@@ -35,12 +54,6 @@ namespace Depths.Core.World.Chunks
             #endregion
         };
 
-        internal DWorldChunk(DWorldChunkType type, string[,] content)
-        {
-            this.type = type;
-            this.content = content;
-        }
-
         internal void ApplyToTilemap(DPoint chunkPosition, DTilemap tilemap)
         {
             uint baseY = (uint)chunkPosition.Y * DWorldConstants.TILES_PER_CHUNK_HEIGHT;
@@ -50,7 +63,7 @@ namespace Depths.Core.World.Chunks
             {
                 for (uint x = 0; x < DWorldConstants.TILES_PER_CHUNK_WIDTH; x++)
                 {
-                    PlaceTile(this.content[x, y], tilemap, new((byte)(baseX + x), (byte)(baseY + y)));
+                    PlaceTile(this.Mapping[x, y], tilemap, new((byte)(baseX + x), (byte)(baseY + y)));
                 }
             }
         }

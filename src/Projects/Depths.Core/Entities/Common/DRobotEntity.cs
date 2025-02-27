@@ -38,14 +38,12 @@ namespace Depths.Core.Entities.Common
 
         private byte animationFrameCounter;
         private byte movementFrameCounter;
-        private byte gravityFrameCounter;
         private byte lifespanFrameCounter;
 
         private readonly ushort lifespanFrameDelay = 320;
         private readonly byte movementFrameDelay = 16;
         private readonly byte animationFrameDelay = 10;
         private readonly byte limitBlocksToBreak = 10;
-        private readonly byte gravityDelayFrames = 5;
 
         private readonly Texture2D texture;
         private readonly DEntityManager entityManager;
@@ -111,7 +109,6 @@ namespace Depths.Core.Entities.Common
             this.animationIndex = 0;
 
             this.animationFrameCounter = 0;
-            this.gravityFrameCounter = 0;
             this.lifespanFrameCounter = 0;
             this.movementFrameCounter = 0;
         }
