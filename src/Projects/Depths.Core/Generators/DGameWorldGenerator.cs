@@ -134,15 +134,16 @@ namespace Depths.Core.Generators
         {
             foreach (DOre ore in this.WorldDatabase.Ores)
             {
-                byte orePlacementCount = (byte)DRandomMath.Range(50, 150);
+                byte orePlacementCount = (byte)DRandomMath.Range(50, 100);
 
                 // Filter stone tiles to only include those in the ore's allowed chunk range.
                 List<(DPoint Position, DTile Tile)> validStoneTiles = [];
+
                 foreach ((DPoint Position, DTile Tile) stoneTile in this.stoneTiles)
                 {
-                    byte tileChunk = GetChunkIndex(stoneTile.Position);
+                    byte layerIndex = GetYLayerIndex(stoneTile.Position.Y);
 
-                    if (tileChunk >= ore.LayerRange.Start.Value && tileChunk <= ore.LayerRange.End.Value)
+                    if (layerIndex >= ore.LayerRange.Start.Value && layerIndex <= ore.LayerRange.End.Value)
                     {
                         validStoneTiles.Add(stoneTile);
                     }
@@ -156,9 +157,7 @@ namespace Depths.Core.Generators
 
                 for (byte i = 0; i < orePlacementCount; i++)
                 {
-                    bool isOrePlaced = DRandomMath.Chance(DRarityUtility.GetOreNumericalChance(ore.Rarity), 100);
-
-                    if (!isOrePlaced)
+                    if (!DRandomMath.Chance(DRarityUtility.GetOreNumericalChance(ore.Rarity), 100))
                     {
                         continue;
                     }
@@ -166,10 +165,7 @@ namespace Depths.Core.Generators
                     // Pick a random valid stone tile.
                     (DPoint Position, DTile Tile) selectedTile = validStoneTiles.GetRandomItem();
 
-                    bool removedFromGlobal = this.stoneTiles.Remove(selectedTile);
-                    bool removedFromLocal = validStoneTiles.Remove(selectedTile);
-
-                    if (!removedFromGlobal || !removedFromLocal)
+                    if (!this.stoneTiles.Remove(selectedTile) || !validStoneTiles.Remove(selectedTile))
                     {
                         continue;
                     }
@@ -199,8 +195,8 @@ namespace Depths.Core.Generators
             for (byte i = 0; i < boxCount; i++)
             {
                 (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-                bool removed = this.stoneTiles.Remove(tileEntry);
-                if (!removed)
+                
+                if (!this.stoneTiles.Remove(tileEntry))
                 {
                     continue;
                 }
@@ -221,8 +217,8 @@ namespace Depths.Core.Generators
             for (byte i = 0; i < dirtCount; i++)
             {
                 (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-                bool removed = this.stoneTiles.Remove(tileEntry);
-                if (!removed)
+                
+                if (!this.stoneTiles.Remove(tileEntry))
                 {
                     continue;
                 }
@@ -244,9 +240,7 @@ namespace Depths.Core.Generators
             {
                 (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
 
-                bool removed = this.stoneTiles.Remove(tileEntry);
-
-                if (!removed)
+                if (!this.stoneTiles.Remove(tileEntry))
                 {
                     continue;
                 }
@@ -264,6 +258,7 @@ namespace Depths.Core.Generators
         private void GenerateStoneTraps()
         {
             byte trapCount = (byte)DRandomMath.Range(30, 60);
+
             if (this.stoneTiles.Count < trapCount)
             {
                 return;
@@ -272,9 +267,8 @@ namespace Depths.Core.Generators
             for (byte i = 0; i < trapCount; i++)
             {
                 (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-                bool removed = this.stoneTiles.Remove(tileEntry);
 
-                if (!removed)
+                if (!this.stoneTiles.Remove(tileEntry))
                 {
                     continue;
                 }
@@ -353,10 +347,9 @@ namespace Depths.Core.Generators
         // =============================== //
         // Utilities
 
-        private static byte GetChunkIndex(DPoint tilePosition)
+        private static byte GetYLayerIndex(int tileYPosition)
         {
-            // Each chunk is 12 tiles wide. We use 1-indexing for chunk numbers.
-            return Convert.ToByte((tilePosition.X / DWorldConstants.TILES_PER_CHUNK_WIDTH) + 1);
+            return Convert.ToByte(MathF.Floor(tileYPosition / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
         }
     }
 }

@@ -507,6 +507,21 @@ namespace Depths.Core.Databases
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     }
                 },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T9, DCI.T9, DCI.T3, DCI.T9, DCI.T9, DCI.T9, DCI.T9, DCI.T3, DCI.T9, DCI.T9, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
                 #endregion
 
                 #region DEPTHS
