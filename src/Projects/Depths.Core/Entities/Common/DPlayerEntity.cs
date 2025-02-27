@@ -50,6 +50,8 @@ namespace Depths.Core.Entities.Common
         public uint Money { get => this.money; set => this.money = value; }
         public byte Power { get => this.power; set => this.power = value; }
         public uint StairCount { get => this.stairCount; set => this.stairCount = value; }
+        public uint PlataformCount { get => this.plataformCount; set => this.plataformCount = value; }
+        public uint RobotCount { get => this.robotCount; set => this.robotCount = value; }
         public Queue<DOre> CollectedMinerals => this.collectedMinerals;
 
         internal delegate void Died();
@@ -62,19 +64,19 @@ namespace Depths.Core.Entities.Common
         internal event FullBackpack OnFullBackpack;
         internal event CollectedOre OnCollectedOre;
 
-        private sbyte horizontalDirectionDelta = -1;
+        private sbyte horizontalDirectionDelta;
 
-        private byte damage = 1;
-        private byte backpackSize = 5;
-        private byte energy = 30;
-        private byte gravityFrameCounter = 0;
+        private byte damage;
+        private byte backpackSize;
+        private byte energy;
+        private byte gravityFrameCounter;
         private bool isDead;
-        private byte maximumEnergy = 30;
-        private uint money = 0;
-        private byte power = 1;
-        private uint stairCount = 10;
-        private uint plataformCount = 10;
-        private uint robotCount = 10;
+        private byte maximumEnergy;
+        private uint money;
+        private byte power;
+        private uint stairCount;
+        private uint plataformCount;
+        private uint robotCount;
 
         private readonly Texture2D texture;
         private readonly DTilemap tilemap;
@@ -103,6 +105,8 @@ namespace Depths.Core.Entities.Common
             this.inputManager = inputManager;
             this.musicManager = musicManager;
             this.gameInformation = gameInformation;
+
+            OnReset();
         }
 
         protected override void OnUpdate(GameTime gameTime)
@@ -129,16 +133,23 @@ namespace Depths.Core.Entities.Common
             spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 
-        private Rectangle? GetCurrentSpriteRectangle()
+        protected override void OnReset()
         {
-            return this.isDead
-                ? this.textureClipAreas[2]
-                : this.horizontalDirectionDelta switch
-                {
-                    1 => (Rectangle?)this.textureClipAreas[0],
-                    -1 => (Rectangle?)this.textureClipAreas[1],
-                    _ => null,
-                };
+            this.collectedMinerals.Clear();
+
+            this.horizontalDirectionDelta = -1;
+
+            this.damage = DPlayerConstants.DEFAULT_STARTING_DAMAGE;
+            this.backpackSize = DPlayerConstants.DEFAULT_STARTING_BAG_SIZE;
+            this.energy = DPlayerConstants.DEFAULT_MAXIMUM_STARTING_ENERGY;
+            this.gravityFrameCounter = 0;
+            this.isDead = false;
+            this.maximumEnergy = DPlayerConstants.DEFAULT_MAXIMUM_STARTING_ENERGY;
+            this.money = 0;
+            this.power = DPlayerConstants.DEFAULT_STARTING_POWER;
+            this.stairCount = DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_STAIRS;
+            this.plataformCount = DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_PLATAFORMS;
+            this.robotCount = DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_ROBOTS;
         }
 
         private bool CheckForSuffocation()
@@ -401,6 +412,21 @@ namespace Depths.Core.Entities.Common
             {
                 this.OnFullBackpack?.Invoke();
             }
+        }
+
+        // ==================================================== //
+        // Utilities
+
+        private Rectangle? GetCurrentSpriteRectangle()
+        {
+            return this.isDead
+                ? this.textureClipAreas[2]
+                : this.horizontalDirectionDelta switch
+                {
+                    1 => (Rectangle?)this.textureClipAreas[0],
+                    -1 => (Rectangle?)this.textureClipAreas[1],
+                    _ => null,
+                };
         }
     }
 }

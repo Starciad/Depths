@@ -142,7 +142,7 @@ namespace Depths.Core
             this.gameInformation.SetTruckEntity((DTruckEntity)this.entityManager.InstantiateEntity("Truck", null));
             this.gameInformation.SetIdolHeadEntity((DIdolHeadEntity)this.entityManager.InstantiateEntity("Idol Head", null));
 
-            this.guiDatabase.Initialize(this.assetDatabase, this.textManager, this.guiManager, this.gameInformation);
+            this.guiDatabase.Initialize(this.assetDatabase, this.gameInformation, this.guiManager, this.inputManager, this.textManager);
 
             this.gameInformation.OnGameStarted += () =>
             {
@@ -182,6 +182,7 @@ namespace Depths.Core
                 this.gameInformation.IsWorldVisible = true;
 
                 this.guiManager.Open("HUD");
+                this.guiManager.Open("Truck");
             };
 
             this.gameInformation.OnGameOver += () =>

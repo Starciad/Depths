@@ -43,6 +43,7 @@ namespace Depths.Core.Databases
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_TILE_LENGTH, "texture_tile_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_TILE_ASSETS));
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_ORE_LENGTH, "texture_ore_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_ORE_ASSETS));
             AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_GUI_LENGTH, "texture_gui_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_GUI_ASSETS));
+            AssetLoader(contentManager, DAssetType.Texture, DAssetConstants.TEXTURE_BUTTON_LENGTH, "texture_button_", Path.Combine(DDirectoryConstants.TEXTURE_ASSETS, DDirectoryConstants.TEXTURE_BUTTON_ASSETS));
         }
 
         private void LoadSoundEffects(ContentManager contentManager)
