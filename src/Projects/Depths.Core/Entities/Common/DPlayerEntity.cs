@@ -65,7 +65,7 @@ namespace Depths.Core.Entities.Common
         private sbyte horizontalDirectionDelta = -1;
 
         private byte damage = 1;
-        private byte backpackSize = 10;
+        private byte backpackSize = 5;
         private byte energy = 30;
         private byte gravityFrameCounter = 0;
         private bool isDead;
@@ -320,7 +320,7 @@ namespace Depths.Core.Entities.Common
 
             DTile tile = this.tilemap.GetTile(this.Position);
 
-            if (tile != null && tile.Type == DTileType.Empty && this.robotCount > 0)
+            if (tile != null && (tile.Type == DTileType.Empty || tile.Type == DTileType.Stair || tile.Type == DTileType.Platform) && this.robotCount > 0)
             {
                 this.robotCount--;
                 _ = this.entityManager.InstantiateEntity("Robot", (DEntity entity) =>

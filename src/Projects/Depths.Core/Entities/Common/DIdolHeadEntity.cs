@@ -27,7 +27,11 @@ namespace Depths.Core.Entities.Common
 
         private readonly Texture2D texture;
         private readonly Rectangle[] idolHeadSourceRectangles = [
-            new(new(0, 0), new(21, 30)), // [0]
+            new(new(00, 00), new(21, 30)), // [1]
+            new(new(21, 00), new(21, 30)), // [2]
+            new(new(42, 00), new(21, 30)), // [3]
+            new(new(63, 00), new(21, 30)), // [4]
+            new(new(84, 00), new(21, 30)), // [5]
         ];
 
         private readonly DGameInformation gameInformation;
