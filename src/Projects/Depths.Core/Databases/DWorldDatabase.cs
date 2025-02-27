@@ -1,34 +1,4 @@
-﻿/*
-
-DEPTHS
-Copyright (c) 2025 Davi "Starciad" Fernandes
-
-============================================
-
-[ CHUNKS ]
-
-TILES
-
-T0 - Empty
-T1 - Dirt
-T2 - Stone
-T3 - Stair
-T4 - Box
-T5 - Spike Trap
-T6 - Arrow Trap
-T7 - Wall
-T8 - Boulder Trap
-T9 - Plataform
-
-RANDOM
-
-R0 - Enemy (random)
-
-============================================
-
-*/
-
-using Depths.Core.Enums.General;
+﻿using Depths.Core.Enums.General;
 using Depths.Core.Enums.World;
 using Depths.Core.World.Chunks;
 using Depths.Core.World.Ores;
@@ -194,15 +164,15 @@ namespace Depths.Core.Databases
                 new()
                 {
                     Type = DWorldChunkType.Surface,
-                    Mapping = new string[,]
+                    Mapping = new DCI[,]
                     {
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1" },
-                        { "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1" },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1 },
+                        { DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1 },
                     },
                 },
                 #endregion
@@ -211,16 +181,331 @@ namespace Depths.Core.Databases
                 new()
                 {
                     Type = DWorldChunkType.Underground,
-                    Mapping = new string[,]
+                    Mapping = new DCI[,]
                     {
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
-                        { "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2", "T2" },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     },
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T3, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T4, DCI.T0, DCI.T0, DCI.T4, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T3, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T3, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T9, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T9, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T1, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T1, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T1, DCI.T1, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T1, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T5, DCI.T0, DCI.T2, DCI.T5, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T4, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T2, DCI.T0, DCI.T0, DCI.T4, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T0, DCI.T4, DCI.T4, DCI.T4, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T5, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T1, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T8, DCI.T8, DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T1 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T4, DCI.T8, DCI.T8, DCI.T4, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T1, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T8, DCI.T8, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T1 },
+                        { DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T5, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T4, DCI.T2, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T8, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T8, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T4, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T3, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T3, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
+                },
+
+                new()
+                {
+                    Type = DWorldChunkType.Underground,
+                    Mapping = new DCI[,]
+                    {
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
+                    }
                 },
                 #endregion
 
@@ -228,15 +513,15 @@ namespace Depths.Core.Databases
                 new()
                 {
                     Type = DWorldChunkType.Depth,
-                    Mapping = new string[,]
+                    Mapping = new DCI[,]
                     {
-                        { "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0", "T0" },
-                        { "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1", "T1" },
+                        { DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0 },
+                        { DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1, DCI.T1 },
                     },
                 },
                 #endregion

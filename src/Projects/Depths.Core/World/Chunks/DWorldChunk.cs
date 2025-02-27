@@ -11,13 +11,13 @@ namespace Depths.Core.World.Chunks
     internal sealed class DWorldChunk
     {
         internal required DWorldChunkType Type { get; init; }
-        internal required string[,] Mapping
+        internal required DCI[,] Mapping
         {
             get => this.mapping;
 
             init
             {
-                string[,] matrix = new string[DWorldConstants.TILES_PER_CHUNK_WIDTH, DWorldConstants.TILES_PER_CHUNK_HEIGHT];
+                DCI[,] matrix = new DCI[DWorldConstants.TILES_PER_CHUNK_WIDTH, DWorldConstants.TILES_PER_CHUNK_HEIGHT];
 
                 // Allocate elements from the string array to the chunk's 2d array.
                 for (byte y = 0; y < DWorldConstants.TILES_PER_CHUNK_HEIGHT; y++)
@@ -32,25 +32,25 @@ namespace Depths.Core.World.Chunks
             }
         }
 
-        private string[,] mapping;
+        private DCI[,] mapping;
 
-        private static readonly Dictionary<string, Action<DTilemap, DPoint>> tileActions = new()
+        private static readonly Dictionary<DCI, Action<DTilemap, DPoint>> tileActions = new()
         {
             #region TILES
-            ["T0"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Empty),
-            ["T1"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Dirt),
-            ["T2"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stone),
-            ["T3"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stair),
-            ["T4"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Box),
-            ["T5"] = (tilemap, position) => tilemap.SetTile(position, DTileType.SpikeTrap),
-            ["T6"] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),
-            ["T7"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Wall),
-            ["T8"] = (tilemap, position) => tilemap.SetTile(position, DTileType.BoulderTrap),
-            ["T9"] = (tilemap, position) => tilemap.SetTile(position, DTileType.Platform),
+            [DCI.T0] = (tilemap, position) => tilemap.SetTile(position, DTileType.Empty),
+            [DCI.T1] = (tilemap, position) => tilemap.SetTile(position, DTileType.Dirt),
+            [DCI.T2] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stone),
+            [DCI.T3] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stair),
+            [DCI.T4] = (tilemap, position) => tilemap.SetTile(position, DTileType.Box),
+            [DCI.T5] = (tilemap, position) => tilemap.SetTile(position, DTileType.SpikeTrap),
+            [DCI.T6] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),
+            [DCI.T7] = (tilemap, position) => tilemap.SetTile(position, DTileType.Wall),
+            [DCI.T8] = (tilemap, position) => tilemap.SetTile(position, DTileType.BoulderTrap),
+            [DCI.T9] = (tilemap, position) => tilemap.SetTile(position, DTileType.Platform),
             #endregion
 
             #region RANDOM
-            ["R0"] = (tilemap, position) => { },
+            [DCI.R0] = (tilemap, position) => { },
             #endregion
         };
 
@@ -63,14 +63,14 @@ namespace Depths.Core.World.Chunks
             {
                 for (uint x = 0; x < DWorldConstants.TILES_PER_CHUNK_WIDTH; x++)
                 {
-                    PlaceTile(this.Mapping[x, y], tilemap, new((byte)(baseX + x), (byte)(baseY + y)));
+                    PlaceItem(this.Mapping[x, y], tilemap, new((byte)(baseX + x), (byte)(baseY + y)));
                 }
             }
         }
 
-        private static void PlaceTile(string tileCode, DTilemap tilemap, DPoint position)
+        private static void PlaceItem(DCI chunkItem, DTilemap tilemap, DPoint position)
         {
-            if (tileActions.TryGetValue(tileCode, out Action<DTilemap, DPoint> action))
+            if (tileActions.TryGetValue(chunkItem, out Action<DTilemap, DPoint> action))
             {
                 action(tilemap, position);
             }
