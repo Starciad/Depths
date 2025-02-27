@@ -10,6 +10,7 @@ namespace Depths.Core
     {
         internal DPlayerEntity PlayerEntity { get; private set; }
         internal DTruckEntity TruckEntity { get; private set; }
+        internal DIdolHeadEntity IdolHeadEntity { get; private set; }
 
         internal bool TransitionIsDisabled { get; set; }
 
@@ -51,6 +52,7 @@ namespace Depths.Core
         internal void SetPlayerEntity(DPlayerEntity playerEntity)
         {
             this.PlayerEntity = playerEntity;
+
             this.PlayerEntity.OnDied += () =>
             {
                 this.OnGameOver?.Invoke();
@@ -60,6 +62,11 @@ namespace Depths.Core
         internal void SetTruckEntity(DTruckEntity truckEntity)
         {
             this.TruckEntity = truckEntity;
+        }
+
+        internal void SetIdolHeadEntity(DIdolHeadEntity idolHeadEntity)
+        {
+            this.IdolHeadEntity = idolHeadEntity;
         }
 
         internal void Start()

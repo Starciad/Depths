@@ -1,7 +1,6 @@
 ﻿using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
 using Depths.Core.Generators;
 using Depths.Core.Managers;
@@ -34,6 +33,7 @@ namespace Depths.Core
         private readonly DPoint truckLobbyPosition;
         private readonly DPoint cameraIdolPosition;
         private readonly DPoint cameraLobbyPosition;
+        private readonly DPoint idolHeadSpawnPosition;
 
         private readonly DAssetDatabase assetDatabase;
         private readonly DMusicDatabase musicDatabase;
@@ -115,9 +115,9 @@ namespace Depths.Core
             this.playerLobbyPosition = new((this.world.Tilemap.Size.Width / 2) - 3, 4);
             this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new DPoint(0, 10);
             this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new DPoint(-6, 10);
-
-            this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
+            this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
+            this.idolHeadSpawnPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1))) + new DPoint((DScreenConstants.GAME_WIDTH / 2) - 10, 12);
         }
 
         protected override void Initialize()
@@ -140,9 +140,10 @@ namespace Depths.Core
         {
             this.gameInformation.SetPlayerEntity((DPlayerEntity)this.entityManager.InstantiateEntity("Player", null));
             this.gameInformation.SetTruckEntity((DTruckEntity)this.entityManager.InstantiateEntity("Truck", null));
+            this.gameInformation.SetIdolHeadEntity((DIdolHeadEntity)this.entityManager.InstantiateEntity("Idol Head", null));
 
             this.guiDatabase.Initialize(this.assetDatabase, this.textManager, this.guiManager, this.gameInformation);
-            
+
             this.gameInformation.OnGameStarted += () =>
             {
                 this.gameGenerator.Initialize();
@@ -158,6 +159,7 @@ namespace Depths.Core
 
                 this.gameInformation.PlayerEntity.Position = this.playerSpawnPosition;
                 this.gameInformation.TruckEntity.Position = this.truckSpawnPosition;
+                this.gameInformation.IdolHeadEntity.Position = this.idolHeadSpawnPosition;
 
                 this.gameInformation.IsIdolCutsceneRunning = true;
                 this.gameInformation.IsTruckCutsceneRunning = false;

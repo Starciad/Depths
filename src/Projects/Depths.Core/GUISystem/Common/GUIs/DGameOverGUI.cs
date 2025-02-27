@@ -2,9 +2,6 @@
 using Depths.Core.Databases;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
-using Depths.Core.World.Ores;
-
-using System;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
