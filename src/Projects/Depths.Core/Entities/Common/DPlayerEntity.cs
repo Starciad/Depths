@@ -203,8 +203,9 @@ namespace Depths.Core.Entities.Common
 
         private void HandleGuiInput()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.PlayerInfos))
+            if (this.inputManager.Started(DKeyMappingConstant.GameInfos))
             {
+                this.guiManager.Open("Player Information");
                 return;
             }
 

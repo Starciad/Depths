@@ -32,15 +32,7 @@ namespace Depths.Core.GUISystem
 
         internal virtual void Update()
         {
-            foreach (DGUIElement element in this.elements)
-            {
-                if (element == null || !element.IsActive)
-                {
-                    continue;
-                }
-
-                element.Update();
-            }
+            return;
         }
 
         internal virtual void Draw(SpriteBatch spriteBatch)

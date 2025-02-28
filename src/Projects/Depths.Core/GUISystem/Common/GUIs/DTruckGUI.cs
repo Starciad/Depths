@@ -84,17 +84,20 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.buttonElement = new()
             {
                 Position = new(13, 4),
+                Texture = assetDatabase.GetTexture("texture_button_1")
             };
-            this.mainPanelElement = new();
-            this.upgradePanelElement = new();
-            this.itemPanelElement = new();
-
-            // ============================ //
-
-            this.buttonElement.SetTexture(assetDatabase.GetTexture("texture_button_1"));
-            this.mainPanelElement.SetTexture(assetDatabase.GetTexture("texture_gui_3"));
-            this.upgradePanelElement.SetTexture(assetDatabase.GetTexture("texture_gui_4"));
-            this.itemPanelElement.SetTexture(assetDatabase.GetTexture("texture_gui_4"));
+            this.mainPanelElement = new()
+            {
+                Texture = assetDatabase.GetTexture("texture_gui_3")
+            };
+            this.upgradePanelElement = new()
+            {
+                Texture = assetDatabase.GetTexture("texture_gui_4")
+            };
+            this.itemPanelElement = new()
+            {
+                Texture = assetDatabase.GetTexture("texture_gui_4")
+            };
 
             // ============================ //
 

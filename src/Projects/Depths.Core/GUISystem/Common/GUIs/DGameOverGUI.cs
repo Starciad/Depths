@@ -46,9 +46,8 @@ namespace Depths.Core.GUISystem.Common.GUIs
             {
                 IsVisible = false,
                 Position = new(0, this.yStartingPosition),
+                Texture = assetDatabase.GetTexture("texture_gui_2")
             };
-
-            this.panelElement.SetTexture(assetDatabase.GetTexture("texture_gui_2"));
         }
 
         protected override void OnBuild()
@@ -140,7 +139,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.state = DGUIState.Disable;
 
             this.guiManager.Close(this.Identifier);
-            this.guiManager.Open("Game Stats");
+            this.guiManager.Open("Game Final Stats");
         }
     }
 }

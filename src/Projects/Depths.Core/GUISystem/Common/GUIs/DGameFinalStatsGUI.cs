@@ -3,14 +3,14 @@ using Depths.Core.Managers;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
-    internal sealed class DGameStatsGUI : DGUI
+    internal sealed class DGameFinalStatsGUI : DGUI
     {
-        private readonly DGUITextElement titleTextElement;
+        // private readonly DGUITextElement titleTextElement;
 
         private readonly DGUIManager guiManager;
         private readonly DGameInformation gameInformation;
 
-        internal DGameStatsGUI(string identifier, DGUIManager guiManager, DGameInformation gameInformation) : base(identifier)
+        internal DGameFinalStatsGUI(string identifier, DGUIManager guiManager, DGameInformation gameInformation) : base(identifier)
         {
             this.guiManager = guiManager;
             this.gameInformation = gameInformation;

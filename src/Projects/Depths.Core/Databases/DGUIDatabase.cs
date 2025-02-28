@@ -13,10 +13,11 @@ namespace Depths.Core.Databases
         internal void Initialize(DAssetDatabase assetDatabase, DGameInformation gameInformation, DGUIManager guiManager, DInputManager inputManager, DTextManager textManager)
         {
             RegisterGUI(new DGameOverGUI("Game Over", assetDatabase, guiManager, gameInformation));
-            RegisterGUI(new DGameStatsGUI("Game Stats", guiManager, gameInformation));
+            RegisterGUI(new DGameFinalStatsGUI("Game Final Stats", guiManager, gameInformation));
             RegisterGUI(new DHudGUI("HUD", textManager, guiManager, gameInformation));
             RegisterGUI(new DSurfaceStatsGUI("Surface Stats", assetDatabase, textManager, guiManager, gameInformation));
             RegisterGUI(new DTruckGUI("Truck Store", assetDatabase, gameInformation, guiManager, inputManager, textManager));
+            RegisterGUI(new DPlayerInformationGUI("Player Information", assetDatabase, gameInformation, guiManager, inputManager, textManager));
 
             foreach (DGUI gui in this.guis.Values)
             {

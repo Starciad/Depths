@@ -12,9 +12,24 @@ namespace Depths.Core.GUISystem.Common.Elements
         internal Vector2 Origin { get; set; }
         internal float Rotation { get; set; }
         internal Vector2 Scale { get; set; }
-        internal DSize2 Size { get; private set; }
+        internal Texture2D Texture
+        {
+            get
+            {
+                return texture;
+            }
+
+            set
+            {
+                this.texture = value;
+                this.textureSize = this.Texture.GetSize();
+            }
+        }
         internal Rectangle? TextureClipArea { get; set; }
-        internal Texture2D Texture { get; private set; }
+        internal DSize2 TextureSize => this.textureSize;
+
+        private Texture2D texture;
+        private DSize2 textureSize;
 
         internal DGUIImageElement() : base()
         {
@@ -22,9 +37,9 @@ namespace Depths.Core.GUISystem.Common.Elements
             this.Origin = Vector2.Zero;
             this.Rotation = 0f;
             this.Scale = Vector2.One;
-            this.Size = DSize2.Empty;
+            this.textureSize = DSize2.Empty;
             this.TextureClipArea = null;
-            this.Texture = null;
+            this.texture = null;
 
             this.IsVisible = true;
         }
@@ -32,12 +47,6 @@ namespace Depths.Core.GUISystem.Common.Elements
         internal override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.Texture, this.Position.ToVector2(), this.TextureClipArea, this.Color, this.Rotation, this.Origin, this.Scale, SpriteEffects.None, 0f);
-        }
-
-        internal void SetTexture(Texture2D value)
-        {
-            this.Texture = value;
-            this.Size = this.Texture.GetSize();
         }
     }
 }

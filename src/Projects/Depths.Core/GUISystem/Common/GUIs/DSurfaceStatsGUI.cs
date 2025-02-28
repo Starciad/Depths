@@ -87,7 +87,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 this.oreIconElements[i] = oreIconElement;
             }
 
-            this.panelElement.SetTexture(assetDatabase.GetTexture("texture_gui_1"));
+            this.panelElement.Texture = assetDatabase.GetTexture("texture_gui_1");
         }
 
         protected override void OnBuild()
@@ -213,7 +213,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 byte index = Convert.ToByte(this.currentOreIndex % (byte)this.oreIconElements.Length);
 
                 // If the index is 0, it means we have reached a multiple of the array size and we must reset
-                this.oreIconElements[index].SetTexture(ore.IconTexture);
+                this.oreIconElements[index].Texture = ore.IconTexture;
 
                 if (index == 0)
                 {
