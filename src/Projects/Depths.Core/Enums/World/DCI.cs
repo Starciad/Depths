@@ -5,8 +5,6 @@
     /// </summary>
     internal enum DCI : byte
     {
-        #region TILES
-
         /// <summary>
         /// Empty tile.
         /// </summary>
@@ -33,7 +31,7 @@
         T4,
 
         /// <summary>
-        /// Spike trap tile.
+        /// Monster.
         /// </summary>
         T5,
 
@@ -57,15 +55,9 @@
         /// </summary>
         T9,
 
-        #endregion
-
-        #region RANDOM
-
         /// <summary>
-        /// Random enemy spawn.
+        /// Ghost.
         /// </summary>
-        R0,
-
-        #endregion
+        T10,
     }
 }

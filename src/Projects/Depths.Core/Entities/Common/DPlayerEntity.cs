@@ -178,7 +178,7 @@ namespace Depths.Core.Entities.Common
 
             if ((currentTile != null && currentTile.Type == DTileType.Stair) ||
                 (bottomTile != null && bottomTile.Type == DTileType.Stair) ||
-                (bottomTile != null && bottomTile.Type == DTileType.Platform) ||
+                (bottomTile.Type == DTileType.Platform) ||
                 IsCollidingAt(checkPointBottom))
             {
                 return false;

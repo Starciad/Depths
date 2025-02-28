@@ -36,22 +36,17 @@ namespace Depths.Core.World.Chunks
 
         private static readonly Dictionary<DCI, Action<DTilemap, DPoint>> tileActions = new()
         {
-            #region TILES
             [DCI.T0] = (tilemap, position) => tilemap.SetTile(position, DTileType.Empty),
             [DCI.T1] = (tilemap, position) => tilemap.SetTile(position, DTileType.Dirt),
             [DCI.T2] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stone),
             [DCI.T3] = (tilemap, position) => tilemap.SetTile(position, DTileType.Stair),
             [DCI.T4] = (tilemap, position) => tilemap.SetTile(position, DTileType.Box),
             [DCI.T5] = (tilemap, position) => tilemap.SetTile(position, DTileType.SpikeTrap),
-            [DCI.T6] = (tilemap, position) => tilemap.SetTile(position, DTileType.ArrowTrap),
+            [DCI.T6] = (tilemap, position) => tilemap.SetTile(position, DTileType.Monster),
             [DCI.T7] = (tilemap, position) => tilemap.SetTile(position, DTileType.Wall),
             [DCI.T8] = (tilemap, position) => tilemap.SetTile(position, DTileType.BoulderTrap),
             [DCI.T9] = (tilemap, position) => tilemap.SetTile(position, DTileType.Platform),
-            #endregion
-
-            #region RANDOM
-            [DCI.R0] = (tilemap, position) => { },
-            #endregion
+            [DCI.T10] = (tilemap, position) => tilemap.SetTile(position, DTileType.Ghost),
         };
 
         internal void ApplyToTilemap(DPoint chunkPosition, DTilemap tilemap)

@@ -4,7 +4,7 @@
     {
         internal const byte TEXTURE_ENTITY_LENGTH = 4;
         internal const byte TEXTURE_FONT_LENGTH = 4;
-        internal const byte TEXTURE_TILE_LENGTH = 10;
+        internal const byte TEXTURE_TILE_LENGTH = 11;
         internal const byte TEXTURE_ORE_LENGTH = 14;
         internal const byte TEXTURE_GUI_LENGTH = 6;
         internal const byte TEXTURE_BUTTON_LENGTH = 1;

@@ -9,9 +9,10 @@
         Stair = 4,
         Box = 5,
         SpikeTrap = 6,
-        ArrowTrap = 7,
+        Monster = 7,
         Wall = 8,
         BoulderTrap = 9,
-        Platform = 10
+        Platform = 10,
+        Ghost = 111
     }
 }
