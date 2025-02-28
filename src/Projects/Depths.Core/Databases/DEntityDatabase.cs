@@ -23,7 +23,8 @@ namespace Depths.Core.Databases
             RegisterEntityDescriptor(new DPlayerEntityDescriptor("Player", this.assetDatabase.GetTexture("texture_entity_1"), world, entityManager, gameInformation, guiManager, inputManager, musicManager));
             RegisterEntityDescriptor(new DTruckEntityDescriptor("Truck Store", this.assetDatabase.GetTexture("texture_entity_2"), world));
             RegisterEntityDescriptor(new DRobotEntityDescriptor("Robot", this.assetDatabase.GetTexture("texture_entity_3"), world, entityManager, gameInformation));
-            RegisterEntityDescriptor(new DIdolHeadEntityDescriptor("Idol Head", this.assetDatabase.GetTexture("texture_entity_4"), world, gameInformation));
+            RegisterEntityDescriptor(new DIdolHeadEntityDescriptor("Idol Head", this.assetDatabase.GetTexture("texture_entity_4"), world, entityManager, gameInformation));
+            RegisterEntityDescriptor(new DStarEntityDescriptor("Star", this.assetDatabase.GetTexture("texture_entity_5"), world));
         }
 
         private void RegisterEntityDescriptor(DEntityDescriptor descriptor)
