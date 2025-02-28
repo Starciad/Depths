@@ -1,4 +1,5 @@
 ﻿using Depths.Core.Collections;
+using Depths.Core.Databases;
 using Depths.Core.Interfaces.Collections;
 
 using Microsoft.Xna.Framework.Audio;
@@ -37,12 +38,18 @@ namespace Depths.Core.Audio
         private static DPoolableSoundEffect activeInstance = null;
 
         private static readonly Dictionary<SoundEffect, DObjectPool> soundEffectPools = [];
+        private static DAssetDatabase assetDatabase;
 
-        internal static void Play(SoundEffect soundEffect)
+        internal static void Initialize(DAssetDatabase assetDatabase)
+        {
+            DAudioEngine.assetDatabase = assetDatabase;
+        }
+
+        internal static void Play(string identifier)
         {
             ReleaseInstance();
 
-            DPoolableSoundEffect poolableSoundEffect = GetOrCreateInstance(soundEffect);
+            DPoolableSoundEffect poolableSoundEffect = GetOrCreateInstance(assetDatabase.GetSoundEffect(identifier));
 
             if (poolableSoundEffect == null)
             {

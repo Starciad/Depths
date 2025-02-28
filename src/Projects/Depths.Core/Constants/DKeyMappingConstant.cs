@@ -17,5 +17,6 @@ namespace Depths.Core.Constants
         internal static Keys Cancel => Keys.Escape;
 
         internal static Keys PlayerInfos => Keys.Q;
+        internal static Keys TruckStore => Keys.E;
     }
 }

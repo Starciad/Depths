@@ -1,4 +1,5 @@
 ﻿using Depths.Core.Audio.Music;
+using Depths.Core.Databases;
 
 using Microsoft.Xna.Framework;
 
@@ -8,9 +9,16 @@ namespace Depths.Core.Managers
     {
         private DMusic currentMusic;
 
-        internal void SetMusic(DMusic music)
+        private readonly DMusicDatabase musicDatabase;
+
+        internal DMusicManager(DMusicDatabase musicDatabase)
         {
-            this.currentMusic = music;
+            this.musicDatabase = musicDatabase;
+        }
+
+        internal void SetMusic(string identifier)
+        {
+            this.currentMusic = this.musicDatabase.GetMusicByIdentifier(identifier);
         }
 
         internal void PlayMusic()

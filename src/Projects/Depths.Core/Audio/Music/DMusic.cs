@@ -1,7 +1,6 @@
 ﻿using Depths.Core.Databases;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 
 namespace Depths.Core.Audio.Music
 {
@@ -73,11 +72,11 @@ namespace Depths.Core.Audio.Music
             }
 
             DMusicNote currentNote = this.notes[this.currentNoteIndex];
-            SoundEffect noteSound = this.musicDatabase.GetMusicalNoteSoundEffect(currentNote.Note);
+            string noteSoundIdentifier = DMusicDatabase.GetMusicalNoteIdentifier(currentNote.Note);
 
-            if (noteSound != null)
+            if (!string.IsNullOrWhiteSpace(noteSoundIdentifier))
             {
-                DAudioEngine.Play(noteSound);
+                DAudioEngine.Play(noteSoundIdentifier);
             }
 
             this.noteTimer = currentNote.Duration;

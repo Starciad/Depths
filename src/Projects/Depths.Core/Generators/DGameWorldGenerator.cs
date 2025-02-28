@@ -195,7 +195,7 @@ namespace Depths.Core.Generators
             for (byte i = 0; i < boxCount; i++)
             {
                 (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-                
+
                 if (!this.stoneTiles.Remove(tileEntry))
                 {
                     continue;
@@ -217,7 +217,7 @@ namespace Depths.Core.Generators
             for (byte i = 0; i < dirtCount; i++)
             {
                 (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-                
+
                 if (!this.stoneTiles.Remove(tileEntry))
                 {
                     continue;

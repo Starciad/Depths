@@ -1,5 +1,6 @@
-﻿using Depths.Core.Constants;
+﻿using Depths.Core.Audio;
 using Depths.Core.Databases;
+using Depths.Core.Entities.Common;
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
@@ -10,11 +11,9 @@ using Microsoft.Xna.Framework;
 
 using System;
 
-using static System.Collections.Specialized.BitVector32;
-
 namespace Depths.Core.GUISystem.Common.GUIs
 {
-    internal sealed class DTruckGUI : DGUI
+    internal sealed partial class DTruckGUI : DGUI
     {
         private enum DSection : byte
         {
@@ -49,10 +48,23 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 this.PriceIncreaseFactor = priceIncreaseFactor;
             }
 
-            internal void Buy()
+            internal bool TryBuy(DPlayerEntity playerEntity)
             {
-                UpdatePrice();
-                this.OnBuyCallback?.Invoke(this);
+                if (playerEntity.Money >= this.Price)
+                {
+                    playerEntity.Money -= this.Price;
+
+                    UpdatePrice();
+                    this.OnBuyCallback?.Invoke(this);
+
+                    DAudioEngine.Play("sound_good_2");
+
+                    return true;
+                }
+
+                DAudioEngine.Play("sound_odd_1");
+
+                return false;
             }
 
             private void UpdatePrice()
@@ -103,6 +115,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             // Texts
             this.currentMoneyTextElement = new(textManager);
+
             this.pageTitleTextElement = new(textManager)
             {
                 FontType = DFontType.Dark,
@@ -110,17 +123,19 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 Position = new(42, 4),
                 Spacing = -1
             };
+
             this.priceTextElement = new(textManager)
             {
                 FontType = DFontType.Dark,
                 TextAlignment = DTextAlignment.Center,
-                Position = new(25, 18),
+                Position = new(24, 18),
             };
+
             this.previewTextElement = new(textManager)
             {
                 FontType = DFontType.Dark,
                 TextAlignment = DTextAlignment.Center,
-                Position = new(60, 18),
+                Position = new(59, 18),
                 Spacing = -1
             };
 
@@ -191,6 +206,20 @@ namespace Depths.Core.GUISystem.Common.GUIs
                         item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_DAMAGE;
                     },
                 },
+
+                new("Bag Size", 50, true, 3.5f)
+                {
+                    CurrentPreviewValue = gameInformation.PlayerEntity.BackpackSize,
+                    NextPreviewValue = gameInformation.PlayerEntity.BackpackSize + DPlayerConstants.DEFAULT_STARTING_BAG_SIZE,
+
+                    OnBuyCallback = (DPurchasableItem item) =>
+                    {
+                        gameInformation.PlayerEntity.BackpackSize = (byte)item.NextPreviewValue;
+
+                        item.CurrentPreviewValue = item.NextPreviewValue;
+                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_BAG_SIZE;
+                    },
+                },
             ];
 
             // Items
@@ -246,7 +275,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             AddElement(this.upgradePanelElement);
             AddElement(this.itemPanelElement);
             AddElement(this.buttonElement);
-            
+
             AddElement(this.currentMoneyTextElement);
             AddElement(this.pageTitleTextElement);
             AddElement(this.priceTextElement);
@@ -269,272 +298,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         internal override void Update()
         {
             HandleUserInputs();
-            UpdateElements();
-        }
-
-        private void HandleUserInputs()
-        {
-            switch (this.selectedSection)
-            {
-                case DSection.Main:
-                    HandleUserMainSectionInputs();
-                    break;
-
-                case DSection.Upgrades:
-                    HandleUserUpgradeSectionInputs();
-                    break;
-
-                case DSection.Items:
-                    HandleUserItemSectionInputs();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void HandleUserMainSectionInputs()
-        {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
-            {
-                this.guiManager.Close(this.Identifier);
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Confirm))
-            {
-                this.currentPageIndex = 0;
-
-                switch (this.selectedButton)
-                {
-                    case DButton.Upgrades:
-                        this.selectedSection = DSection.Upgrades;
-                        SetPageInfos(DSection.Upgrades);
-                        break;
-
-                    case DButton.Items:
-                        this.selectedSection = DSection.Items;
-                        SetPageInfos(DSection.Items);
-                        break;
-
-                    default:
-                        break;
-                }
-
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Up) || this.inputManager.Started(DKeyMappingConstant.Down))
-            {
-                switch (this.selectedButton)
-                {
-                    case DButton.Upgrades:
-                        this.selectedButton = DButton.Items;
-                        break;
-
-                    case DButton.Items:
-                        this.selectedButton = DButton.Upgrades;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                return;
-            }
-        }
-
-        private void HandleUserUpgradeSectionInputs()
-        {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
-            {
-                this.selectedSection = DSection.Main;
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Confirm))
-            {
-                this.purchasableUpgrades[this.currentPageIndex].Buy();
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Left))
-            {
-                PreviousPage(DSection.Upgrades);
-                SetPageInfos(DSection.Upgrades);
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Right))
-            {
-                NextPage(DSection.Upgrades);
-                SetPageInfos(DSection.Upgrades);
-                return;
-            }
-        }
-
-        private void HandleUserItemSectionInputs()
-        {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
-            {
-                this.selectedSection = DSection.Main;
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Confirm))
-            {
-                this.purchasableItems[this.currentPageIndex].Buy();
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Left))
-            {
-                PreviousPage(DSection.Items);
-                SetPageInfos(DSection.Items);
-                return;
-            }
-
-            if (this.inputManager.Started(DKeyMappingConstant.Right))
-            {
-                NextPage(DSection.Items);
-                SetPageInfos(DSection.Items);
-                return;
-            }
-        }
-
-        private void UpdateElements()
-        {
-            UpdateMoneyElement();
-            UpdateElementVisibility();
-            UpdateButtonElement();
-            UpdatePanelElements();
-        }
-
-        private void UpdateMoneyElement()
-        {
-            this.currentMoneyTextElement.SetValue(this.gameInformation.PlayerEntity.Money.ToString());
-
-            if (this.selectedSection == DSection.Main)
-            {
-                this.currentMoneyTextElement.Position = this.moneyElementPositions[0];
-            }
-            else
-            {
-                this.currentMoneyTextElement.Position = this.moneyElementPositions[1];
-            }
-        }
-
-        private void UpdateElementVisibility()
-        {
-            UpdateTextElementVisibility();
-        }
-
-        private void UpdateTextElementVisibility()
-        {
-            if (this.selectedSection == DSection.Main)
-            {
-                this.previewTextElement.IsVisible = false;
-                this.priceTextElement.IsVisible = false;
-                this.pageTitleTextElement.IsVisible = false;
-                return;
-            }
-
-            this.previewTextElement.IsVisible = true;
-            this.priceTextElement.IsVisible = true;
-            this.pageTitleTextElement.IsVisible = true;
-        }
-
-        private void UpdateButtonElement()
-        {
-            if (this.selectedSection != DSection.Main)
-            {
-                this.buttonElement.IsVisible = false;
-                return;
-            }
-
-            this.buttonElement.IsVisible = true;
-
-            this.buttonElement.TextureClipArea = this.selectedButton switch
-            {
-                DButton.Upgrades => (Rectangle?)this.buttonSourceRectangles[0],
-                DButton.Items => (Rectangle?)this.buttonSourceRectangles[1],
-                _ => null,
-            };
-        }
-
-        private void UpdatePanelElements()
-        {
-            switch (this.selectedSection)
-            {
-                case DSection.Main:
-                    this.mainPanelElement.IsVisible = true;
-                    this.upgradePanelElement.IsVisible = false;
-                    this.itemPanelElement.IsVisible = false;
-                    break;
-
-                case DSection.Upgrades:
-                    this.mainPanelElement.IsVisible = false;
-                    this.upgradePanelElement.IsVisible = true;
-                    this.itemPanelElement.IsVisible = false;
-                    break;
-
-                case DSection.Items:
-                    this.mainPanelElement.IsVisible = false;
-                    this.upgradePanelElement.IsVisible = false;
-                    this.itemPanelElement.IsVisible = true;
-                    break;
-
-                default:
-                    this.mainPanelElement.IsVisible = false;
-                    this.upgradePanelElement.IsVisible = false;
-                    this.itemPanelElement.IsVisible = false;
-                    break;
-            }
-        }
-
-        private void NextPage(DSection section)
-        {
-            if (++this.currentPageIndex > GetTotalPages(section))
-            {
-                this.currentPageIndex = 0;
-            }
-        }
-
-        private void PreviousPage(DSection section)
-        {
-            if (--this.currentPageIndex < 0)
-            {
-                this.currentPageIndex = GetTotalPages(section);
-            }
-        }
-
-        private int GetTotalPages(DSection section)
-        {
-            return section switch
-            {
-                DSection.Upgrades => this.purchasableUpgrades.Length - 1,
-                DSection.Items => this.purchasableItems.Length - 1,
-                _ => 0,
-            };
-        }
-
-        private void SetPageInfos(DSection section)
-        {
-            DPurchasableItem item = section switch
-            {
-                DSection.Upgrades => this.purchasableUpgrades[this.currentPageIndex],
-                DSection.Items => this.purchasableItems[this.currentPageIndex],
-                _ => null,
-            };
-
-            if (item == null)
-            {
-                return;
-            }
-
-            this.pageTitleTextElement.SetValue(item.Name);
-            this.previewTextElement.SetValue(string.Concat(item.CurrentPreviewValue, '>', item.NextPreviewValue));
-            this.priceTextElement.SetValue(string.Concat('$', item.Price));
+            UpdateGUI();
         }
     }
 }

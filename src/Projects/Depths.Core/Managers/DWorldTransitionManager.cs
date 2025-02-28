@@ -1,6 +1,5 @@
 ﻿using Depths.Core.Audio;
 using Depths.Core.Constants;
-using Depths.Core.Databases;
 using Depths.Core.Extensions;
 using Depths.Core.Mathematics.Primitives;
 
@@ -14,14 +13,11 @@ namespace Depths.Core.Managers
         private bool isTransitioning;
 
         private readonly byte transitionSpeed = 3;
-        private readonly DAssetDatabase assetDatabase;
         private readonly DCameraManager cameraManager;
 
-        internal DWorldTransitionManager(DAssetDatabase assetDatabase, DCameraManager cameraManager)
+        internal DWorldTransitionManager(DCameraManager cameraManager)
         {
-            this.assetDatabase = assetDatabase;
             this.cameraManager = cameraManager;
-
             this.targetPosition = cameraManager.Position.ToDPoint();
         }
 
@@ -29,7 +25,7 @@ namespace Depths.Core.Managers
         {
             if (this.isTransitioning)
             {
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_blip_10"));
+                DAudioEngine.Play("sound_blip_10");
                 MoveCameraToTarget();
                 return;
             }

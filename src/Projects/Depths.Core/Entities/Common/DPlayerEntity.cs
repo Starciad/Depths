@@ -18,24 +18,24 @@ namespace Depths.Core.Entities.Common
 {
     internal sealed class DPlayerEntityDescriptor : DEntityDescriptor
     {
-        private readonly DAssetDatabase assetDatabase;
+        private readonly DGameInformation gameInformation;
+        private readonly DGUIManager guiManager;
         private readonly DEntityManager entityManager;
         private readonly DInputManager inputManager;
         private readonly DMusicManager musicManager;
-        private readonly DGameInformation gameInformation;
 
-        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DAssetDatabase assetDatabase, DEntityManager entityManager, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(identifier, texture, world)
+        internal DPlayerEntityDescriptor(string identifier, Texture2D texture, DWorld world, DEntityManager entityManager, DGameInformation gameInformation, DGUIManager guiManager, DInputManager inputManager, DMusicManager musicManager) : base(identifier, texture, world)
         {
-            this.assetDatabase = assetDatabase;
             this.entityManager = entityManager;
+            this.gameInformation = gameInformation;
+            this.guiManager = guiManager;
             this.inputManager = inputManager;
             this.musicManager = musicManager;
-            this.gameInformation = gameInformation;
         }
 
         internal override DEntity CreateEntity()
         {
-            return new DPlayerEntity(this, this.assetDatabase, this.entityManager, this.inputManager, this.musicManager, this.gameInformation);
+            return new DPlayerEntity(this, this.entityManager, this.gameInformation, this.guiManager, this.inputManager, this.musicManager);
         }
     }
 
@@ -80,11 +80,6 @@ namespace Depths.Core.Entities.Common
 
         private readonly Texture2D texture;
         private readonly DTilemap tilemap;
-        private readonly DAssetDatabase assetDatabase;
-        private readonly DEntityManager entityManager;
-        private readonly DInputManager inputManager;
-        private readonly DMusicManager musicManager;
-        private readonly DGameInformation gameInformation;
 
         private readonly Queue<DOre> collectedMinerals = [];
 
@@ -96,15 +91,22 @@ namespace Depths.Core.Entities.Common
             new(new(0, 14), new(7)), // Death Sprite
         ];
 
-        internal DPlayerEntity(DEntityDescriptor descriptor, DAssetDatabase assetDatabase, DEntityManager entityManager, DInputManager inputManager, DMusicManager musicManager, DGameInformation gameInformation) : base(descriptor)
+        private readonly DEntityManager entityManager;
+        private readonly DGameInformation gameInformation;
+        private readonly DGUIManager guiManager;
+        private readonly DInputManager inputManager;
+        private readonly DMusicManager musicManager;
+
+        internal DPlayerEntity(DEntityDescriptor descriptor, DEntityManager entityManager, DGameInformation gameInformation, DGUIManager guiManager, DInputManager inputManager, DMusicManager musicManager) : base(descriptor)
         {
             this.texture = descriptor.Texture;
             this.tilemap = descriptor.World.Tilemap;
-            this.assetDatabase = assetDatabase;
+
+            this.gameInformation = gameInformation;
+            this.guiManager = guiManager;
             this.entityManager = entityManager;
             this.inputManager = inputManager;
             this.musicManager = musicManager;
-            this.gameInformation = gameInformation;
 
             OnReset();
         }
@@ -193,9 +195,24 @@ namespace Depths.Core.Entities.Common
                 return;
             }
 
+            HandleGuiInput();
             HandleHorizontalMovementInput();
             HandleVerticalMovementInput();
             HandlingItemPositioningInput();
+        }
+
+        private void HandleGuiInput()
+        {
+            if (this.inputManager.Started(DKeyMappingConstant.PlayerInfos))
+            {
+                return;
+            }
+
+            if (this.inputManager.Started(DKeyMappingConstant.TruckStore) && this.gameInformation.IsPlayerOnSurface)
+            {
+                this.guiManager.Open("Truck Store");
+                return;
+            }
         }
 
         private void HandleHorizontalMovementInput()
@@ -352,12 +369,12 @@ namespace Depths.Core.Entities.Common
 
             if (this.power > tile.Resistance)
             {
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_hit_6"));
+                DAudioEngine.Play("sound_hit_6");
                 tile.Health -= this.damage;
             }
             else
             {
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_negative_2"));
+                DAudioEngine.Play("sound_negative_2");
             }
 
             if (tile.Health <= 0)
@@ -376,7 +393,7 @@ namespace Depths.Core.Entities.Common
                         break;
                 }
 
-                DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_good_3"));
+                DAudioEngine.Play("sound_good_3");
             }
         }
 
@@ -396,7 +413,7 @@ namespace Depths.Core.Entities.Common
 
             this.isDead = true;
             this.musicManager.StopMusic();
-            DAudioEngine.Play(this.assetDatabase.GetSoundEffect("sound_negative_1"));
+            DAudioEngine.Play("sound_negative_1");
 
             this.OnDied?.Invoke();
         }

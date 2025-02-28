@@ -1,4 +1,5 @@
-﻿using Depths.Core.Colors;
+﻿using Depths.Core.Audio;
+using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Entities.Common;
@@ -77,10 +78,10 @@ namespace Depths.Core
             // Managers
             this.inputManager = new();
             this.textManager = new(this.assetDatabase);
-            this.musicManager = new();
+            this.musicManager = new(this.musicDatabase);
             this.entityManager = new(this.entityDatabase);
             this.cameraManager = new(this.graphicsManager);
-            this.worldTransitionManager = new(this.assetDatabase, this.cameraManager);
+            this.worldTransitionManager = new(this.cameraManager);
             this.guiManager = new(this.guiDatabase);
 
             // Infos
@@ -123,10 +124,12 @@ namespace Depths.Core
         protected override void Initialize()
         {
             this.assetDatabase.Initialize(this.Content);
-            this.entityDatabase.Initialize(this.world, this.assetDatabase, this.entityManager, this.inputManager, this.musicManager, this.gameInformation);
+            this.entityDatabase.Initialize(this.world, this.entityManager, this.gameInformation, this.guiManager, this.inputManager, this.musicManager);
             this.graphicsManager.Initialize();
             this.worldDatabase.Initialize(this.assetDatabase);
             this.textManager.Initialize();
+
+            DAudioEngine.Initialize(this.assetDatabase);
 
             base.Initialize();
         }
@@ -139,10 +142,28 @@ namespace Depths.Core
         protected override void BeginRun()
         {
             this.gameInformation.SetPlayerEntity((DPlayerEntity)this.entityManager.InstantiateEntity("Player", null));
-            this.gameInformation.SetTruckEntity((DTruckEntity)this.entityManager.InstantiateEntity("Truck", null));
+            this.gameInformation.SetTruckEntity((DTruckEntity)this.entityManager.InstantiateEntity("Truck Store", null));
             this.gameInformation.SetIdolHeadEntity((DIdolHeadEntity)this.entityManager.InstantiateEntity("Idol Head", null));
 
             this.guiDatabase.Initialize(this.assetDatabase, this.gameInformation, this.guiManager, this.inputManager, this.textManager);
+
+            this.gameInformation.OnPlayerReachedTheSurface += () =>
+            {
+                this.musicManager.SetMusic("Surface");
+                this.musicManager.PlayMusic();
+            };
+
+            this.gameInformation.OnPlayerReachedTheUnderground += () =>
+            {
+                this.musicManager.SetMusic("Underground");
+                this.musicManager.PlayMusic();
+            };
+
+            this.gameInformation.OnPlayerReachedTheDepth += () =>
+            {
+                this.musicManager.SetMusic("Depth");
+                this.musicManager.PlayMusic();
+            };
 
             this.gameInformation.OnGameStarted += () =>
             {
@@ -150,7 +171,7 @@ namespace Depths.Core
 
                 // ======================= //
 
-                this.musicManager.SetMusic(this.musicDatabase.GetMusicByIdentifier("theme"));
+                this.musicManager.SetMusic("Intro");
                 this.musicManager.PlayMusic();
 
                 this.cameraManager.Position = this.cameraIdolPosition.ToVector2();
@@ -182,7 +203,6 @@ namespace Depths.Core
                 this.gameInformation.IsWorldVisible = true;
 
                 this.guiManager.Open("HUD");
-                this.guiManager.Open("Truck");
             };
 
             this.gameInformation.OnGameOver += () =>
@@ -248,6 +268,8 @@ namespace Depths.Core
                 this.gameInformation.IsPlayerCutsceneRunning = false;
 
                 this.gameInformation.TransitionIsDisabled = false;
+
+                this.musicManager.StopMusic();
             }
 
             UpdateIdolCutscene();
@@ -322,6 +344,7 @@ namespace Depths.Core
             }
             else
             {
+                this.musicManager.StopMusic();
                 this.gameInformation.IsPlayerCutsceneRunning = false;
             }
         }
