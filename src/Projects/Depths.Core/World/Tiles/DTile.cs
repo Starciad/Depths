@@ -31,6 +31,7 @@ namespace Depths.Core.World.Tiles
             this.Resistance = tile.Resistance;
             this.Type = tile.Type;
             this.UpdateCycleFlag = tile.UpdateCycleFlag;
+            this.OnDestroyed = tile.OnDestroyed;
         }
     }
 }

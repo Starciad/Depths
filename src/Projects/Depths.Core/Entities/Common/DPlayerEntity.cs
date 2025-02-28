@@ -367,7 +367,7 @@ namespace Depths.Core.Entities.Common
                 return;
             }
 
-            if (this.power > tile.Resistance)
+            if (this.power >= tile.Resistance)
             {
                 DAudioEngine.Play("sound_hit_6");
                 tile.Health -= this.damage;

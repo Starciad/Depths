@@ -6,10 +6,24 @@ namespace Depths.Core.GUISystem.Common.GUIs
     {
         private void UpdateGUI()
         {
+            SyncItems();
             UpdateMoneyElement();
             UpdateElementVisibility();
             UpdateButtonElement();
             UpdatePage();
+        }
+
+        private void SyncItems()
+        {
+            foreach (DPurchasableItem item in this.purchasableUpgrades)
+            {
+                item.Sync();
+            }
+
+            foreach (DPurchasableItem item in this.purchasableItems)
+            {
+                item.Sync();
+            }
         }
 
         private void UpdateMoneyElement()

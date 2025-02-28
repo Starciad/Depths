@@ -209,6 +209,9 @@ namespace Depths.Core
             {
                 this.gameInformation.IsWorldActive = false;
 
+                this.musicManager.SetMusic("Game Over");
+                this.musicManager.PlayMusic();
+
                 this.guiManager.Open("Game Over");
             };
 

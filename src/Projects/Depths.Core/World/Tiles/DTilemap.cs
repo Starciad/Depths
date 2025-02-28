@@ -28,7 +28,7 @@ namespace Depths.Core.World.Tiles
 
         private readonly DAssetDatabase assetDatabase;
 
-        private readonly Dictionary<DTileType, Action<DTile>> tileTypes;
+        private readonly Dictionary<DTileType, Action<DTile, DPoint>> tileTypes;
         internal DTilemap(DSize2 size, DAssetDatabase assetDatabase, DGameInformation gameInformation)
         {
             this.assetDatabase = assetDatabase;
@@ -46,7 +46,7 @@ namespace Depths.Core.World.Tiles
 
             this.tileTypes = new()
             {
-                [DTileType.Empty] = (DTile tile) =>
+                [DTileType.Empty] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
@@ -57,7 +57,7 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.Dirt] = (DTile tile) =>
+                [DTileType.Dirt] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
@@ -68,22 +68,22 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.Stone] = (DTile tile) =>
+                [DTileType.Stone] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
-                    tile.Health = (byte)DRandomMath.Range(2, 3);
+                    tile.Health = Convert.ToByte(DRandomMath.Range(2, 3) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.Ore = null;
                     tile.Resistance = 0;
                 },
 
-                [DTileType.Ore] = (DTile tile) =>
+                [DTileType.Ore] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
-                    tile.Health = (byte)DRandomMath.Range(4, 5);
+                    tile.Health = Convert.ToByte(DRandomMath.Range(4, 5) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.Ore = null;
@@ -94,7 +94,7 @@ namespace Depths.Core.World.Tiles
                     };
                 },
 
-                [DTileType.Stair] = (DTile tile) =>
+                [DTileType.Stair] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = true;
@@ -105,7 +105,7 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.Box] = (DTile tile) =>
+                [DTileType.Box] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = true;
@@ -132,7 +132,7 @@ namespace Depths.Core.World.Tiles
                     };
                 },
 
-                [DTileType.SpikeTrap] = (DTile tile) =>
+                [DTileType.SpikeTrap] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = true;
@@ -143,7 +143,7 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.ArrowTrap] = (DTile tile) =>
+                [DTileType.ArrowTrap] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = true;
@@ -154,7 +154,7 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.Wall] = (DTile tile) =>
+                [DTileType.Wall] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
@@ -165,7 +165,7 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.BoulderTrap] = (DTile tile) =>
+                [DTileType.BoulderTrap] = (DTile tile, DPoint position) =>
                 {
                     tile.Direction = DRandomMath.Chance(50, 100) ? DDirection.Left : DDirection.Right;
                     tile.HasGravity = true;
@@ -176,7 +176,7 @@ namespace Depths.Core.World.Tiles
                     tile.Resistance = 0;
                 },
 
-                [DTileType.Platform] = (DTile tile) =>
+                [DTileType.Platform] = (DTile tile, DPoint position) =>
                 {
                     tile.HasGravity = false;
                     tile.Health = 0;
@@ -360,7 +360,7 @@ namespace Depths.Core.World.Tiles
             }
 
             tile.Type = type;
-            this.tileTypes[type]?.Invoke(tile);
+            this.tileTypes[type]?.Invoke(tile, position);
         }
 
         internal DTile GetTile(DPoint position)

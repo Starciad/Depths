@@ -172,6 +172,7 @@ namespace Depths.Core.Generators
 
                     this.worldTilemap.SetTile(selectedTile.Position, DTileType.Ore);
                     selectedTile.Tile.Ore = ore;
+                    selectedTile.Tile.Resistance = ore.Resistance;
                 }
             }
         }
@@ -300,7 +301,7 @@ namespace Depths.Core.Generators
                 DPoint belowPosition = new(tileEntry.Position.X, tileEntry.Position.Y + 1);
                 DTile tileBelow = this.worldTilemap.GetTile(belowPosition);
 
-                byte trapType = (byte)DRandomMath.Range(0, 2);
+                byte trapType = (byte)DRandomMath.Range(0, 1);
 
                 if (trapType == 0)
                 {
@@ -313,11 +314,6 @@ namespace Depths.Core.Generators
                 else if (trapType == 1)
                 {
                     this.worldTilemap.SetTile(tileEntry.Position, DTileType.ArrowTrap);
-                    _ = this.emptyTiles.Remove(tileEntry);
-                }
-                else if (trapType == 2)
-                {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.BoulderTrap);
                     _ = this.emptyTiles.Remove(tileEntry);
                 }
             }

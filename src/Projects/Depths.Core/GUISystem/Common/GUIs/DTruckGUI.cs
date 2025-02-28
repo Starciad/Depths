@@ -1,6 +1,4 @@
-﻿using Depths.Core.Audio;
-using Depths.Core.Databases;
-using Depths.Core.Entities.Common;
+﻿using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
@@ -9,73 +7,10 @@ using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 
-using System;
-
 namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed partial class DTruckGUI : DGUI
     {
-        private enum DSection : byte
-        {
-            Main = 0,
-            Upgrades = 1,
-            Items = 2
-        }
-
-        private enum DButton : byte
-        {
-            Upgrades = 0,
-            Items = 1
-        }
-
-        private sealed class DPurchasableItem
-        {
-            internal string Name { get; private set; }
-            internal uint Price { get; private set; }
-            internal bool HasPriceIncrease { get; private set; }
-            internal float PriceIncreaseFactor { get; private set; }
-
-            internal int CurrentPreviewValue { get; set; }
-            internal int NextPreviewValue { get; set; }
-
-            internal Action<DPurchasableItem> OnBuyCallback { get; init; }
-
-            internal DPurchasableItem(string name, uint basePrice, bool hasPriceIncrease, float priceIncreaseFactor)
-            {
-                this.Name = name;
-                this.Price = basePrice;
-                this.HasPriceIncrease = hasPriceIncrease;
-                this.PriceIncreaseFactor = priceIncreaseFactor;
-            }
-
-            internal bool TryBuy(DPlayerEntity playerEntity)
-            {
-                if (playerEntity.Money >= this.Price)
-                {
-                    playerEntity.Money -= this.Price;
-
-                    UpdatePrice();
-                    this.OnBuyCallback?.Invoke(this);
-
-                    DAudioEngine.Play("sound_good_2");
-
-                    return true;
-                }
-
-                DAudioEngine.Play("sound_odd_1");
-
-                return false;
-            }
-
-            private void UpdatePrice()
-            {
-                if (this.HasPriceIncrease)
-                {
-                    this.Price = (uint)(this.Price * this.PriceIncreaseFactor);
-                }
-            }
-        }
-
         private DSection selectedSection;
         private DButton selectedButton;
 
@@ -165,104 +100,104 @@ namespace Depths.Core.GUISystem.Common.GUIs
             #region ITEMS
             // Upgrades
             this.purchasableUpgrades = [
-                new("Energy", 10, true, 2)
+                new("Energy", 10, true, 2.5f)
                 {
-                    CurrentPreviewValue = gameInformation.PlayerEntity.MaximumEnergy,
-                    NextPreviewValue = gameInformation.PlayerEntity.MaximumEnergy + DPlayerConstants.DEFAULT_MAXIMUM_STARTING_ENERGY,
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = gameInformation.PlayerEntity.MaximumEnergy;
+                        item.NextPreviewValue = gameInformation.PlayerEntity.MaximumEnergy + DPlayerConstants.DEFAULT_MAXIMUM_STARTING_ENERGY;
+                    },
 
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.MaximumEnergy = (byte)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_MAXIMUM_STARTING_ENERGY;
                     },
                 },
 
-                new("Power", 15, true, 4.5f)
+                new("Power", 5, true, 2f)
                 {
-                    CurrentPreviewValue = gameInformation.PlayerEntity.Power,
-                    NextPreviewValue = gameInformation.PlayerEntity.Power + DPlayerConstants.DEFAULT_STARTING_POWER,
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = gameInformation.PlayerEntity.Power;
+                        item.NextPreviewValue = gameInformation.PlayerEntity.Power + DPlayerConstants.DEFAULT_STARTING_POWER;
+                    },
 
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.Power = (byte)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_POWER;
                     },
                 },
 
-                new("Damage", 25, true, 5)
+                new("Damage", 15, true, 2f)
                 {
-                    CurrentPreviewValue = gameInformation.PlayerEntity.Damage,
-                    NextPreviewValue = gameInformation.PlayerEntity.Damage + DPlayerConstants.DEFAULT_STARTING_DAMAGE,
-
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = gameInformation.PlayerEntity.Damage;
+                        item.NextPreviewValue = gameInformation.PlayerEntity.Damage + DPlayerConstants.DEFAULT_STARTING_DAMAGE;
+                    },
+                    
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.Damage = (byte)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_DAMAGE;
                     },
                 },
 
-                new("Bag Size", 50, true, 3.5f)
+                new("Bag Size", 10, true, 3.5f)
                 {
-                    CurrentPreviewValue = gameInformation.PlayerEntity.BackpackSize,
-                    NextPreviewValue = gameInformation.PlayerEntity.BackpackSize + DPlayerConstants.DEFAULT_STARTING_BAG_SIZE,
-
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = gameInformation.PlayerEntity.BackpackSize;
+                        item.NextPreviewValue = gameInformation.PlayerEntity.BackpackSize + DPlayerConstants.DEFAULT_STARTING_BAG_SIZE;
+                    },
+                    
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.BackpackSize = (byte)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_BAG_SIZE;
                     },
                 },
             ];
 
             // Items
             this.purchasableItems = [
-                new("Stairs", 8, false, 0)
+                new("Stairs", 5, false, 0)
                 {
-                    CurrentPreviewValue = (int)gameInformation.PlayerEntity.StairCount,
-                    NextPreviewValue = (int)gameInformation.PlayerEntity.StairCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_STAIRS,
-
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.StairCount;
+                        item.NextPreviewValue = (int)gameInformation.PlayerEntity.StairCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_STAIRS;
+                    },
+                    
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.StairCount = (uint)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_STAIRS;
                     },
                 },
 
-                new("Plataforms", 12, false, 0)
+                new("Plataforms", 10, false, 0)
                 {
-                    CurrentPreviewValue = (int)gameInformation.PlayerEntity.PlataformCount,
-                    NextPreviewValue = (int)gameInformation.PlayerEntity.PlataformCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_PLATAFORMS,
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.PlataformCount;
+                        item.NextPreviewValue = (int)gameInformation.PlayerEntity.PlataformCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_PLATAFORMS;
+                    },
 
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.PlataformCount = (uint)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_PLATAFORMS;
                     },
                 },
 
-                new("Miners", 32, false, 0)
+                new("Miners", 30, false, 0)
                 {
-                    CurrentPreviewValue = (int)gameInformation.PlayerEntity.RobotCount,
-                    NextPreviewValue = (int)gameInformation.PlayerEntity.RobotCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_ROBOTS,
-
+                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
+                    {
+                        item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.RobotCount;
+                        item.NextPreviewValue = (int)gameInformation.PlayerEntity.RobotCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_ROBOTS;
+                    },
+                    
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.RobotCount = (uint)item.NextPreviewValue;
-
-                        item.CurrentPreviewValue = item.NextPreviewValue;
-                        item.NextPreviewValue += DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_ROBOTS;
                     },
                 },
             ];

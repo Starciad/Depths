@@ -17,45 +17,30 @@ namespace Depths.Core.Databases
             this.musics = new()
             {
                 ["Main Theme"] = new(this, [
+                    new(DMusicNoteType.C, 0.4f),
+                    new(DMusicNoteType.E, 0.4f),
+                    new(DMusicNoteType.A, 0.4f),
+                    new(DMusicNoteType.G, 0.3f),
+                
+                    new(DMusicNoteType.C, 0.3f),
+                    new(DMusicNoteType.E, 0.3f),
+                    new(DMusicNoteType.A, 0.3f),
+                    new(DMusicNoteType.G, 0.3f),
+                
+                    new(DMusicNoteType.D, 0.4f),
+                    new(DMusicNoteType.F, 0.4f),
+                    new(DMusicNoteType.B, 0.4f),
+                    new(DMusicNoteType.A, 0.3f),
+                
+                    new(DMusicNoteType.D, 0.3f),
+                    new(DMusicNoteType.F, 0.3f),
+                    new(DMusicNoteType.B, 0.3f),
+                    new(DMusicNoteType.A, 0.3f),
+                
+                    new(DMusicNoteType.G, 0.2f),
+                    new(DMusicNoteType.A, 0.2f),
+                    new(DMusicNoteType.B, 0.2f),
                     new(DMusicNoteType.C, 0.5f),
-                    new(DMusicNoteType.E, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-                    new(DMusicNoteType.G, 0.5f),
-
-                    new(DMusicNoteType.C, 0.5f),
-                    new(DMusicNoteType.E, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-                    new(DMusicNoteType.G, 0.5f),
-
-                    new(DMusicNoteType.C, 0.5f),
-                    new(DMusicNoteType.E, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-                    new(DMusicNoteType.G, 0.5f),
-
-                    new(DMusicNoteType.C, 0.5f),
-                    new(DMusicNoteType.E, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-                    new(DMusicNoteType.G, 0.5f),
-
-                    new(DMusicNoteType.D, 0.5f),
-                    new(DMusicNoteType.F, 0.5f),
-                    new(DMusicNoteType.B, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-
-                    new(DMusicNoteType.D, 0.5f),
-                    new(DMusicNoteType.F, 0.5f),
-                    new(DMusicNoteType.B, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-
-                    new(DMusicNoteType.D, 0.5f),
-                    new(DMusicNoteType.F, 0.5f),
-                    new(DMusicNoteType.B, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
-
-                    new(DMusicNoteType.D, 0.5f),
-                    new(DMusicNoteType.F, 0.5f),
-                    new(DMusicNoteType.B, 0.5f),
-                    new(DMusicNoteType.A, 0.5f),
                 ])
                 {
                     IsRepeating = true,
@@ -66,13 +51,16 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.B, 0.2f),
                     new(DMusicNoteType.C, 0.4f),
                     new(DMusicNoteType.D, 0.5f),
-
+                
+                    new(DMusicNoteType.E, 0.3f),
+                    new(DMusicNoteType.F, 0.3f),
+                    new(DMusicNoteType.G, 0.3f),
+                
                     new(DMusicNoteType.C, 0.1f),
-                    new(DMusicNoteType.C, 0.2f),
-                    new(DMusicNoteType.D, 0.1f),
+                    new(DMusicNoteType.B, 0.2f),
+                    new(DMusicNoteType.C, 0.1f),
                     new(DMusicNoteType.D, 0.2f),
-                    new(DMusicNoteType.E, 0.1f),
-                    new(DMusicNoteType.E, 0.2f),
+                    new(DMusicNoteType.E, 0.3f),
                 ])
                 {
                     IsRepeating = true,
@@ -80,61 +68,142 @@ namespace Depths.Core.Databases
 
                 ["Surface"] = new(this, [
                     new(DMusicNoteType.E, 0.5f),
-                    new(DMusicNoteType.B, 0.2f),
-                    new(DMusicNoteType.A, 0.2f),
-
+                    new(DMusicNoteType.B, 0.3f),
+                    new(DMusicNoteType.A, 0.3f),
+                
+                    new(DMusicNoteType.GSharp, 0.3f),
+                    new(DMusicNoteType.FSharp, 0.3f),
                     new(DMusicNoteType.E, 0.5f),
-                    new(DMusicNoteType.B, 0.2f),
-                    new(DMusicNoteType.A, 0.2f),
-
-                    new(DMusicNoteType.GSharp, 0.2f),
-                    new(DMusicNoteType.FSharp, 0.2f),
+                
+                    new(DMusicNoteType.G, 0.3f),
+                    new(DMusicNoteType.A, 0.3f),
                 ])
                 {
                     IsRepeating = true,
                 },
 
                 ["Underground"] = new(this, [
-                    new(DMusicNoteType.B, 0.2f),
-                    new(DMusicNoteType.G, 0.2f),
-                    new(DMusicNoteType.E, 0.2f),
-                    new(DMusicNoteType.C, 0.2f),
-
-                    new(DMusicNoteType.B, 0.2f),
-                    new(DMusicNoteType.G, 0.2f),
-                    new(DMusicNoteType.E, 0.2f),
-                    new(DMusicNoteType.C, 0.2f),
-
-                    new(DMusicNoteType.C, 0.1f),
-                    new(DMusicNoteType.B, 0.1f),
-                    new(DMusicNoteType.C, 0.1f),
-                    new(DMusicNoteType.B, 0.1f),
-
+                    new(DMusicNoteType.B, 0.3f),
+                    new(DMusicNoteType.G, 0.3f),
+                    new(DMusicNoteType.E, 0.3f),
+                    new(DMusicNoteType.C, 0.3f),
+                
                     new(DMusicNoteType.C, 0.2f),
                     new(DMusicNoteType.E, 0.2f),
                     new(DMusicNoteType.G, 0.2f),
                     new(DMusicNoteType.B, 0.2f),
-
-                    new(DMusicNoteType.C, 0.2f),
-                    new(DMusicNoteType.E, 0.2f),
-                    new(DMusicNoteType.G, 0.2f),
-                    new(DMusicNoteType.B, 0.2f),
-
+                
                     new(DMusicNoteType.C, 0.1f),
                     new(DMusicNoteType.B, 0.1f),
-                    new(DMusicNoteType.C, 0.1f),
-                    new(DMusicNoteType.B, 0.1f),
+                    new(DMusicNoteType.A, 0.1f),
+                    new(DMusicNoteType.G, 0.1f),
                 ])
                 {
                     IsRepeating = true,
                 },
 
-                ["Depth"] = null,
-                ["Game Over"] = null,
-                ["Victory"] = null,
-                ["Pause"] = null,
-                ["Menu"] = null,
-                ["Credits"] = null,
+                ["Depth"] = new(this, [
+                    new(DMusicNoteType.F, 0.5f),
+                    new(DMusicNoteType.D, 0.4f),
+                    new(DMusicNoteType.A, 0.4f),
+                
+                    new(DMusicNoteType.GSharp, 0.4f),
+                    new(DMusicNoteType.E, 0.3f),
+                    new(DMusicNoteType.B, 0.3f),
+                
+                    new(DMusicNoteType.FSharp, 0.4f),
+                    new(DMusicNoteType.D, 0.3f),
+                ])
+                {
+                    IsRepeating = true,
+                },
+
+                ["Game Over"] = new(this, [
+                    new(DMusicNoteType.C, 0.4f),
+                    new(DMusicNoteType.A, 0.3f),
+                    new(DMusicNoteType.F, 0.3f),
+                
+                    new(DMusicNoteType.D, 0.5f),
+                    new(DMusicNoteType.GSharp, 0.5f),
+                
+                    new(DMusicNoteType.C, 0.2f),
+                    new(DMusicNoteType.B, 0.2f),
+                    new(DMusicNoteType.A, 0.2f),
+                
+                    new(DMusicNoteType.F, 0.3f),
+                    new(DMusicNoteType.D, 0.3f),
+                ])
+                {
+                    IsRepeating = false,
+                },
+
+                ["Victory"] = new(this, [
+                    new(DMusicNoteType.C, 0.3f),
+                    new(DMusicNoteType.E, 0.3f),
+                    new(DMusicNoteType.G, 0.3f),
+                
+                    new(DMusicNoteType.B, 0.5f),
+                    new(DMusicNoteType.G, 0.3f),
+                    new(DMusicNoteType.E, 0.3f),
+                
+                    new(DMusicNoteType.A, 0.4f),
+                    new(DMusicNoteType.F, 0.3f),
+                    new(DMusicNoteType.C, 0.3f),
+                
+                    new(DMusicNoteType.C, 0.5f),
+                ])
+                {
+                    IsRepeating = false,
+                },
+
+                ["Pause"] = new(this, [
+                    new(DMusicNoteType.G, 0.2f),
+                    new(DMusicNoteType.E, 0.2f),
+                    new(DMusicNoteType.C, 0.3f),
+                    new(DMusicNoteType.G, 0.2f),
+                ])
+                {
+                    IsRepeating = true,
+                },
+
+
+                ["Menu"] = new(this, [
+                    new(DMusicNoteType.C, 0.4f),
+                    new(DMusicNoteType.G, 0.3f),
+                    new(DMusicNoteType.F, 0.3f),
+                
+                    new(DMusicNoteType.A, 0.5f),
+                    new(DMusicNoteType.C, 0.3f),
+                    new(DMusicNoteType.GSharp, 0.3f),
+                
+                    new(DMusicNoteType.F, 0.3f),
+                    new(DMusicNoteType.D, 0.3f),
+                    new(DMusicNoteType.B, 0.3f),
+                
+                    new(DMusicNoteType.E, 0.4f),
+                ])
+                {
+                    IsRepeating = true,
+                },
+
+
+                ["Credits"] = new(this, [
+                    new(DMusicNoteType.D, 0.5f),
+                    new(DMusicNoteType.F, 0.5f),
+                    new(DMusicNoteType.A, 0.5f),
+                
+                    new(DMusicNoteType.C, 0.5f),
+                    new(DMusicNoteType.E, 0.5f),
+                
+                    new(DMusicNoteType.B, 0.3f),
+                    new(DMusicNoteType.G, 0.3f),
+                    new(DMusicNoteType.F, 0.3f),
+                
+                    new(DMusicNoteType.D, 0.5f),
+                ])
+                {
+                    IsRepeating = true,
+                },
             };
         }
 
