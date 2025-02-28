@@ -1,9 +1,12 @@
-﻿using Depths.Core.Managers;
+﻿using Depths.Core.GUISystem.Common.Elements;
+using Depths.Core.Managers;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed class DGameStatsGUI : DGUI
     {
+        private readonly DGUITextElement titleTextElement;
+
         private readonly DGUIManager guiManager;
         private readonly DGameInformation gameInformation;
 

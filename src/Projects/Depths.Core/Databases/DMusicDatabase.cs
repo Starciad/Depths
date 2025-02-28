@@ -21,22 +21,22 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.E, 0.4f),
                     new(DMusicNoteType.A, 0.4f),
                     new(DMusicNoteType.G, 0.3f),
-                
+
                     new(DMusicNoteType.C, 0.3f),
                     new(DMusicNoteType.E, 0.3f),
                     new(DMusicNoteType.A, 0.3f),
                     new(DMusicNoteType.G, 0.3f),
-                
+
                     new(DMusicNoteType.D, 0.4f),
                     new(DMusicNoteType.F, 0.4f),
                     new(DMusicNoteType.B, 0.4f),
                     new(DMusicNoteType.A, 0.3f),
-                
+
                     new(DMusicNoteType.D, 0.3f),
                     new(DMusicNoteType.F, 0.3f),
                     new(DMusicNoteType.B, 0.3f),
                     new(DMusicNoteType.A, 0.3f),
-                
+
                     new(DMusicNoteType.G, 0.2f),
                     new(DMusicNoteType.A, 0.2f),
                     new(DMusicNoteType.B, 0.2f),
@@ -51,11 +51,11 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.B, 0.2f),
                     new(DMusicNoteType.C, 0.4f),
                     new(DMusicNoteType.D, 0.5f),
-                
+
                     new(DMusicNoteType.E, 0.3f),
                     new(DMusicNoteType.F, 0.3f),
                     new(DMusicNoteType.G, 0.3f),
-                
+
                     new(DMusicNoteType.C, 0.1f),
                     new(DMusicNoteType.B, 0.2f),
                     new(DMusicNoteType.C, 0.1f),
@@ -70,11 +70,11 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.E, 0.5f),
                     new(DMusicNoteType.B, 0.3f),
                     new(DMusicNoteType.A, 0.3f),
-                
+
                     new(DMusicNoteType.GSharp, 0.3f),
                     new(DMusicNoteType.FSharp, 0.3f),
                     new(DMusicNoteType.E, 0.5f),
-                
+
                     new(DMusicNoteType.G, 0.3f),
                     new(DMusicNoteType.A, 0.3f),
                 ])
@@ -87,12 +87,12 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.G, 0.3f),
                     new(DMusicNoteType.E, 0.3f),
                     new(DMusicNoteType.C, 0.3f),
-                
+
                     new(DMusicNoteType.C, 0.2f),
                     new(DMusicNoteType.E, 0.2f),
                     new(DMusicNoteType.G, 0.2f),
                     new(DMusicNoteType.B, 0.2f),
-                
+
                     new(DMusicNoteType.C, 0.1f),
                     new(DMusicNoteType.B, 0.1f),
                     new(DMusicNoteType.A, 0.1f),
@@ -106,11 +106,11 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.F, 0.5f),
                     new(DMusicNoteType.D, 0.4f),
                     new(DMusicNoteType.A, 0.4f),
-                
+
                     new(DMusicNoteType.GSharp, 0.4f),
                     new(DMusicNoteType.E, 0.3f),
                     new(DMusicNoteType.B, 0.3f),
-                
+
                     new(DMusicNoteType.FSharp, 0.4f),
                     new(DMusicNoteType.D, 0.3f),
                 ])
@@ -122,14 +122,14 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.C, 0.4f),
                     new(DMusicNoteType.A, 0.3f),
                     new(DMusicNoteType.F, 0.3f),
-                
+
                     new(DMusicNoteType.D, 0.5f),
                     new(DMusicNoteType.GSharp, 0.5f),
-                
+
                     new(DMusicNoteType.C, 0.2f),
                     new(DMusicNoteType.B, 0.2f),
                     new(DMusicNoteType.A, 0.2f),
-                
+
                     new(DMusicNoteType.F, 0.3f),
                     new(DMusicNoteType.D, 0.3f),
                 ])
@@ -141,15 +141,15 @@ namespace Depths.Core.Databases
                     new(DMusicNoteType.C, 0.3f),
                     new(DMusicNoteType.E, 0.3f),
                     new(DMusicNoteType.G, 0.3f),
-                
+
                     new(DMusicNoteType.B, 0.5f),
                     new(DMusicNoteType.G, 0.3f),
                     new(DMusicNoteType.E, 0.3f),
-                
+
                     new(DMusicNoteType.A, 0.4f),
                     new(DMusicNoteType.F, 0.3f),
                     new(DMusicNoteType.C, 0.3f),
-                
+
                     new(DMusicNoteType.C, 0.5f),
                 ])
                 {
@@ -166,39 +166,37 @@ namespace Depths.Core.Databases
                     IsRepeating = true,
                 },
 
-
                 ["Menu"] = new(this, [
                     new(DMusicNoteType.C, 0.4f),
                     new(DMusicNoteType.G, 0.3f),
                     new(DMusicNoteType.F, 0.3f),
-                
+
                     new(DMusicNoteType.A, 0.5f),
                     new(DMusicNoteType.C, 0.3f),
                     new(DMusicNoteType.GSharp, 0.3f),
-                
+
                     new(DMusicNoteType.F, 0.3f),
                     new(DMusicNoteType.D, 0.3f),
                     new(DMusicNoteType.B, 0.3f),
-                
+
                     new(DMusicNoteType.E, 0.4f),
                 ])
                 {
                     IsRepeating = true,
                 },
 
-
                 ["Credits"] = new(this, [
                     new(DMusicNoteType.D, 0.5f),
                     new(DMusicNoteType.F, 0.5f),
                     new(DMusicNoteType.A, 0.5f),
-                
+
                     new(DMusicNoteType.C, 0.5f),
                     new(DMusicNoteType.E, 0.5f),
-                
+
                     new(DMusicNoteType.B, 0.3f),
                     new(DMusicNoteType.G, 0.3f),
                     new(DMusicNoteType.F, 0.3f),
-                
+
                     new(DMusicNoteType.D, 0.5f),
                 ])
                 {

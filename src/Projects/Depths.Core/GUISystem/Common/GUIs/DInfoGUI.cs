@@ -1,6 +1,6 @@
 ﻿namespace Depths.Core.GUISystem.Common.GUIs
 {
-    internal sealed class DPlayerGUI
+    internal sealed class DInfoGUI
     {
 
     }

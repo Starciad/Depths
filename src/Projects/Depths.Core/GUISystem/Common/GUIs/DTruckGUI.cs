@@ -114,7 +114,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Power", 5, true, 2f)
+                new("Power", 6, true, 2f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -128,14 +128,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Damage", 15, true, 2f)
+                new("Damage", 8, true, 3.5f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
                         item.CurrentPreviewValue = gameInformation.PlayerEntity.Damage;
                         item.NextPreviewValue = gameInformation.PlayerEntity.Damage + DPlayerConstants.DEFAULT_STARTING_DAMAGE;
                     },
-                    
+
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.Damage = (byte)item.NextPreviewValue;
@@ -149,7 +149,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                         item.CurrentPreviewValue = gameInformation.PlayerEntity.BackpackSize;
                         item.NextPreviewValue = gameInformation.PlayerEntity.BackpackSize + DPlayerConstants.DEFAULT_STARTING_BAG_SIZE;
                     },
-                    
+
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.BackpackSize = (byte)item.NextPreviewValue;
@@ -159,14 +159,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             // Items
             this.purchasableItems = [
-                new("Stairs", 5, false, 0)
+                new("Stairs", 6, false, 0)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
                         item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.StairCount;
                         item.NextPreviewValue = (int)gameInformation.PlayerEntity.StairCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_STAIRS;
                     },
-                    
+
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.StairCount = (uint)item.NextPreviewValue;
@@ -194,7 +194,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                         item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.RobotCount;
                         item.NextPreviewValue = (int)gameInformation.PlayerEntity.RobotCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_ROBOTS;
                     },
-                    
+
                     OnBuyCallback = (DPurchasableItem item) =>
                     {
                         gameInformation.PlayerEntity.RobotCount = (uint)item.NextPreviewValue;
