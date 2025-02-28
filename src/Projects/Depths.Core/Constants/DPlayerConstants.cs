@@ -1,4 +1,4 @@
-﻿namespace Depths.Core.Databases
+﻿namespace Depths.Core.Constants
 {
     internal static class DPlayerConstants
     {

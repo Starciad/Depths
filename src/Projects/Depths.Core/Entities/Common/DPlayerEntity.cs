@@ -1,6 +1,5 @@
 ﻿using Depths.Core.Audio;
 using Depths.Core.Constants;
-using Depths.Core.Databases;
 using Depths.Core.Enums.World;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
@@ -203,6 +202,12 @@ namespace Depths.Core.Entities.Common
 
         private void HandleGuiInput()
         {
+            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
+            {
+                this.guiManager.Open("Pause");
+                return;
+            }
+
             if (this.inputManager.Started(DKeyMappingConstant.GameInfos))
             {
                 this.guiManager.Open("Player Information");

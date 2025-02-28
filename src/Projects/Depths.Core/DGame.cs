@@ -118,7 +118,8 @@ namespace Depths.Core
             this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new DPoint(-6, 10);
             this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
             this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
-            this.idolHeadSpawnPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1))) + new DPoint((DScreenConstants.GAME_WIDTH / 2) - 10, 12);
+            // this.idolHeadSpawnPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1))) + new DPoint((DScreenConstants.GAME_WIDTH / 2) - 10, 12);
+            this.idolHeadSpawnPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * 2)) + new DPoint((DScreenConstants.GAME_WIDTH / 2) - 10, 12);
         }
 
         protected override void Initialize()
@@ -218,6 +219,16 @@ namespace Depths.Core
                 this.musicManager.PlayMusic();
 
                 this.guiManager.Open("Game Over");
+            };
+
+            this.gameInformation.OnGameWon += () =>
+            {
+                this.gameInformation.IsWorldActive = false;
+
+                this.musicManager.SetMusic("Victory");
+                this.musicManager.PlayMusic();
+
+                this.guiManager.Open("Victory");
             };
         }
 

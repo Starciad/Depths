@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Entities.Common;
 using Depths.Core.Interfaces.General;
+using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
 using System;
@@ -12,6 +13,7 @@ namespace Depths.Core
         internal DPlayerEntity PlayerEntity { get; private set; }
         internal DTruckEntity TruckEntity { get; private set; }
         internal DIdolHeadEntity IdolHeadEntity { get; private set; }
+        internal byte IdolHeadSpriteIndex { get; private set; }
 
         internal bool TransitionIsDisabled { get; set; }
 
@@ -34,12 +36,14 @@ namespace Depths.Core
 
         internal delegate void GameStarted();
         internal delegate void GameOver();
+        internal delegate void GameWon();
         internal delegate void PlayerReachedTheDepth();
         internal delegate void PlayerReachedTheUnderground();
         internal delegate void PlayerReachedTheSurface();
 
         internal event GameStarted OnGameStarted;
         internal event GameOver OnGameOver;
+        internal event GameWon OnGameWon;
         internal event PlayerReachedTheDepth OnPlayerReachedTheDepth;
         internal event PlayerReachedTheUnderground OnPlayerReachedTheUnderground;
         internal event PlayerReachedTheSurface OnPlayerReachedTheSurface;
@@ -62,6 +66,11 @@ namespace Depths.Core
         internal void SetIdolHeadEntity(DIdolHeadEntity idolHeadEntity)
         {
             this.IdolHeadEntity = idolHeadEntity;
+
+            this.IdolHeadEntity.OnCollected += () =>
+            {
+                this.OnGameWon?.Invoke();
+            };
         }
 
         internal void Start()
@@ -142,6 +151,7 @@ namespace Depths.Core
             this.PlayerEntity = null;
             this.TruckEntity = null;
             this.IdolHeadEntity = null;
+            this.IdolHeadSpriteIndex = (byte)DRandomMath.Range(0, DSpriteConstants.IDOL_HEAD_VARIATIONS - 1);
 
             this.IsPlayerOnSurface = true;
             this.IsPlayerInUnderground = false;

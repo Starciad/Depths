@@ -127,7 +127,6 @@ namespace Depths.Core.Generators
             GenerateOres();
             GenerateAdditionalBlocks();
             GenerateDangers();
-            GenerateEntities();
         }
 
         private void GenerateOres()
@@ -318,11 +317,6 @@ namespace Depths.Core.Generators
                     _ = this.emptyTiles.Remove(tileEntry);
                 }
             }
-        }
-
-        private static void GenerateEntities()
-        {
-            // Implementation for entity generation can be added here.
         }
 
         private void GenerateMapBorders()
