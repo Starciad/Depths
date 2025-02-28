@@ -134,7 +134,7 @@ namespace Depths.Core.Entities.Common
                 return;
             }
 
-            if (this.playerPower > targetTile.Resistance)
+            if (this.playerPower >= targetTile.Resistance)
             {
                 targetTile.Health -= this.playerDamage;
 

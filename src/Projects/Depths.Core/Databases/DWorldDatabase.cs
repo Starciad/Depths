@@ -44,7 +44,7 @@ namespace Depths.Core.Databases
                     LayerRange = new(new(1), new(3)),
                     Name = "Quartz",
                     Rarity = DRarity.Common,
-                    Resistance = 2,
+                    Resistance = 1,
                     Value = 2
                 },
 
@@ -54,7 +54,7 @@ namespace Depths.Core.Databases
                     LayerRange = new(new(2), new(4)),
                     Name = "Ambar",
                     Rarity = DRarity.Uncommon,
-                    Resistance = 3,
+                    Resistance = 2,
                     Value = 4
                 },
 
@@ -102,7 +102,7 @@ namespace Depths.Core.Databases
                 {
                     IconTexture = assetDatabase.GetTexture("texture_ore_9"),
                     LayerRange = new(new(6), new(9)),
-                    Name = "Lazuli",
+                    Name = "Lapis Lazuli",
                     Rarity = DRarity.Rare,
                     Resistance = 4,
                     Value = 5

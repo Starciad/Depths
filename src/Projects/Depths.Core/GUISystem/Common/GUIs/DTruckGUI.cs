@@ -49,29 +49,35 @@ namespace Depths.Core.GUISystem.Common.GUIs
             // ============================ //
 
             // Texts
-            this.currentMoneyTextElement = new(textManager);
+            this.currentMoneyTextElement = new(textManager, new());
 
-            this.pageTitleTextElement = new(textManager)
+            this.pageTitleTextElement = new(textManager, new()
             {
                 FontType = DFontType.Dark,
-                TextAlignment = DTextAlignment.Center,
+                HorizontalAlignment = DTextAlignment.Center,
+                CharacterSpacing = -1
+            })
+            {
                 Position = new(42, 4),
-                Spacing = -1
             };
 
-            this.priceTextElement = new(textManager)
+            this.priceTextElement = new(textManager, new()
             {
                 FontType = DFontType.Dark,
-                TextAlignment = DTextAlignment.Center,
+                HorizontalAlignment = DTextAlignment.Center,
+            })
+            {
                 Position = new(24, 18),
             };
 
-            this.previewTextElement = new(textManager)
+            this.previewTextElement = new(textManager, new()
             {
                 FontType = DFontType.Dark,
-                TextAlignment = DTextAlignment.Center,
+                HorizontalAlignment = DTextAlignment.Center,
+                CharacterSpacing = -1
+            })
+            {
                 Position = new(59, 18),
-                Spacing = -1
             };
 
             // Elements
@@ -100,7 +106,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             #region ITEMS
             // Upgrades
             this.purchasableUpgrades = [
-                new("Energy", 10, true, 2.5f)
+                new("Energy", 4, true, 2f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -128,7 +134,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Damage", 8, true, 3.5f)
+                new("Damage", 5, true, 2f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -142,7 +148,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Bag Size", 10, true, 3.5f)
+                new("Bag Size", 10, true, 2f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -159,7 +165,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             // Items
             this.purchasableItems = [
-                new("Stairs", 6, false, 0)
+                new("Stairs", 5, false, 0)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -173,7 +179,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Plataforms", 10, false, 0)
+                new("Plataforms", 8, false, 0)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -187,7 +193,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Miners", 30, false, 0)
+                new("Miners", 25, false, 0)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {

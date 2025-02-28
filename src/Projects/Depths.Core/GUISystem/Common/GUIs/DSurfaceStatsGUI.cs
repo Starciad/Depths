@@ -59,17 +59,19 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 Position = new(0, this.yStartingPosition),
             };
 
-            this.moneyTextElement = new(textManager)
+            this.moneyTextElement = new(textManager, new())
             {
                 IsVisible = false,
                 Position = new(17, 37),
             };
 
-            this.oreCountingTextElement = new(textManager)
+            this.oreCountingTextElement = new(textManager, new()
+            {
+                CharacterSpacing = -1,
+            })
             {
                 IsVisible = false,
                 Position = new(60, 37),
-                Spacing = -1,
             };
 
             this.oreIconElements = new DGUIImageElement[5];

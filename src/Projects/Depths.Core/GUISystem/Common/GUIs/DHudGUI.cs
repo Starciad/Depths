@@ -30,12 +30,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             this.gameInformation = gameInformation;
 
-            this.notifyTextElement = new(this.textManager)
+            this.notifyTextElement = new(this.textManager, new()
+            {
+                FontType = DFontType.DarkOutline,
+                HorizontalAlignment = DTextAlignment.Center,
+                WrapText = true,
+            })
             {
                 IsVisible = false,
-                FontType = DFontType.DarkOutline,
-                TextAlignment = DTextAlignment.Center,
-                Spacing = 1
             };
         }
 

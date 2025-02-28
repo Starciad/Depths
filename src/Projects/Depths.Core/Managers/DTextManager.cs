@@ -3,12 +3,12 @@ using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.Mathematics.Primitives;
+using Depths.Core.TextRendering;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System.Collections.Generic;
-using System.Text;
 
 namespace Depths.Core.Managers
 {
@@ -36,23 +36,92 @@ namespace Depths.Core.Managers
             this.characterMap = GenerateCharacterMap();
         }
 
-        internal void DrawText(SpriteBatch spriteBatch, StringBuilder value, DPoint position, DFontType fontType, sbyte spacing, DTextAlignment alignment)
+        internal void DrawText(SpriteBatch spriteBatch, string value, DPoint position, DTextRenderOptions options)
         {
-            int totalWidth = (value.Length * (DFontConstants.WIDTH + spacing)) - spacing;
+            List<string> lines = [];
 
-            DPoint startPosition = alignment switch
+            // Determines the maximum width for line breaks.
+            int maxWidth = options.MaxDimensions?.X ?? DScreenConstants.GAME_WIDTH;
+
+            if (options.WrapText)
             {
-                DTextAlignment.Center => new(position.X - (totalWidth / 2), position.Y),
-                DTextAlignment.Right => new(position.X - totalWidth, position.Y),
-                _ => position
-            };
+                int charWidthWithSpacing = DFontConstants.WIDTH + options.CharacterSpacing;
+                int charsPerLine = maxWidth / charWidthWithSpacing;
 
-            DPoint currentPos = startPosition;
+                if (charsPerLine < 1)
+                {
+                    charsPerLine = 1;
+                }
 
-            for (byte i = 0; i < value.Length; i++)
+                // Divide the text into lines according to the number of characters.
+                for (int i = 0; i < value.Length; i += charsPerLine)
+                {
+                    int length = (i + charsPerLine > value.Length) ? value.Length - i : charsPerLine;
+                    lines.Add(value.Substring(i, length));
+                }
+            }
+            else
             {
-                DrawCharacter(spriteBatch, value[i], currentPos, fontType);
-                currentPos.X += DFontConstants.WIDTH + spacing;
+                // No wrapping, text is rendered on a single line.
+                lines.Add(value);
+            }
+
+            // Calculates the total height of the text block (including line spacing).
+            int totalHeight = (lines.Count * DFontConstants.HEIGHT) + ((lines.Count - 1) * options.LineSpacing);
+
+            // Adjust the start Y position based on the vertical alignment.
+            int startY = position.Y;
+
+            switch (options.VerticalAlignment)
+            {
+                case DVerticalTextAlignment.Center:
+                    startY = position.Y - (totalHeight / 2);
+                    break;
+
+                case DVerticalTextAlignment.Bottom:
+                    startY = position.Y - totalHeight;
+                    break;
+
+                case DVerticalTextAlignment.Top:
+                default:
+                    break;
+            }
+
+            // Render each line.
+            for (int lineIndex = 0; lineIndex < lines.Count; lineIndex++)
+            {
+                string line = lines[lineIndex];
+
+                // Calculate the width of the current line.
+                int lineWidth = (line.Length * (DFontConstants.WIDTH + options.CharacterSpacing)) - options.CharacterSpacing;
+
+                // Adjust the start X position based on the horizontal alignment.
+                int startX = position.X;
+
+                switch (options.HorizontalAlignment)
+                {
+                    case DTextAlignment.Center:
+                        startX = position.X - (lineWidth / 2);
+                        break;
+
+                    case DTextAlignment.Right:
+                        startX = position.X - lineWidth;
+                        break;
+
+                    case DTextAlignment.Left:
+                    default:
+                        break;
+                }
+
+                // Draw each character on the line.
+                int currentX = startX;
+                int currentY = startY + (lineIndex * (DFontConstants.HEIGHT + options.LineSpacing));
+
+                foreach (char c in line)
+                {
+                    DrawCharacter(spriteBatch, c, new DPoint(currentX, currentY), options.FontType);
+                    currentX += DFontConstants.WIDTH + options.CharacterSpacing;
+                }
             }
         }
 
@@ -60,10 +129,10 @@ namespace Depths.Core.Managers
         {
             if (!this.characterMap.TryGetValue(character, out Rectangle sourceRectangle))
             {
-                return; // If the requested character is not mapped, the code returns.
+                return; // If the character is not mapped, it is not drawn.
             }
 
-            spriteBatch.Draw(GetFontTypeTexture(fontType), new(position.X, position.Y), sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            spriteBatch.Draw(GetFontTypeTexture(fontType), new Vector2(position.X, position.Y), sourceRectangle, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 
         private static Dictionary<char, Rectangle> GenerateCharacterMap()
@@ -72,7 +141,8 @@ namespace Depths.Core.Managers
 
             for (byte i = 0; i < DFontConstants.MAPPED_CHARACTERS.Length; i++)
             {
-                map[DFontConstants.MAPPED_CHARACTERS[i]] = new(new(DFontConstants.WIDTH * i, 0), new(DFontConstants.WIDTH, DFontConstants.HEIGHT));
+                map[DFontConstants.MAPPED_CHARACTERS[i]] =
+                    new Rectangle(DFontConstants.WIDTH * i, 0, DFontConstants.WIDTH, DFontConstants.HEIGHT);
             }
 
             return map;
