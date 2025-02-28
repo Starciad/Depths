@@ -37,7 +37,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private readonly DGUIManager guiManager;
         private readonly DGameInformation gameInformation;
 
-        internal DVictoryGUI(string identifier, DAssetDatabase assetDatabase, DGUIManager guiManager, DGameInformation gameInformation) : base(identifier)
+        internal DVictoryGUI(string identifier, DAssetDatabase assetDatabase, DGameInformation gameInformation, DGUIManager guiManager) : base(identifier)
         {
             this.guiManager = guiManager;
             this.gameInformation = gameInformation;

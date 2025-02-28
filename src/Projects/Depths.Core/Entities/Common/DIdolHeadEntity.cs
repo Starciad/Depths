@@ -40,13 +40,6 @@ namespace Depths.Core.Entities.Common
         private readonly Texture2D texture;
         private readonly int totalStars = 8;
         private readonly byte victoryFrameDelay = 32;
-        private readonly Rectangle[] idolHeadSourceRectangles = [
-            new(new(00, 00), new(21, 30)), // [0]
-            new(new(21, 00), new(21, 30)), // [1]
-            new(new(42, 00), new(21, 30)), // [2]
-            new(new(63, 00), new(21, 30)), // [3]
-            new(new(84, 00), new(21, 30)), // [4]
-        ];
 
         private readonly DEntityManager entityManager;
         private readonly DGameInformation gameInformation;
@@ -86,30 +79,31 @@ namespace Depths.Core.Entities.Common
 
         protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.texture, this.Position.ToVector2(), this.idolHeadSourceRectangles[this.gameInformation.IdolHeadSpriteIndex], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            spriteBatch.Draw(this.texture, this.Position.ToVector2(), DSpriteConstants.IDOL_SOURCE_RECTANGLES[this.gameInformation.IdolHeadSpriteIndex], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
 
         protected override void OnReset()
         {
             this.IsCollected = false;
+            this.IsVisible = true;
             this.victoryFrameCounter = 0;
         }
 
         private void InstantiateStars()
         {
-            float angleIncrement = MathHelper.TwoPi / totalStars;
+            float angleIncrement = MathHelper.TwoPi / this.totalStars;
             const float initialSpeed = 2f;
 
-            for (int i = 0; i < totalStars; i++)
+            for (int i = 0; i < this.totalStars; i++)
             {
                 float angle = i * angleIncrement;
                 Vector2 velocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * initialSpeed;
 
-                this.entityManager.InstantiateEntity("Star", (DEntity entity) =>
+                _ = this.entityManager.InstantiateEntity("Star", (DEntity entity) =>
                 {
                     DStarEntity starEntity = entity as DStarEntity;
 
-                    starEntity.Position = new(this.Position.X + DSpriteConstants.IDOL_HEAD_WIDTH / 2, this.Position.Y + DSpriteConstants.IDOL_HEAD_HEIGHT / 2);
+                    starEntity.Position = new(this.Position.X + (DSpriteConstants.IDOL_HEAD_WIDTH / 2), this.Position.Y + (DSpriteConstants.IDOL_HEAD_HEIGHT / 2));
                     starEntity.Velocity = velocity;
                 });
             }

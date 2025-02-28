@@ -187,6 +187,7 @@ namespace Depths.Core.World.Tiles
                                 this.boulderTrapFrameCounter = 0;
                                 UpdateBoulderTrap(tile, position);
                             }
+
                             break;
 
                         case DTileType.Monster:
@@ -195,6 +196,7 @@ namespace Depths.Core.World.Tiles
                                 this.monsterMovementFrameCounter = 0;
                                 UpdateMonster(position);
                             }
+
                             break;
 
                         case DTileType.Ghost:
@@ -203,6 +205,7 @@ namespace Depths.Core.World.Tiles
                                 this.ghostMovementFrameCounter = 0;
                                 UpdateGhost(position);
                             }
+
                             break;
 
                         default:
@@ -312,7 +315,8 @@ namespace Depths.Core.World.Tiles
             DDirection nextDirection = tile.Direction == DDirection.Left ? DDirection.Right : DDirection.Left;
             DPoint nextPosition = new(position.X + (tile.Direction == DDirection.Left ? -1 : 1), position.Y);
             DTile nextTile = GetTile(nextPosition);
-            DTile tileBelow = GetTile(new(position.X, position.Y + 1));
+
+            _ = GetTile(new(position.X, position.Y + 1));
             DTile nextTileBelow = GetTile(new(nextPosition.X, nextPosition.Y + 1));
 
             // Se há um bloco sólido à frente ou o próximo tile não tem chão, inverte a direção.
@@ -335,7 +339,7 @@ namespace Depths.Core.World.Tiles
                 return;
             }
 
-            List<DDirection> possibleDirections = new();
+            List<DDirection> possibleDirections = [];
             Dictionary<DDirection, DPoint> directionOffsets = new()
             {
                 { DDirection.Left, new DPoint(position.X - 1, position.Y) },

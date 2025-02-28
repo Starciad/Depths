@@ -156,35 +156,6 @@ namespace Depths.Core.Databases
                     IsRepeating = false,
                 },
 
-                ["Pause"] = new(this, [
-                    new(DMusicNoteType.G, 0.2f),
-                    new(DMusicNoteType.E, 0.2f),
-                    new(DMusicNoteType.C, 0.3f),
-                    new(DMusicNoteType.G, 0.2f),
-                ])
-                {
-                    IsRepeating = true,
-                },
-
-                ["General Menu"] = new(this, [
-                    new(DMusicNoteType.C, 0.4f),
-                    new(DMusicNoteType.G, 0.3f),
-                    new(DMusicNoteType.F, 0.3f),
-
-                    new(DMusicNoteType.A, 0.5f),
-                    new(DMusicNoteType.C, 0.3f),
-                    new(DMusicNoteType.GSharp, 0.3f),
-
-                    new(DMusicNoteType.F, 0.3f),
-                    new(DMusicNoteType.D, 0.3f),
-                    new(DMusicNoteType.B, 0.3f),
-
-                    new(DMusicNoteType.E, 0.4f),
-                ])
-                {
-                    IsRepeating = true,
-                },
-
                 ["Credits"] = new(this, [
                     new(DMusicNoteType.D, 0.5f),
                     new(DMusicNoteType.F, 0.5f),

@@ -1,7 +1,4 @@
-﻿using Depths.Core.Managers;
-using Depths.Core.Mathematics;
-using Depths.Core.Mathematics.Primitives;
-using Depths.Core.World;
+﻿using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

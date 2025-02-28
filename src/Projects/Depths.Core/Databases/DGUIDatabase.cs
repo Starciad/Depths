@@ -18,9 +18,8 @@ namespace Depths.Core.Databases
             RegisterGUI(new DSurfaceStatsGUI("Surface Stats", assetDatabase, textManager, guiManager, gameInformation));
             RegisterGUI(new DTruckGUI("Truck Store", assetDatabase, gameInformation, guiManager, inputManager, textManager));
             RegisterGUI(new DPlayerInformationGUI("Player Information", assetDatabase, gameInformation, guiManager, inputManager, textManager));
-            RegisterGUI(new DVictoryGUI("Victory", assetDatabase, guiManager, gameInformation));
-            RegisterGUI(new DCreditsGUI("Credits"));
-            RegisterGUI(new DPauseGUI("Pause"));
+            RegisterGUI(new DVictoryGUI("Victory", assetDatabase, gameInformation, guiManager));
+            RegisterGUI(new DCreditsGUI("Credits", assetDatabase, gameInformation, guiManager, inputManager, musicManager, textManager));
 
             foreach (DGUI gui in this.guis.Values)
             {

@@ -1,4 +1,5 @@
-﻿using Depths.Core.Enums.General;
+﻿using Depths.Core.Constants;
+using Depths.Core.Enums.General;
 using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
@@ -25,13 +26,6 @@ namespace Depths.Core.Entities.Common
 
         private readonly Texture2D texture;
 
-        private readonly Rectangle[] textureClipAreas = [
-            new(new(0, 0), new(45, 25)), // Left [1]
-            new(new(0, 25), new(45, 25)), // Left [2]
-            new(new(48, 0), new(45, 25)), // Right [1]
-            new(new(48, 25), new(45, 25)), // Right [2]
-        ];
-
         internal DTruckEntity(DEntityDescriptor descriptor) : base(descriptor)
         {
             this.texture = descriptor.Texture;
@@ -51,8 +45,8 @@ namespace Depths.Core.Entities.Common
         {
             return this.direction switch
             {
-                DDirection.Right => (Rectangle?)this.textureClipAreas[2],
-                DDirection.Left => (Rectangle?)this.textureClipAreas[0],
+                DDirection.Right => (Rectangle?)DSpriteConstants.TRUCK_SOURCE_RECTANGLES[2],
+                DDirection.Left => (Rectangle?)DSpriteConstants.TRUCK_SOURCE_RECTANGLES[0],
                 _ => null,
             };
         }
