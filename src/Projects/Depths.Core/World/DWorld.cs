@@ -1,5 +1,6 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Interfaces.General;
 using Depths.Core.Mathematics;
 using Depths.Core.World.Tiles;
 
@@ -7,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Depths.Core.World
 {
-    internal sealed class DWorld
+    internal sealed class DWorld : IDResettable
     {
         internal DTilemap Tilemap { get; private set; }
 
@@ -24,6 +25,11 @@ namespace Depths.Core.World
         internal void Draw(SpriteBatch spriteBatch)
         {
             this.Tilemap.Draw(spriteBatch);
+        }
+
+        public void Reset()
+        {
+            this.Tilemap.Reset();
         }
     }
 }

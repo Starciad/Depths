@@ -139,7 +139,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.state = DGUIState.Disable;
 
             this.guiManager.Close(this.Identifier);
-            this.guiManager.Open("Game Final Stats");
+            this.guiManager.Open("Main Menu");
         }
     }
 }

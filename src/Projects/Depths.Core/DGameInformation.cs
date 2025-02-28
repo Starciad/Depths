@@ -1,12 +1,13 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Entities.Common;
+using Depths.Core.Interfaces.General;
 using Depths.Core.Mathematics.Primitives;
 
 using System;
 
 namespace Depths.Core
 {
-    internal sealed class DGameInformation
+    internal sealed class DGameInformation : IDResettable
     {
         internal DPlayerEntity PlayerEntity { get; private set; }
         internal DTruckEntity TruckEntity { get; private set; }
@@ -19,6 +20,7 @@ namespace Depths.Core
         internal bool IsTruckCutsceneRunning { get; set; }
         internal bool IsPlayerCutsceneRunning { get; set; }
 
+        internal bool IsGameStarted { get; set; }
         internal bool IsGameFocused { get; set; }
         internal bool IsGamePaused { get; set; }
         internal bool IsGameCrucialMenuOpen { get; set; }
@@ -42,17 +44,6 @@ namespace Depths.Core
         internal event PlayerReachedTheUnderground OnPlayerReachedTheUnderground;
         internal event PlayerReachedTheSurface OnPlayerReachedTheSurface;
 
-        internal DGameInformation()
-        {
-            this.IsPlayerOnSurface = true;
-            this.IsPlayerInUnderground = false;
-            this.IsPlayerInDepth = false;
-
-            this.IsGameFocused = true;
-            this.IsGamePaused = false;
-            this.IsGameCrucialMenuOpen = false;
-        }
-
         internal void SetPlayerEntity(DPlayerEntity playerEntity)
         {
             this.PlayerEntity = playerEntity;
@@ -75,6 +66,12 @@ namespace Depths.Core
 
         internal void Start()
         {
+            if (this.IsGameStarted)
+            {
+                return;
+            }
+
+            this.IsGameStarted = true;
             this.OnGameStarted?.Invoke();
         }
 
@@ -138,6 +135,30 @@ namespace Depths.Core
         private static bool CheckIfPlayerYAxisIsInRange(int yPosition, Range yRange)
         {
             return yPosition >= yRange.Start.Value && yPosition < yRange.End.Value;
+        }
+
+        public void Reset()
+        {
+            this.PlayerEntity = null;
+            this.TruckEntity = null;
+            this.IdolHeadEntity = null;
+
+            this.IsPlayerOnSurface = true;
+            this.IsPlayerInUnderground = false;
+            this.IsPlayerInDepth = false;
+
+            this.IsGameFocused = true;
+            this.IsGamePaused = false;
+            this.IsGameCrucialMenuOpen = false;
+
+            this.IsIdolCutsceneRunning = true;
+            this.IsTruckCutsceneRunning = false;
+            this.IsPlayerCutsceneRunning = false;
+
+            this.TransitionIsDisabled = true;
+
+            this.IsWorldActive = true;
+            this.IsWorldVisible = true;
         }
     }
 }

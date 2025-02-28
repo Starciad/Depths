@@ -1,6 +1,5 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
-using Depths.Core.Entities.Common;
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
@@ -41,14 +40,12 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private readonly DGameInformation gameInformation;
         private readonly DGUIManager guiManager;
         private readonly DInputManager inputManager;
-        private readonly DPlayerEntity playerEntity;
 
         internal DPlayerInformationGUI(string identifier, DAssetDatabase assetDatabase, DGameInformation gameInformation, DGUIManager guiManager, DInputManager inputManager, DTextManager textManager) : base(identifier)
         {
             this.gameInformation = gameInformation;
             this.inputManager = inputManager;
             this.guiManager = guiManager;
-            this.playerEntity = gameInformation.PlayerEntity;
 
             this.panelElement = new()
             {
@@ -58,20 +55,20 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.pageInfoFields = new()
             {
                 ["Stats"] = [
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Bag:", this.playerEntity.CollectedMinerals.Count, '/', this.playerEntity.BackpackSize)); }), // Bag
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Energy:", this.playerEntity.Energy)); }), // Energy
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Money:", this.playerEntity.Money)); }), // Money
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Bag:", this.gameInformation.PlayerEntity.CollectedMinerals.Count, '/', this.gameInformation.PlayerEntity.BackpackSize)); }), // Bag
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Energy:", this.gameInformation.PlayerEntity.Energy)); }), // Energy
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Money:", this.gameInformation.PlayerEntity.Money)); }), // Money
                 ],
 
                 ["Attributes"] = [
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Damage:", this.playerEntity.Damage)); }), // Damage
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Power:", this.playerEntity.Power)); }), // Power
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Damage:", this.gameInformation.PlayerEntity.Damage)); }), // Damage
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Power:", this.gameInformation.PlayerEntity.Power)); }), // Power
                 ],
 
                 ["Items"] = [
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Stairs:", this.playerEntity.StairCount)); }), // Stairs
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Scaff:", this.playerEntity.PlataformCount)); }), // Plataforms
-                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Miners:", this.playerEntity.RobotCount)); }), // Miners
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Stairs:", this.gameInformation.PlayerEntity.StairCount)); }), // Stairs
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Scaff:", this.gameInformation.PlayerEntity.PlataformCount)); }), // Plataforms
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Miners:", this.gameInformation.PlayerEntity.RobotCount)); }), // Miners
                 ],
             };
 

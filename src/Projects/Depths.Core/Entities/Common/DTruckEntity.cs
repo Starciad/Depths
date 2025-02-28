@@ -21,7 +21,7 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DTruckEntity : DEntity
     {
-        private readonly DDirection direction = DDirection.Left;
+        private DDirection direction;
 
         private readonly Texture2D texture;
 
@@ -40,6 +40,11 @@ namespace Depths.Core.Entities.Common
         protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.texture, this.Position.ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+        }
+
+        protected override void OnReset()
+        {
+            this.direction = DDirection.Left;
         }
 
         private Rectangle? GetCurrentSpriteRectangle()

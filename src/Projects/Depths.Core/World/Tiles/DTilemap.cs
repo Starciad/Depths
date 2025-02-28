@@ -3,6 +3,7 @@ using Depths.Core.Databases;
 using Depths.Core.Enums.General;
 using Depths.Core.Enums.World;
 using Depths.Core.Helpers;
+using Depths.Core.Interfaces.General;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
@@ -14,7 +15,7 @@ using System.Collections.Generic;
 
 namespace Depths.Core.World.Tiles
 {
-    internal sealed class DTilemap
+    internal sealed class DTilemap : IDResettable
     {
         internal DSize2 Size => this.size;
 
@@ -72,7 +73,7 @@ namespace Depths.Core.World.Tiles
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
-                    tile.Health = Convert.ToByte(DRandomMath.Range(2, 3) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
+                    tile.Health = Convert.ToInt32(DRandomMath.Range(2, 3) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.Ore = null;
@@ -83,7 +84,7 @@ namespace Depths.Core.World.Tiles
                 {
                     tile.Direction = DDirection.None;
                     tile.HasGravity = false;
-                    tile.Health = Convert.ToByte(DRandomMath.Range(4, 5) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
+                    tile.Health = Convert.ToInt32(DRandomMath.Range(4, 5) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.Ore = null;
@@ -391,6 +392,17 @@ namespace Depths.Core.World.Tiles
         {
             return position.X >= 0 && position.X < this.size.Width &&
                    position.Y >= 0 && position.Y < this.size.Height;
+        }
+
+        public void Reset()
+        {
+            for (byte y = 0; y < this.size.Height; y++)
+            {
+                for (byte x = 0; x < this.size.Width; x++)
+                {
+                    SetTile(new(x, y), DTileType.Empty);
+                }
+            }
         }
     }
 }

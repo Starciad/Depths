@@ -8,7 +8,7 @@ namespace Depths.Core.World.Tiles
     {
         internal DDirection Direction { get; set; }
         internal bool HasGravity { get; set; }
-        internal byte Health { get; set; }
+        internal int Health { get; set; }
         internal bool IsDestructible { get; set; }
         internal bool IsSolid { get; set; }
         internal DOre Ore { get; set; }

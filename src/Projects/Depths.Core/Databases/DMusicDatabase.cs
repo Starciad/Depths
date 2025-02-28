@@ -16,7 +16,7 @@ namespace Depths.Core.Databases
 
             this.musics = new()
             {
-                ["Main Theme"] = new(this, [
+                ["Main Menu"] = new(this, [
                     new(DMusicNoteType.C, 0.4f),
                     new(DMusicNoteType.E, 0.4f),
                     new(DMusicNoteType.A, 0.4f),
@@ -166,7 +166,7 @@ namespace Depths.Core.Databases
                     IsRepeating = true,
                 },
 
-                ["Menu"] = new(this, [
+                ["General Menu"] = new(this, [
                     new(DMusicNoteType.C, 0.4f),
                     new(DMusicNoteType.G, 0.3f),
                     new(DMusicNoteType.F, 0.3f),

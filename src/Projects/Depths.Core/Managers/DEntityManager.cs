@@ -2,6 +2,7 @@
 using Depths.Core.Databases;
 using Depths.Core.Entities;
 using Depths.Core.Interfaces.Collections;
+using Depths.Core.Interfaces.General;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,7 @@ using System.Linq;
 
 namespace Depths.Core.Managers
 {
-    internal sealed class DEntityManager
+    internal sealed class DEntityManager : IDResettable
     {
         internal IEnumerable<DEntity> ActiveEntities => this.instantiatedEntities;
 
@@ -68,6 +69,7 @@ namespace Depths.Core.Managers
             {
                 DEntityDescriptor entityDescriptor = this.entityDatabase.GetEntityDescriptorByIdentifier(entityIdentifier);
                 value = entityDescriptor.CreateEntity();
+                value.Reset();
             }
 
             if (value is not DEntity entity)
@@ -119,6 +121,11 @@ namespace Depths.Core.Managers
 
                 DestroyEntity(entity);
             }
+        }
+
+        public void Reset()
+        {
+            RemoveAllEntities();
         }
     }
 }
