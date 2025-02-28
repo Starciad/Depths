@@ -27,8 +27,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             }
         }
 
-        private string currentPageIdentifier;
-        private byte pageIndex = 0;
+        private sbyte pageIndex = 0;
 
         private readonly byte totalPageCount;
 
@@ -59,31 +58,31 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.pageInfoFields = new()
             {
                 ["Stats"] = [
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Bag: ", this.playerEntity.CollectedMinerals.Count, '/', this.playerEntity.BackpackSize)); }), // Bag
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Energy: ", this.playerEntity.Energy, '/', this.playerEntity.MaximumEnergy)); }), // Energy
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Money: $", this.playerEntity.Money )); }), // Money
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Bag:", this.playerEntity.CollectedMinerals.Count, '/', this.playerEntity.BackpackSize)); }), // Bag
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Energy:", this.playerEntity.Energy)); }), // Energy
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Money:", this.playerEntity.Money)); }), // Money
                 ],
 
                 ["Attributes"] = [
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Damage: ", this.playerEntity.Damage)); }), // Damage
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Power: ", this.playerEntity.Power)); }), // Power
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Damage:", this.playerEntity.Damage)); }), // Damage
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Power:", this.playerEntity.Power)); }), // Power
                 ],
 
                 ["Items"] = [
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Stairs:", this.playerEntity.StairCount)); }), // Stairs
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Plataforms:", this.playerEntity.PlataformCount)); }), // Plataforms
-                    new(new(textManager, new() { FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Miners:", this.playerEntity.RobotCount)); }), // Miners
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Stairs:", this.playerEntity.StairCount)); }), // Stairs
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Scaff:", this.playerEntity.PlataformCount)); }), // Plataforms
+                    new(new(textManager, new() { CharacterSpacing = -1, FontType = DFontType.Dark }), (DGUITextElement textElement) => { textElement.SetValue(string.Concat("Miners:", this.playerEntity.RobotCount)); }), // Miners
                 ],
             };
 
-            this.titleTextElement = new(textManager, new() { HorizontalAlignment = DTextAlignment.Center })
+            this.titleTextElement = new(textManager, new() { FontType = DFontType.DarkOutline, HorizontalAlignment = DTextAlignment.Center })
             {
-                Position = new(42, 6),
+                Position = new(42, 2),
             };
 
-            this.infoFieldBasePosition = new(11, 16);
-            this.infoFieldVerticalSpacing = DFontConstants.HEIGHT + 1;
-            
+            this.infoFieldBasePosition = new(5, 16);
+            this.infoFieldVerticalSpacing = DFontConstants.HEIGHT + 2;
+
             this.totalPageCount = Convert.ToByte(this.pageInfoFields.Count - 1);
 
             foreach (IEnumerable<DInfoField> infoFields in this.pageInfoFields.Values)
@@ -93,9 +92,8 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 foreach (DInfoField infoField in infoFields)
                 {
                     infoField.TextElement.Position = targetPosition;
+                    targetPosition.Y += this.infoFieldVerticalSpacing;
                 }
-
-                targetPosition.Y += this.infoFieldVerticalSpacing;
             }
         }
 
@@ -181,7 +179,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void SyncTitleTextElement()
         {
-            this.titleTextElement.SetValue(this.currentPageIdentifier);
+            this.titleTextElement.SetValue(this.pageInfoFields.ElementAt(this.pageIndex).Key);
         }
 
         private void SyncInfoFields()
@@ -201,18 +199,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
             {
                 this.pageIndex = 0;
             }
-
-            this.currentPageIdentifier = this.pageInfoFields.ElementAt(this.pageIndex).Key;
         }
 
         private void PreviousPage()
         {
             if (--this.pageIndex < 0)
             {
-                this.pageIndex = this.totalPageCount;
+                this.pageIndex = (sbyte)this.totalPageCount;
             }
-
-            this.currentPageIdentifier = this.pageInfoFields.ElementAt(this.pageIndex).Key;
         }
     }
 }

@@ -14,10 +14,7 @@ namespace Depths.Core.GUISystem.Common.Elements
         internal Vector2 Scale { get; set; }
         internal Texture2D Texture
         {
-            get
-            {
-                return texture;
-            }
+            get => this.texture;
 
             set
             {

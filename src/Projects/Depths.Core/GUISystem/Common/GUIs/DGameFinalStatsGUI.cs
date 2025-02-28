@@ -1,5 +1,4 @@
-﻿using Depths.Core.GUISystem.Common.Elements;
-using Depths.Core.Managers;
+﻿using Depths.Core.Managers;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
