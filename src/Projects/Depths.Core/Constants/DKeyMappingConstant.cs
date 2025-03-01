@@ -11,7 +11,7 @@ namespace Depths.Core.Constants
 
         internal static Keys PlaceStair => Keys.K;
         internal static Keys PlacePlataform => Keys.J;
-        internal static Keys PlaceRobot => Keys.R;
+        internal static Keys PlaceRobot => Keys.H;
 
         internal static Keys Confirm => Keys.Enter;
         internal static Keys Cancel => Keys.Escape;

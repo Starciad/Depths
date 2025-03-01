@@ -1,4 +1,5 @@
 ﻿using Depths.Core.Audio;
+using Depths.Core.Background;
 using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
@@ -19,6 +20,7 @@ namespace Depths.Core
     public sealed class DGame : Game
     {
         private SpriteBatch spriteBatch;
+        private DBackground background;
 
         private byte idolCutsceneFrameCounter = 0;
         private byte truckMovementCutsceneFrameCounter = 0;
@@ -52,8 +54,8 @@ namespace Depths.Core
         private readonly DGUIManager guiManager;
 
         private readonly DWorld world;
+        
         private readonly DGameWorldGenerator gameGenerator;
-
         private readonly DGameInformation gameInformation;
 
         public DGame()
@@ -129,6 +131,8 @@ namespace Depths.Core
             this.worldDatabase.Initialize(this.assetDatabase);
             this.textManager.Initialize();
 
+            this.background = new(this.assetDatabase, this.graphicsManager);
+
             DAudioEngine.Initialize(this.assetDatabase);
 
             base.Initialize();
@@ -184,6 +188,7 @@ namespace Depths.Core
 
                 // ======================= //
 
+                this.background.Initialize(this.spriteBatch);
                 this.gameGenerator.Initialize();
 
                 // ======================= //
@@ -267,25 +272,6 @@ namespace Depths.Core
             if (!this.gameInformation.IsGameStarted || (!this.gameInformation.IsIdolCutsceneRunning && !this.gameInformation.IsTruckCutsceneRunning && !this.gameInformation.IsPlayerCutsceneRunning))
             {
                 return;
-            }
-
-            // Skip Cutscene
-            if (this.inputManager.KeyboardState.GetPressedKeyCount() > 0)
-            {
-                this.cameraManager.Position = this.cameraLobbyPosition.ToVector2();
-
-                this.gameInformation.PlayerEntity.IsVisible = true;
-
-                this.gameInformation.PlayerEntity.Position = this.playerLobbyPosition;
-                this.gameInformation.TruckEntity.Position = this.truckLobbyPosition;
-
-                this.gameInformation.IsIdolCutsceneRunning = false;
-                this.gameInformation.IsTruckCutsceneRunning = false;
-                this.gameInformation.IsPlayerCutsceneRunning = false;
-
-                this.gameInformation.TransitionIsDisabled = false;
-
-                this.musicManager.StopMusic();
             }
 
             UpdateIdolCutscene();
@@ -386,6 +372,7 @@ namespace Depths.Core
 
             if (this.gameInformation.IsWorldVisible)
             {
+                this.spriteBatch.Draw(this.background.RenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 this.world.Draw(this.spriteBatch);
                 this.entityManager.Draw(gameTime, this.spriteBatch);
             }

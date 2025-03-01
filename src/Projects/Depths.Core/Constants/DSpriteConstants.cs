@@ -9,6 +9,7 @@ namespace Depths.Core.Constants
         internal const byte IDOL_HEAD_WIDTH = 21;
         internal const byte IDOL_HEAD_HEIGHT = 30;
 
+        internal const byte TILE_SPRITE_SIZE = 7;
         internal const byte PLAYER_SPRITE_SIZE = 7;
 
         internal const byte ORE_ICON_SIZE = 11;
