@@ -1,4 +1,5 @@
-﻿using Depths.Core.Constants;
+﻿using Depths.Core.Audio;
+using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
@@ -205,6 +206,8 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
             if (this.gameInformation.PlayerEntity.CollectedMinerals.TryDequeue(out DOre ore))
             {
+                DAudioEngine.Play("sound_blip_11");
+
                 this.moneyRaised += ore.Value;
                 this.countedMinerals++;
                 this.gameInformation.PlayerEntity.Money += ore.Value;
