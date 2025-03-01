@@ -5,6 +5,7 @@ using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Ores;
+using Depths.Core.World.Tiles;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
@@ -64,6 +65,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 FontType = DFontType.DarkOutline,
                 HorizontalAlignment = DTextAlignment.Center,
                 WrapText = true,
+                CharacterSpacing = -1,
             })
             {
                 IsVisible = false,
@@ -75,6 +77,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 FontType = DFontType.DarkOutline,
                 HorizontalAlignment = DTextAlignment.Center,
                 WrapText = true,
+                CharacterSpacing = -1,
             })
             {
                 IsVisible = false,
@@ -86,6 +89,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 FontType = DFontType.DarkOutline,
                 HorizontalAlignment = DTextAlignment.Center,
                 WrapText = true,
+                CharacterSpacing = -1,
             })
             {
                 IsVisible = false,
@@ -109,6 +113,8 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.gameInformation.PlayerEntity.OnEnergyDepleted += Player_OnEnergyDepleted;
             this.gameInformation.PlayerEntity.OnCollectedOre += Player_OnCollectedOre;
             this.gameInformation.PlayerEntity.OnFullBackpack += Player_OnFullBackpack;
+            this.gameInformation.PlayerEntity.OnTriedMineToughBlock += Player_OnTriedMineToughBlock;
+            this.gameInformation.PlayerEntity.OnTriedMineIndestructibleBlock += Player_OnTriedMineIndestructibleBlock;
         }
 
         internal override void Unload()
@@ -117,8 +123,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.gameInformation.OnPlayerReachedTheUnderground -= GameInformation_PlayerReachedTheUnderground;
             this.gameInformation.OnPlayerReachedTheDepth -= GameInformation_PlayerReachedTheDepth;
 
+            this.gameInformation.PlayerEntity.OnEnergyDepleted -= Player_OnEnergyDepleted;
             this.gameInformation.PlayerEntity.OnCollectedOre -= Player_OnCollectedOre;
             this.gameInformation.PlayerEntity.OnFullBackpack -= Player_OnFullBackpack;
+            this.gameInformation.PlayerEntity.OnTriedMineToughBlock -= Player_OnTriedMineToughBlock;
+            this.gameInformation.PlayerEntity.OnTriedMineIndestructibleBlock -= Player_OnTriedMineIndestructibleBlock;
         }
 
         internal override void Update()
@@ -240,6 +249,18 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             ResetTextElement(this.centerTextElement, this.centerTextYAnchorPosition, ref this.centerTextVisibilityFrameCounter);
             this.centerTextElement.SetValue(ore.Name);
+        }
+
+        private void Player_OnTriedMineToughBlock(DTile tile)
+        {
+            ResetTextElement(this.bottomTextElement, this.bottomTextYAnchorPosition, ref this.bottomTextVisibilityFrameCounter);
+            this.bottomTextElement.SetValue(string.Concat("Req. Power ", tile.Resistance));
+        }
+
+        private void Player_OnTriedMineIndestructibleBlock(DTile tile)
+        {
+            ResetTextElement(this.bottomTextElement, this.bottomTextYAnchorPosition, ref this.bottomTextVisibilityFrameCounter);
+            this.bottomTextElement.SetValue("Unbreak Block");
         }
     }
 }

@@ -57,11 +57,15 @@ namespace Depths.Core.Entities.Common
         internal delegate void EnergyDepleted();
         internal delegate void FullBackpack();
         internal delegate void CollectedOre(DOre ore);
+        internal delegate void TriedMineToughBlock(DTile tile);
+        internal delegate void TriedMineIndestructibleBlock(DTile tile);
 
         internal event Died OnDied;
         internal event EnergyDepleted OnEnergyDepleted;
         internal event FullBackpack OnFullBackpack;
         internal event CollectedOre OnCollectedOre;
+        internal event TriedMineToughBlock OnTriedMineToughBlock;
+        internal event TriedMineIndestructibleBlock OnTriedMineIndestructibleBlock;
 
         private sbyte horizontalDirectionDelta;
 
@@ -362,8 +366,14 @@ namespace Depths.Core.Entities.Common
         {
             DTile tile = this.tilemap.GetTile(position);
 
-            if (tile == null || !tile.IsDestructible)
+            if (tile == null)
             {
+                return;
+            }
+
+            if (!tile.IsDestructible)
+            {
+                this.OnTriedMineIndestructibleBlock?.Invoke(tile);
                 return;
             }
 
@@ -375,6 +385,8 @@ namespace Depths.Core.Entities.Common
             else
             {
                 DAudioEngine.Play("sound_negative_2");
+                this.OnTriedMineToughBlock?.Invoke(tile);
+                return;
             }
 
             if (tile.Health <= 0)

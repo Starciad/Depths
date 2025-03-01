@@ -251,12 +251,6 @@ namespace Depths.Core.Generators
 
         private void GenerateDangers()
         {
-            GenerateDangersInsideStones();
-            GenerateDangersInTheAir();
-        }
-
-        private void GenerateDangersInsideStones()
-        {
             byte trapCount = (byte)DRandomMath.Range(30, 60);
 
             if (this.stoneTiles.Count < trapCount)
@@ -282,39 +276,6 @@ namespace Depths.Core.Generators
                 else if (dangerType == 1)
                 {
                     this.worldTilemap.SetTile(tileEntry.Position, DTileType.SpikeTrap);
-                }
-            }
-        }
-
-        private void GenerateDangersInTheAir()
-        {
-            byte trapCount = (byte)DRandomMath.Range(20, 40);
-
-            if (this.emptyTiles.Count < trapCount)
-            {
-                return;
-            }
-
-            for (byte i = 0; i < trapCount; i++)
-            {
-                (DPoint Position, DTile Tile) tileEntry = this.emptyTiles.GetRandomItem();
-
-                byte trapType = (byte)DRandomMath.Range(0, 2);
-
-                if (trapType == 0)
-                {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.SpikeTrap);
-                    _ = this.emptyTiles.Remove(tileEntry);
-                }
-                else if (trapType == 1)
-                {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.Monster);
-                    _ = this.emptyTiles.Remove(tileEntry);
-                }
-                else if (trapType == 2)
-                {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.Ghost);
-                    _ = this.emptyTiles.Remove(tileEntry);
                 }
             }
         }
