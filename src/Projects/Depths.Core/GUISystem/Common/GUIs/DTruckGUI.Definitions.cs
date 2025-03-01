@@ -1,5 +1,6 @@
 ﻿using Depths.Core.Audio;
 using Depths.Core.Entities.Common;
+using Depths.Core.Interfaces.General;
 
 using System;
 
@@ -20,7 +21,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             Items = 1
         }
 
-        private sealed class DPurchasableItem
+        private sealed class DPurchasableItem : IDResettable
         {
             internal string Name { get; private set; }
             internal uint Price { get; private set; }
@@ -33,12 +34,16 @@ namespace Depths.Core.GUISystem.Common.GUIs
             internal Action<DPurchasableItem> OnSyncPreviewValuesCallback { get; init; }
             internal Action<DPurchasableItem> OnBuyCallback { get; init; }
 
-            internal DPurchasableItem(string name, uint basePrice, bool hasPriceIncrease, float priceIncreaseFactor)
+            private readonly uint originalPrice;
+
+            internal DPurchasableItem(string name, uint originalPrice, bool hasPriceIncrease, float priceIncreaseFactor)
             {
                 this.Name = name;
-                this.Price = basePrice;
+                this.Price = originalPrice;
                 this.HasPriceIncrease = hasPriceIncrease;
                 this.PriceIncreaseFactor = priceIncreaseFactor;
+
+                this.originalPrice = originalPrice;
             }
 
             internal void Sync()
@@ -71,6 +76,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 {
                     this.Price = (uint)(this.Price * this.PriceIncreaseFactor);
                 }
+            }
+
+            public void Reset()
+            {
+                this.Price = this.originalPrice;
             }
         }
     }

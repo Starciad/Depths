@@ -1,12 +1,13 @@
 ﻿using Depths.Core.GUISystem;
 using Depths.Core.GUISystem.Common.GUIs;
+using Depths.Core.Interfaces.General;
 using Depths.Core.Managers;
 
 using System.Collections.Generic;
 
 namespace Depths.Core.Databases
 {
-    internal sealed class DGUIDatabase
+    internal sealed class DGUIDatabase : IDResettable
     {
         private readonly Dictionary<string, DGUI> guis = [];
 
@@ -35,6 +36,14 @@ namespace Depths.Core.Databases
         internal DGUI GetGUIByIdentifier(string identifier)
         {
             return this.guis[identifier];
+        }
+
+        public void Reset()
+        {
+            foreach (DGUI gui in this.guis.Values)
+            {
+                gui.Reset();
+            }
         }
     }
 }

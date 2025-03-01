@@ -12,6 +12,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed class DHudGUI : DGUI
     {
+        private readonly bool isTopArrowVisible;
+        private readonly bool isRightArrowVisible;
+        private readonly bool isBottomArrowVisible;
+        private readonly bool isLeftArrowVisible;
+
         // ========================= //
 
         #region Counters
@@ -137,7 +142,13 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             base.Update();
 
+            UpdateArrowVisibility();
             UpdateTextAnimations();
+        }
+
+        private void UpdateArrowVisibility()
+        {
+
         }
 
         private void UpdateTextAnimations()

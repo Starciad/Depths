@@ -6,6 +6,8 @@ using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics.Primitives;
 
+using Microsoft.Xna.Framework;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +30,19 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private sbyte pageIndex = 0;
 
+        private bool panelAnimationState;
+        private byte panelAnimationFrameCounter;
+
+        private readonly byte panelAnimationFrameDelay = 10;
         private readonly byte totalPageCount;
 
         private readonly DPoint infoFieldBasePosition;
         private readonly byte infoFieldVerticalSpacing;
+
+        private readonly Rectangle[] backgroundSourceRectangles = [
+            new(new(0, 0), new(DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT)),
+            new(new(DScreenConstants.GAME_WIDTH, 0), new(DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT)),
+        ];
 
         private readonly DGUIImageElement panelElement;
         private readonly DGUITextElement titleTextElement;
@@ -127,6 +138,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             HandleUserInputs();
             UpdateInfoFieldsVisibility();
+            UpdatePanelAnimation();
         }
 
         private void HandleUserInputs()
@@ -171,6 +183,17 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 }
 
                 sectionIndex++;
+            }
+        }
+
+        private void UpdatePanelAnimation()
+        {
+            if (++this.panelAnimationFrameCounter > this.panelAnimationFrameDelay)
+            {
+                this.panelAnimationFrameCounter = 0;
+                this.panelAnimationState = !this.panelAnimationState;
+
+                this.panelElement.TextureClipArea = this.backgroundSourceRectangles[Convert.ToByte(this.panelAnimationState)];
             }
         }
 

@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Depths.Core.Interfaces.General;
+
+using Microsoft.Xna.Framework.Graphics;
 
 using System.Collections.Generic;
 
 namespace Depths.Core.GUISystem
 {
-    internal abstract class DGUI
+    internal abstract class DGUI : IDResettable
     {
         internal string Identifier { get; private set; }
 
@@ -59,5 +61,10 @@ namespace Depths.Core.GUISystem
         }
 
         protected abstract void OnBuild();
+
+        public virtual void Reset()
+        {
+            return;
+        }
     }
 }

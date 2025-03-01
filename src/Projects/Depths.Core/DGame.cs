@@ -424,6 +424,8 @@ namespace Depths.Core
 
         public void Reset()
         {
+            this.guiDatabase.Reset();
+
             this.entityManager.Reset();
             this.gameInformation.Reset();
             this.world.Reset();

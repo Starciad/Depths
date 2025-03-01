@@ -8,6 +8,8 @@ using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 
+using System;
+
 namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed partial class DTruckGUI : DGUI
@@ -16,6 +18,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private DButton selectedButton;
 
         private int currentPageIndex = 0;
+
+        private bool pageAnimationState;
+        private byte pageAnimationFrameCounter;
+
+        private readonly byte pageAnimationFrameDelay = 10;
 
         private readonly DPurchasableItem[] purchasableUpgrades;
         private readonly DPurchasableItem[] purchasableItems;
@@ -31,6 +38,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private readonly DGUIImageElement itemPanelElement;
 
         private readonly DPoint[] moneyElementPositions;
+
+        private readonly Rectangle[] pageSourceRectangles = [
+            new(new(0, 0), new(DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT)),
+            new(new(DScreenConstants.GAME_WIDTH, 0), new(DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT)),
+        ];
 
         private readonly Rectangle[] buttonSourceRectangles = [
             new(new(0, 0), new(67, 25)),
@@ -242,8 +254,34 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         internal override void Update()
         {
+            UpdateBackgroundAnimation();
             HandleUserInputs();
             UpdateGUI();
+        }
+
+        public override void Reset()
+        {
+            foreach (DPurchasableItem purchasableItem in this.purchasableUpgrades)
+            {
+                purchasableItem.Reset();
+            }
+
+            foreach (DPurchasableItem purchasableItem in this.purchasableItems)
+            {
+                purchasableItem.Reset();
+            }
+        }
+
+        private void UpdateBackgroundAnimation()
+        {
+            if (++this.pageAnimationFrameCounter > this.pageAnimationFrameDelay)
+            {
+                this.pageAnimationFrameCounter = 0;
+                this.pageAnimationState = !this.pageAnimationState;
+
+                this.itemPanelElement.TextureClipArea = this.pageSourceRectangles[Convert.ToByte(this.pageAnimationState)];
+                this.upgradePanelElement.TextureClipArea = this.pageSourceRectangles[Convert.ToByte(this.pageAnimationState)];
+            }
         }
     }
 }
