@@ -5,6 +5,7 @@ using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Entities.Common;
 using Depths.Core.Generators;
+using Depths.Core.Interfaces.General;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
@@ -17,7 +18,7 @@ using System;
 
 namespace Depths.Core
 {
-    public sealed class DGame : Game
+    public sealed class DGame : Game, IDResettable
     {
         private SpriteBatch spriteBatch;
         private DBackground background;
@@ -174,11 +175,7 @@ namespace Depths.Core
 
             this.gameInformation.OnGameStarted += () =>
             {
-                this.entityManager.Reset();
-                this.gameInformation.Reset();
-                this.world.Reset();
-
-                this.musicManager.StopMusic();
+                Reset();
 
                 // ======================= //
 
@@ -238,22 +235,18 @@ namespace Depths.Core
 
         protected override void Update(GameTime gameTime)
         {
+#if DESKTOP
             if (!this.gameInformation.IsGameFocused)
             {
                 base.Update(gameTime);
                 return;
             }
+#endif
 
             this.guiManager.Update();
             this.inputManager.Update();
             this.gameInformation.Update();
             this.musicManager.Update(gameTime);
-
-            if (this.gameInformation.IsGamePaused)
-            {
-                base.Update(gameTime);
-                return;
-            }
 
             if (this.gameInformation.IsWorldActive && !this.gameInformation.IsGameCrucialMenuOpen && !this.worldTransitionManager.IsTransitioning())
             {
@@ -428,5 +421,18 @@ namespace Depths.Core
             base.OnExiting(sender, args);
         }
 #endif
+
+        public void Reset()
+        {
+            this.entityManager.Reset();
+            this.gameInformation.Reset();
+            this.world.Reset();
+
+            this.musicManager.StopMusic();
+
+            this.idolCutsceneFrameCounter = 0;
+            this.playerMovementCutsceneFrameCounter = 0;
+            this.truckMovementCutsceneFrameCounter = 0;
+        }
     }
 }

@@ -160,6 +160,10 @@ namespace Depths.Core.World.Tiles
 
         internal void Update()
         {
+            this.boulderTrapFrameCounter++;
+            this.monsterMovementFrameCounter++;
+            this.ghostMovementFrameCounter++;
+
             for (byte y = 0; y < this.size.Height; y++)
             {
                 for (byte x = 0; x < this.size.Width; x++)
@@ -182,27 +186,22 @@ namespace Depths.Core.World.Tiles
                             break;
 
                         case DTileType.BoulderTrap:
-                            if (++this.boulderTrapFrameCounter > this.boulderTrapFrameDelay)
+                            if (this.boulderTrapFrameCounter > this.boulderTrapFrameDelay)
                             {
-                                this.boulderTrapFrameCounter = 0;
                                 UpdateBoulderTrap(tile, position);
                             }
-
                             break;
 
                         case DTileType.Monster:
-                            if (++this.monsterMovementFrameCounter > this.monsterMovementFrameDelay)
+                            if (this.monsterMovementFrameCounter > this.monsterMovementFrameDelay)
                             {
-                                this.monsterMovementFrameCounter = 0;
                                 UpdateMonster(position);
                             }
-
                             break;
 
                         case DTileType.Ghost:
-                            if (++this.ghostMovementFrameCounter > this.ghostMovementFrameDelay)
+                            if (this.ghostMovementFrameCounter > this.ghostMovementFrameDelay)
                             {
-                                this.ghostMovementFrameCounter = 0;
                                 UpdateGhost(position);
                             }
 
@@ -213,6 +212,10 @@ namespace Depths.Core.World.Tiles
                     }
                 }
             }
+
+            this.boulderTrapFrameCounter = Convert.ToByte(this.boulderTrapFrameCounter > this.boulderTrapFrameDelay ? 0 : this.boulderTrapFrameCounter);
+            this.monsterMovementFrameCounter = Convert.ToByte(this.monsterMovementFrameCounter > this.monsterMovementFrameDelay ? 0 : this.monsterMovementFrameCounter);
+            this.ghostMovementFrameCounter = Convert.ToByte(this.ghostMovementFrameCounter > this.ghostMovementFrameDelay ? 0 : this.ghostMovementFrameCounter);
 
             this.updateCycleFlag = this.updateCycleFlag.GetNextCycle();
         }

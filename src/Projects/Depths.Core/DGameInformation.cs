@@ -23,9 +23,11 @@ namespace Depths.Core
         internal bool IsPlayerCutsceneRunning { get; set; }
 
         internal bool IsGameStarted { get; set; }
-        internal bool IsGameFocused { get; set; }
-        internal bool IsGamePaused { get; set; }
         internal bool IsGameCrucialMenuOpen { get; set; }
+
+#if DESKTOP
+        internal bool IsGameFocused { get; set; }
+#endif
 
         internal bool IsWorldActive { get; set; }
         internal bool IsWorldVisible { get; set; }
@@ -157,9 +159,11 @@ namespace Depths.Core
             this.IsPlayerInUnderground = false;
             this.IsPlayerInDepth = false;
 
-            this.IsGameFocused = true;
-            this.IsGamePaused = false;
             this.IsGameCrucialMenuOpen = false;
+
+#if DESKTOP
+            this.IsGameFocused = true;
+#endif
 
             this.IsIdolCutsceneRunning = true;
             this.IsTruckCutsceneRunning = false;

@@ -219,7 +219,7 @@ namespace Depths.Core.Entities.Common
         {
             DTile tileBelow = this.tilemap.GetTile(new DPoint(this.Position.X, this.Position.Y + 1));
 
-            if (tileBelow == null || tileBelow.Type == DTileType.Empty)
+            if (tileBelow == null || tileBelow.Type == DTileType.Empty || tileBelow.Type == DTileType.SpikeTrap)
             {
                 return;
             }
