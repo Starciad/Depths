@@ -1,5 +1,4 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Enums.General;
 using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
@@ -22,13 +21,26 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DTruckEntity : DEntity
     {
-        private DDirection direction;
+        internal bool IsMoving { get; set; }
 
+        private bool spriteState;
+        private byte spriteAnimationFrameCounter;
+
+        private readonly byte spriteAnimationFrameDelay = 3;
         private readonly Texture2D texture;
 
         internal DTruckEntity(DEntityDescriptor descriptor) : base(descriptor)
         {
             this.texture = descriptor.Texture;
+        }
+
+        protected override void OnUpdate(GameTime gameTime)
+        {
+            if (this.IsMoving && ++this.spriteAnimationFrameCounter > this.spriteAnimationFrameDelay)
+            {
+                this.spriteAnimationFrameCounter = 0;
+                this.spriteState = !this.spriteState;
+            }
         }
 
         protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -38,17 +50,14 @@ namespace Depths.Core.Entities.Common
 
         protected override void OnReset()
         {
-            this.direction = DDirection.Left;
+            this.IsMoving = true;
         }
 
-        private Rectangle? GetCurrentSpriteRectangle()
+        private Rectangle GetCurrentSpriteRectangle()
         {
-            return this.direction switch
-            {
-                DDirection.Right => (Rectangle?)DSpriteConstants.TRUCK_SOURCE_RECTANGLES[2],
-                DDirection.Left => (Rectangle?)DSpriteConstants.TRUCK_SOURCE_RECTANGLES[0],
-                _ => null,
-            };
+            return !this.IsMoving
+                ? DSpriteConstants.TRUCK_SOURCE_RECTANGLES[0]
+                : this.spriteState ? DSpriteConstants.TRUCK_SOURCE_RECTANGLES[0] : DSpriteConstants.TRUCK_SOURCE_RECTANGLES[1];
         }
     }
 }

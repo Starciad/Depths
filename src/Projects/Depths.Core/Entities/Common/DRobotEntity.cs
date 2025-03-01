@@ -40,7 +40,7 @@ namespace Depths.Core.Entities.Common
         private byte movementFrameCounter;
         private byte lifespanFrameCounter;
 
-        private readonly ushort lifespanFrameDelay = 320;
+        private readonly ushort lifespanFrameDelay = 360;
         private readonly byte movementFrameDelay = 16;
         private readonly byte animationFrameDelay = 10;
         private readonly byte limitBlocksToBreak = 10;
@@ -66,11 +66,6 @@ namespace Depths.Core.Entities.Common
             this.gameInformation = gameInformation;
 
             OnReset();
-        }
-
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
         }
 
         protected override void OnUpdate(GameTime gameTime)
@@ -128,7 +123,11 @@ namespace Depths.Core.Entities.Common
             DPoint targetPosition = new(this.Position.X + this.horizontalDirectionDelta, this.Position.Y);
             DTile targetTile = this.worldTilemap.GetTile(targetPosition);
 
-            if (targetTile == null || targetTile.Type == DTileType.Empty)
+            if (targetTile == null ||
+                targetTile.Type == DTileType.Empty ||
+                targetTile.Type == DTileType.Platform ||
+                targetTile.Type == DTileType.Stair ||
+                targetTile.Type == DTileType.SpikeTrap)
             {
                 this.Position = targetPosition;
                 return;

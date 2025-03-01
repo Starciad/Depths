@@ -257,7 +257,7 @@ namespace Depths.Core.World.Tiles
 
         private void UpdateTileHealth(DTile tile, DPoint position)
         {
-            if (tile.Health == 0 && tile.IsDestructible)
+            if (tile.Health <= 0 && tile.IsDestructible)
             {
                 tile.OnDestroyed?.Invoke();
                 SetTile(position, DTileType.Empty);

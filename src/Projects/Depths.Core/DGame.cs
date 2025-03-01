@@ -316,6 +316,7 @@ namespace Depths.Core
                 this.gameInformation.PlayerEntity.IsVisible = true;
                 this.gameInformation.IsPlayerCutsceneRunning = true;
                 this.gameInformation.IsTruckCutsceneRunning = false;
+                this.gameInformation.TruckEntity.IsMoving = false;
             }
         }
 
