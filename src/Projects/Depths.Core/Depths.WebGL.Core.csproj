@@ -10,13 +10,13 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<RollForward>Major</RollForward>
 		<InvariantGlobalization>true</InvariantGlobalization>
+		<PlatformTarget>ARM64</PlatformTarget>
 	</PropertyGroup>
 
 	<!-- SYSTEM -->
 	<PropertyGroup>
 		<AssemblyName>Depths.Core</AssemblyName>
 		<RootNamespace>Depths.Core</RootNamespace>
-		<PlatformTarget>ARM64</PlatformTarget>
 	</PropertyGroup>
 
 	<!-- DEPENDENCIES -->
