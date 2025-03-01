@@ -54,7 +54,7 @@ namespace Depths.Core
         private readonly DGUIManager guiManager;
 
         private readonly DWorld world;
-        
+
         private readonly DGameWorldGenerator gameGenerator;
         private readonly DGameInformation gameInformation;
 
