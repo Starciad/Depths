@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Audio;
 using Depths.Core.Constants;
 using Depths.Core.Enums.World;
+using Depths.Core.Items;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
@@ -59,6 +60,7 @@ namespace Depths.Core.Entities.Common
         internal delegate void CollectedOre(DOre ore);
         internal delegate void TriedMineToughBlock(DTile tile);
         internal delegate void TriedMineIndestructibleBlock(DTile tile);
+        internal delegate void CollectedItemFromBox(DBoxItem boxItem, uint quantityObtained);
 
         internal event Died OnDied;
         internal event EnergyDepleted OnEnergyDepleted;
@@ -66,6 +68,7 @@ namespace Depths.Core.Entities.Common
         internal event CollectedOre OnCollectedOre;
         internal event TriedMineToughBlock OnTriedMineToughBlock;
         internal event TriedMineIndestructibleBlock OnTriedMineIndestructibleBlock;
+        internal event CollectedItemFromBox OnCollectedItemFromBox;
 
         private sbyte horizontalDirectionDelta;
 
@@ -441,6 +444,11 @@ namespace Depths.Core.Entities.Common
             {
                 this.OnFullBackpack?.Invoke();
             }
+        }
+
+        internal void CollectBoxItem(DBoxItem boxItem)
+        {
+            this.OnCollectedItemFromBox?.Invoke(boxItem, boxItem.OnCollectionCallback.Invoke(boxItem, this));
         }
 
         // ==================================================== //

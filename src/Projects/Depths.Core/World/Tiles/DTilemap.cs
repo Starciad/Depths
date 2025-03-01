@@ -1,9 +1,12 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Entities.Common;
 using Depths.Core.Enums.General;
 using Depths.Core.Enums.World;
+using Depths.Core.Extensions;
 using Depths.Core.Helpers;
 using Depths.Core.Interfaces.General;
+using Depths.Core.Items;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
@@ -32,6 +35,44 @@ namespace Depths.Core.World.Tiles
         private readonly DTile[,] tiles;
         private readonly DAssetDatabase assetDatabase;
         private readonly Dictionary<DTileType, Action<DTile, DPoint>> tileTypes;
+
+        private static readonly DBoxItem[] items = [
+            new("Money", new(3, 6), (DBoxItem item, DPlayerEntity playerEntity) =>
+            {
+                uint count = item.GetRandomCount();
+
+                playerEntity.Money += count;
+
+                return count;
+            }),
+
+            new("Stair", new(5, 10), (DBoxItem item, DPlayerEntity playerEntity) =>
+            {
+                uint count = item.GetRandomCount();
+
+                playerEntity.StairCount += count;
+
+                return count;
+            }),
+
+            new("Platform", new(4, 8), (DBoxItem item, DPlayerEntity playerEntity) =>
+            {
+                uint count = item.GetRandomCount();
+
+                playerEntity.PlataformCount += count;
+
+                return count;
+            }),
+
+            new("Robot", new(1, 3), (DBoxItem item, DPlayerEntity playerEntity) =>
+            {
+                uint count = item.GetRandomCount();
+
+                playerEntity.RobotCount += count;
+
+                return count;
+            }),
+        ];
 
         internal DTilemap(DSize2 size, DAssetDatabase assetDatabase, DGameInformation gameInformation)
         {
@@ -103,15 +144,7 @@ namespace Depths.Core.World.Tiles
                     tile.IsDestructible = true;
                     tile.OnDestroyed = () =>
                     {
-                        switch (DRandomMath.Range(0, 1))
-                        {
-                            case 0:
-                                gameInformation.PlayerEntity.Money += (uint)DRandomMath.Range(1, 5);
-                                break;
-                            case 1:
-                                gameInformation.PlayerEntity.StairCount += (uint)DRandomMath.Range(3, 6);
-                                break;
-                        }
+                        gameInformation.PlayerEntity.CollectBoxItem(items.GetRandomItem());
                     };
                 },
 
@@ -190,6 +223,7 @@ namespace Depths.Core.World.Tiles
                             {
                                 UpdateBoulderTrap(tile, position);
                             }
+
                             break;
 
                         case DTileType.Monster:
@@ -197,6 +231,7 @@ namespace Depths.Core.World.Tiles
                             {
                                 UpdateMonster(position);
                             }
+
                             break;
 
                         case DTileType.Ghost:

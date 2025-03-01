@@ -2,6 +2,7 @@
 using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
+using Depths.Core.Items;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics.Primitives;
 using Depths.Core.World.Ores;
@@ -27,7 +28,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
         #region Delays
         private readonly byte topTextMovementFrameDelay = 5;
         private readonly byte topTextVisibilityFrameDelay = 32;
-        
+
         private readonly byte centerTextMovementFrameDelay = 5;
         private readonly byte centerTextVisibilityFrameDelay = 32;
 
@@ -115,6 +116,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.gameInformation.PlayerEntity.OnFullBackpack += Player_OnFullBackpack;
             this.gameInformation.PlayerEntity.OnTriedMineToughBlock += Player_OnTriedMineToughBlock;
             this.gameInformation.PlayerEntity.OnTriedMineIndestructibleBlock += Player_OnTriedMineIndestructibleBlock;
+            this.gameInformation.PlayerEntity.OnCollectedItemFromBox += Player_OnCollectedItemFromBox;
         }
 
         internal override void Unload()
@@ -128,6 +130,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.gameInformation.PlayerEntity.OnFullBackpack -= Player_OnFullBackpack;
             this.gameInformation.PlayerEntity.OnTriedMineToughBlock -= Player_OnTriedMineToughBlock;
             this.gameInformation.PlayerEntity.OnTriedMineIndestructibleBlock -= Player_OnTriedMineIndestructibleBlock;
+            this.gameInformation.PlayerEntity.OnCollectedItemFromBox -= Player_OnCollectedItemFromBox;
         }
 
         internal override void Update()
@@ -217,6 +220,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
             this.topTextElement.SetValue("Surface");
 
             this.gameInformation.PlayerEntity.Energy = this.gameInformation.PlayerEntity.MaximumEnergy;
+
+            if (this.gameInformation.PlayerEntity.CollectedMinerals.Count > 0)
+            {
+                this.guiManager.Open("Surface Stats");
+            }
         }
 
         private void GameInformation_PlayerReachedTheUnderground()
@@ -261,6 +269,15 @@ namespace Depths.Core.GUISystem.Common.GUIs
         {
             ResetTextElement(this.bottomTextElement, this.bottomTextYAnchorPosition, ref this.bottomTextVisibilityFrameCounter);
             this.bottomTextElement.SetValue("Unbreak Block");
+        }
+
+        private void Player_OnCollectedItemFromBox(DBoxItem boxItem, uint quantityObtained)
+        {
+            ResetTextElement(this.centerTextElement, this.centerTextYAnchorPosition, ref this.centerTextVisibilityFrameCounter);
+            ResetTextElement(this.bottomTextElement, this.bottomTextYAnchorPosition, ref this.bottomTextVisibilityFrameCounter);
+
+            this.centerTextElement.SetValue("Box Broken!");
+            this.bottomTextElement.SetValue(string.Concat('+', quantityObtained, " ", boxItem.Name));
         }
     }
 }
