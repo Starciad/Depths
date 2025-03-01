@@ -65,11 +65,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     guiManager.Close(identifier);
                     gameInformation.Start();
                 }),
-                new("Help", () =>
-                {
-                    guiManager.Close(identifier);
-                    guiManager.Open("About");
-                }),
+
                 new("Cast", () =>
                 {
                     guiManager.Close(identifier);
