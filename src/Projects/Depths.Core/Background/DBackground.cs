@@ -34,17 +34,23 @@ namespace Depths.Core.Background
 
             this.surfaceTextures =
             [
-                assetDatabase.GetTexture("texture_background_1")
+                assetDatabase.GetTexture("texture_background_1"),
+                assetDatabase.GetTexture("texture_background_4"),
+                assetDatabase.GetTexture("texture_background_5"),
+                assetDatabase.GetTexture("texture_background_6"),
+                assetDatabase.GetTexture("texture_background_7"),
             ];
 
             this.undergroundTextures =
             [
-                assetDatabase.GetTexture("texture_background_2")
+                assetDatabase.GetTexture("texture_background_2"),
+                assetDatabase.GetTexture("texture_background_8"),
+                assetDatabase.GetTexture("texture_background_9"),
             ];
 
             this.depthTextures =
             [
-                assetDatabase.GetTexture("texture_background_3")
+                assetDatabase.GetTexture("texture_background_3"),
             ];
 
             this.chunkWidth = DWorldConstants.TILES_PER_CHUNK_WIDTH;
