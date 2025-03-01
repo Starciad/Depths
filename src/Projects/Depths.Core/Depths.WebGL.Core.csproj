@@ -16,6 +16,7 @@
 	<PropertyGroup>
 		<AssemblyName>Depths.Core</AssemblyName>
 		<RootNamespace>Depths.Core</RootNamespace>
+		<PlatformTarget>ARM64</PlatformTarget>
 	</PropertyGroup>
 
 	<!-- DEPENDENCIES -->
