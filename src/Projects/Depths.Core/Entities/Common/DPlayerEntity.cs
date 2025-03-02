@@ -256,6 +256,7 @@ namespace Depths.Core.Entities.Common
             if (!IsCollidingAt(checkPointFront))
             {
                 this.Position = checkPointFront;
+                DAudioEngine.Play("sound_blip_9");
             }
             else
             {

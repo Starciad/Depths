@@ -2,7 +2,7 @@
 {
     internal static class DAssetConstants
     {
-        internal const byte TEXTURE_ENTITY_LENGTH = 5;
+        internal const byte TEXTURE_ENTITY_LENGTH = 6;
         internal const byte TEXTURE_FONT_LENGTH = 4;
         internal const byte TEXTURE_TILE_LENGTH = 11;
         internal const byte TEXTURE_ORE_LENGTH = 14;

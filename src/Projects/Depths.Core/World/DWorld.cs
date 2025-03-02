@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Interfaces.General;
+using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.World.Tiles;
 
@@ -12,9 +13,9 @@ namespace Depths.Core.World
     {
         internal DTilemap Tilemap { get; private set; }
 
-        internal DWorld(DAssetDatabase assetDatabase, DGameInformation gameInformation)
+        internal DWorld(DAssetDatabase assetDatabase, DEntityManager entityManager, DGameInformation gameInformation)
         {
-            this.Tilemap = new(DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT), assetDatabase, gameInformation);
+            this.Tilemap = new(DTilemapMath.GetTotalTileCount(DWorldConstants.WORLD_WIDTH, DWorldConstants.WORLD_HEIGHT), assetDatabase, entityManager, gameInformation);
         }
 
         internal void Update()

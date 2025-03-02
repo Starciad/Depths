@@ -91,7 +91,7 @@ namespace Depths.Core
             this.gameInformation = new();
 
             // Core
-            this.world = new(this.assetDatabase, this.gameInformation);
+            this.world = new(this.assetDatabase, this.entityManager, this.gameInformation);
             this.gameGenerator = new()
             {
                 AssetDatabase = this.assetDatabase,

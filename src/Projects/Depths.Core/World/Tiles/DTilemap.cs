@@ -1,5 +1,6 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
+using Depths.Core.Entities;
 using Depths.Core.Entities.Common;
 using Depths.Core.Enums.General;
 using Depths.Core.Enums.World;
@@ -7,6 +8,7 @@ using Depths.Core.Extensions;
 using Depths.Core.Helpers;
 using Depths.Core.Interfaces.General;
 using Depths.Core.Items;
+using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
@@ -30,10 +32,11 @@ namespace Depths.Core.World.Tiles
         private readonly byte boulderTrapFrameDelay = 5;
         private readonly byte monsterMovementFrameDelay = 4;
         private readonly byte ghostMovementFrameDelay = 4;
+        private readonly int totalDust = 8;
 
         private readonly DSize2 size;
         private readonly DTile[,] tiles;
-        private readonly DAssetDatabase assetDatabase;
+
         private readonly Dictionary<DTileType, Action<DTile, DPoint>> tileTypes;
 
         private static readonly DBoxItem[] items = [
@@ -74,9 +77,13 @@ namespace Depths.Core.World.Tiles
             }),
         ];
 
-        internal DTilemap(DSize2 size, DAssetDatabase assetDatabase, DGameInformation gameInformation)
+        private readonly DAssetDatabase assetDatabase;
+        private readonly DEntityManager entityManager;
+
+        internal DTilemap(DSize2 size, DAssetDatabase assetDatabase, DEntityManager entityManager, DGameInformation gameInformation)
         {
             this.assetDatabase = assetDatabase;
+            this.entityManager = entityManager;
             this.size = size;
             this.tiles = new DTile[size.Width, size.Height];
 
@@ -209,7 +216,12 @@ namespace Depths.Core.World.Tiles
                     }
 
                     tile.UpdateCycleFlag = tile.UpdateCycleFlag.GetNextCycle();
-                    UpdateTileHealth(tile, position);
+
+                    if (TryDestroyTile(tile, position))
+                    {
+                        continue;
+                    }
+
                     UpdateTileGravity(tile, position);
 
                     switch (tile.Type)
@@ -255,12 +267,36 @@ namespace Depths.Core.World.Tiles
             this.updateCycleFlag = this.updateCycleFlag.GetNextCycle();
         }
 
-        private void UpdateTileHealth(DTile tile, DPoint position)
+        private bool TryDestroyTile(DTile tile, DPoint position)
         {
             if (tile.Health <= 0 && tile.IsDestructible)
             {
                 tile.OnDestroyed?.Invoke();
                 SetTile(position, DTileType.Empty);
+                InstantiateDust(DTilemapMath.ToGlobalPosition(position));
+                return true;
+            }
+
+            return false;
+        }
+
+        private void InstantiateDust(DPoint position)
+        {
+            float angleIncrement = MathHelper.TwoPi / this.totalDust;
+            const float initialSpeed = 2f;
+
+            for (int i = 0; i < this.totalDust; i++)
+            {
+                float angle = i * angleIncrement;
+                Vector2 velocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * initialSpeed;
+
+                _ = this.entityManager.InstantiateEntity("Dust", (DEntity entity) =>
+                {
+                    DDustEntity dustEntity = entity as DDustEntity;
+
+                    dustEntity.Position = new(position.X + ((DSpriteConstants.TILE_SPRITE_SIZE - 4) / 2), position.Y + ((DSpriteConstants.TILE_SPRITE_SIZE - 4) / 2));
+                    dustEntity.Velocity = velocity;
+                });
             }
         }
 

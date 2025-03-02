@@ -18,10 +18,11 @@ namespace Depths.Core.Collections
         {
             value = null;
 
-            if (this.pool.Count > 0)
+            if (this.pool.TryDequeue(out IDPoolableObject result))
             {
-                value = this.pool.Dequeue();
-                value.Reset();
+                result.Reset();
+                value = result;
+
                 return true;
             }
 

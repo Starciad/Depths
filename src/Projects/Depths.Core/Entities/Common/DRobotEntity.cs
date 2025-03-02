@@ -1,4 +1,5 @@
-﻿using Depths.Core.Enums.World;
+﻿using Depths.Core.Audio;
+using Depths.Core.Enums.World;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
@@ -70,9 +71,8 @@ namespace Depths.Core.Entities.Common
 
         protected override void OnUpdate(GameTime gameTime)
         {
-            if (++this.lifespanFrameCounter >= this.lifespanFrameDelay)
+            if (TryCheckDeath())
             {
-                this.entityManager.DestroyEntity(this);
                 return;
             }
 
@@ -118,6 +118,18 @@ namespace Depths.Core.Entities.Common
             };
         }
 
+        private bool TryCheckDeath()
+        {
+            if (this.brokenBlockCount >= this.limitBlocksToBreak || ++this.lifespanFrameCounter >= this.lifespanFrameDelay)
+            {
+                DAudioEngine.Play("sound_hit_5");
+                this.entityManager.DestroyEntity(this);
+                return true;
+            }
+
+            return false;
+        }
+
         private void TryMoveOrBreak()
         {
             DPoint targetPosition = new(this.Position.X + this.horizontalDirectionDelta, this.Position.Y);
@@ -130,21 +142,25 @@ namespace Depths.Core.Entities.Common
                 targetTile.Type == DTileType.SpikeTrap)
             {
                 this.Position = targetPosition;
+                DAudioEngine.Play("sound_blip_4");
+                return;
+            }
+
+            if (!targetTile.IsDestructible)
+            {
+                this.entityManager.DestroyEntity(this);
                 return;
             }
 
             if (this.playerPower >= targetTile.Resistance)
             {
                 targetTile.Health -= this.playerDamage;
+                DAudioEngine.Play("sound_blip_7");
 
                 if (targetTile.Health <= 0)
                 {
+                    DAudioEngine.Play("sound_blip_3");
                     this.brokenBlockCount++;
-
-                    if (this.brokenBlockCount >= this.limitBlocksToBreak)
-                    {
-                        this.entityManager.DestroyEntity(this);
-                    }
                 }
             }
         }
