@@ -23,9 +23,9 @@ namespace Depths.Core
         private SpriteBatch spriteBatch;
         private DBackground background;
 
-        private byte idolCutsceneFrameCounter = 0;
-        private byte truckMovementCutsceneFrameCounter = 0;
-        private byte playerMovementCutsceneFrameCounter = 0;
+        private byte idolCutsceneFrameCounter;
+        private byte truckMovementCutsceneFrameCounter;
+        private byte playerMovementCutsceneFrameCounter;
 
         private readonly byte idolCutsceneFrameDelay = 32;
         private readonly byte truckMovementCutsceneFrameDelay = 1;

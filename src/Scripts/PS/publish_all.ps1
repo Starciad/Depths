@@ -93,11 +93,11 @@ Write-Host "Publishing Depths (WindowsDX) for Win-x64..."
 Publish-Project -projectName "windowsdx" -projectPath $windowsDXProject -platform $platforms[0]
 
 # Publish DesktopGL project for all specified platforms
-Write-Host "Publishing Depths (DesktopGL) for all platforms..."
-foreach ($platform in $platforms) {
-    Publish-Project -projectName "desktopgl" -projectPath $desktopGLProject -platform $platform
-    Write-Host "Proceeding to the next platform..."
-}
+# Write-Host "Publishing Depths (DesktopGL) for all platforms..."
+# foreach ($platform in $platforms) {
+#    Publish-Project -projectName "desktopgl" -projectPath $desktopGLProject -platform $platform
+#    Write-Host "Proceeding to the next platform..."
+# }
 
 # Publish WebGL project (Blazor)
 Write-Host "Publishing Depths (WebGL)..."

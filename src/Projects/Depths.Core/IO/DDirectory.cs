@@ -9,13 +9,11 @@ namespace Depths.Core.IO
     {
         internal static string Local => AppDomain.CurrentDomain.BaseDirectory;
         internal static string Logs => Path.Combine(Local, DDirectoryConstants.LOGS_LOCAL);
-        internal static string Resources => Path.Combine(Local, DDirectoryConstants.RESOURCES_LOCAL);
 
         public static void Initialize()
         {
             // Local
             _ = Directory.CreateDirectory(Logs);
-            _ = Directory.CreateDirectory(Resources);
         }
     }
 }

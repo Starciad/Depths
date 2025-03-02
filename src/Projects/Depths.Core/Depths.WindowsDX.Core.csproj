@@ -17,9 +17,6 @@
 		<AssemblyName>Depths.Core</AssemblyName>
 		<RootNamespace>Depths.Core</RootNamespace>
 	</PropertyGroup>
-	<ItemGroup>
-	  <None Remove="GUISystem\Common\GUIs\DTruckGUI.cs~RF111ae41.TMP" />
-	</ItemGroup>
 
 	<!-- DEPENDENCIES -->
 	<ItemGroup>
