@@ -122,7 +122,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             #region ITEMS
             // Upgrades
             this.purchasableUpgrades = [
-                new("Energy", 4, true, 2f)
+                new("Energy", 8, true, 2f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {
@@ -150,7 +150,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     },
                 },
 
-                new("Damage", 5, true, 2f)
+                new("Damage", 6, true, 2f)
                 {
                     OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
                     {

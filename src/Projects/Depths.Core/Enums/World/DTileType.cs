@@ -9,7 +9,7 @@
         Stair = 4,
         Box = 5,
         SpikeTrap = 6,
-        Monster = 7,
+        Wood = 7,
         Wall = 8,
         BoulderTrap = 9,
         Platform = 10,

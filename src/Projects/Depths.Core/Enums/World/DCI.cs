@@ -6,6 +6,11 @@
     internal enum DCI : byte
     {
         /// <summary>
+        /// None.
+        /// </summary>
+        NN,
+
+        /// <summary>
         /// Empty tile.
         /// </summary>
         T0,
@@ -31,12 +36,12 @@
         T4,
 
         /// <summary>
-        /// Monster.
+        /// Spike trap tile.
         /// </summary>
         T5,
 
         /// <summary>
-        /// Arrow trap tile.
+        /// Wood tile.
         /// </summary>
         T6,
 

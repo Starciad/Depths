@@ -156,15 +156,13 @@ namespace Depths.Core.World.Tiles
                     tile.Type = DTileType.SpikeTrap;
                 },
 
-                [DTileType.Monster] = (tile, position) =>
+                [DTileType.Wood] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
-                    tile.Direction = DDirection.Right;
-                    tile.HasGravity = true;
-                    tile.SetHealth(3);
+                    tile.SetHealth(4);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
-                    tile.Type = DTileType.Monster;
+                    tile.Type = DTileType.Wood;
                 },
 
                 [DTileType.Wall] = (tile, position) =>
@@ -408,7 +406,7 @@ namespace Depths.Core.World.Tiles
                 DTileType.Stair => this.assetDatabase.GetTexture("texture_tile_4"),
                 DTileType.Box => this.assetDatabase.GetTexture("texture_tile_5"),
                 DTileType.SpikeTrap => this.assetDatabase.GetTexture("texture_tile_6"),
-                DTileType.Monster => this.assetDatabase.GetTexture("texture_tile_7"),
+                DTileType.Wood => this.assetDatabase.GetTexture("texture_tile_7"),
                 DTileType.Wall => this.assetDatabase.GetTexture("texture_tile_8"),
                 DTileType.BoulderTrap => this.assetDatabase.GetTexture("texture_tile_9"),
                 DTileType.Platform => this.assetDatabase.GetTexture("texture_tile_10"),

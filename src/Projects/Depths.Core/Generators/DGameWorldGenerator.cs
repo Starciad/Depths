@@ -41,24 +41,12 @@ namespace Depths.Core.Generators
 
         private void GenerateWorld()
         {
-            GenerateSurfaceLayer();
             GenerateUndergroundLayer();
+            GenerateSurfaceLayer();
             GenerateDepthLayer();
             CollectUndergroundTiles();
             GenerateUndergroundFeatures();
             GenerateMapBorders();
-        }
-
-        private void GenerateSurfaceLayer()
-        {
-            IEnumerable<DWorldChunk> surfaceChunks = this.WorldDatabase.Chunks
-                .Where(chunk => chunk.Type == DWorldChunkType.Surface);
-
-            for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
-            {
-                DWorldChunk randomChunk = surfaceChunks.GetRandomItem();
-                randomChunk.ApplyToTilemap(new(x, 0), this.worldTilemap);
-            }
         }
 
         private void GenerateUndergroundLayer()
@@ -73,6 +61,18 @@ namespace Depths.Core.Generators
                     DWorldChunk randomChunk = undergroundChunks.GetRandomItem();
                     randomChunk.ApplyToTilemap(new(x, y), this.worldTilemap);
                 }
+            }
+        }
+
+        private void GenerateSurfaceLayer()
+        {
+            IEnumerable<DWorldChunk> surfaceChunks = this.WorldDatabase.Chunks
+                .Where(chunk => chunk.Type == DWorldChunkType.Surface);
+
+            for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
+            {
+                DWorldChunk randomChunk = surfaceChunks.GetRandomItem();
+                randomChunk.ApplyToTilemap(new(x, 0), this.worldTilemap);
             }
         }
 
@@ -126,7 +126,6 @@ namespace Depths.Core.Generators
         {
             GenerateOres();
             GenerateAdditionalBlocks();
-            GenerateDangers();
         }
 
         private void GenerateOres()
@@ -246,37 +245,6 @@ namespace Depths.Core.Generators
                 }
 
                 this.worldTilemap.SetTile(tileEntry.Position, DTileType.Wall);
-            }
-        }
-
-        private void GenerateDangers()
-        {
-            byte trapCount = (byte)DRandomMath.Range(30, 60);
-
-            if (this.stoneTiles.Count < trapCount)
-            {
-                return;
-            }
-
-            for (byte i = 0; i < trapCount; i++)
-            {
-                (DPoint Position, DTile Tile) tileEntry = this.stoneTiles.GetRandomItem();
-
-                if (!this.stoneTiles.Remove(tileEntry))
-                {
-                    continue;
-                }
-
-                byte dangerType = (byte)DRandomMath.Range(0, 1);
-
-                if (dangerType == 0)
-                {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.BoulderTrap);
-                }
-                else if (dangerType == 1)
-                {
-                    this.worldTilemap.SetTile(tileEntry.Position, DTileType.SpikeTrap);
-                }
             }
         }
 
