@@ -12,20 +12,20 @@ namespace Depths.Core.Mathematics.Primitives
         internal static readonly DPoint Left = new(-1, 0);
         internal static readonly DPoint Right = new(1, 0);
 
-        public int X;
-        public int Y;
+        internal int X;
+        internal int Y;
 
         public DPoint()
         {
             this.X = 0;
             this.Y = 0;
         }
-        public DPoint(int x, int y)
+        internal DPoint(int x, int y)
         {
             this.X = x;
             this.Y = y;
         }
-        public DPoint(int value)
+        internal DPoint(int value)
         {
             this.X = value;
             this.Y = value;
@@ -116,34 +116,34 @@ namespace Depths.Core.Mathematics.Primitives
             return this.X == other.X && this.Y == other.Y;
         }
 
-        public readonly float DistanceTo(DPoint other)
+        internal readonly float DistanceTo(DPoint other)
         {
             int dx = this.X - other.X;
             int dy = this.Y - other.Y;
             return MathF.Sqrt((dx * dx) + (dy * dy));
         }
 
-        public readonly int ManhattanDistanceTo(DPoint other)
+        internal readonly int ManhattanDistanceTo(DPoint other)
         {
             return Math.Abs(this.X - other.X) + Math.Abs(this.Y - other.Y);
         }
 
-        public readonly DPoint Abs()
+        internal readonly DPoint Abs()
         {
             return new(Math.Abs(this.X), Math.Abs(this.Y));
         }
 
-        public static DPoint Min(DPoint a, DPoint b)
+        internal static DPoint Min(DPoint a, DPoint b)
         {
             return new(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
         }
 
-        public static DPoint Max(DPoint a, DPoint b)
+        internal static DPoint Max(DPoint a, DPoint b)
         {
             return new(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
         }
 
-        public static DPoint Clamp(DPoint value, DPoint min, DPoint max)
+        internal static DPoint Clamp(DPoint value, DPoint min, DPoint max)
         {
             return new(
                 Math.Clamp(value.X, min.X, max.X),
@@ -151,7 +151,7 @@ namespace Depths.Core.Mathematics.Primitives
             );
         }
 
-        public static DPoint Lerp(DPoint a, DPoint b, float t)
+        internal static DPoint Lerp(DPoint a, DPoint b, float t)
         {
             return new(
                 (int)MathF.Round(a.X + ((b.X - a.X) * t)),

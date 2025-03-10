@@ -1,6 +1,4 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Interfaces.Managers;
-using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,10 +9,10 @@ namespace Depths.Core.Managers
 {
     internal sealed class DCameraManager
     {
-        public Vector2 Position { get; set; }
-        public float Rotation { get; set; }
-        public Vector2 Origin { get; set; }
-        public float Zoom
+        internal Vector2 Position { get; set; }
+        internal float Rotation { get; set; }
+        internal Vector2 Origin { get; set; }
+        internal float Zoom
         {
             get => this.zoom;
             set
@@ -27,7 +25,7 @@ namespace Depths.Core.Managers
                 this.zoom = value;
             }
         }
-        public float MinimumZoom
+        internal float MinimumZoom
         {
             get => this.minimumZoom;
             set
@@ -45,7 +43,7 @@ namespace Depths.Core.Managers
                 this.minimumZoom = value;
             }
         }
-        public float MaximumZoom
+        internal float MaximumZoom
         {
             get => this.maximumZoom;
             set
@@ -68,9 +66,9 @@ namespace Depths.Core.Managers
         private float minimumZoom;
         private float zoom;
 
-        private readonly IDGraphicsManager graphicsManager;
+        private readonly DGraphicsManager graphicsManager;
 
-        public DCameraManager(IDGraphicsManager graphicsManager)
+        internal DCameraManager(DGraphicsManager graphicsManager)
         {
             this.graphicsManager = graphicsManager;
 
@@ -80,44 +78,19 @@ namespace Depths.Core.Managers
             this.Position = Vector2.Zero;
         }
 
-        public void Move(Vector2 direction)
-        {
-            this.Position += Vector2.Transform(direction, Matrix.CreateRotationZ(-this.Rotation));
-        }
-
-        public void Rotate(float deltaRadians)
-        {
-            this.Rotation += deltaRadians;
-        }
-
-        public void ZoomIn(float deltaZoom)
-        {
-            ClampZoom(this.Zoom + deltaZoom);
-        }
-
-        public void ZoomOut(float deltaZoom)
-        {
-            ClampZoom(this.Zoom - deltaZoom);
-        }
-
-        public void ClampZoom(float value)
-        {
-            this.Zoom = value < this.MinimumZoom ? this.MinimumZoom : value > this.MaximumZoom ? this.MaximumZoom : value;
-        }
-
-        public Vector2 WorldToScreen(Vector2 worldPosition)
+        internal Vector2 WorldToScreen(Vector2 worldPosition)
         {
             Viewport viewport = this.graphicsManager.Viewport;
             return Vector2.Transform(worldPosition + new Vector2(viewport.X, viewport.Y), GetViewMatrix());
         }
 
-        public Vector2 ScreenToWorld(Vector2 screenPosition)
+        internal Vector2 ScreenToWorld(Vector2 screenPosition)
         {
             Viewport viewport = this.graphicsManager.Viewport;
             return Vector2.Transform(screenPosition - new Vector2(viewport.X, viewport.Y), Matrix.Invert(GetViewMatrix()));
         }
 
-        public Matrix GetViewMatrix()
+        internal Matrix GetViewMatrix()
         {
             return GetVirtualViewMatrix() * Matrix.Identity;
         }
@@ -129,34 +102,6 @@ namespace Depths.Core.Managers
                    Matrix.CreateRotationZ(this.Rotation) *
                    Matrix.CreateScale(this.Zoom, this.Zoom, 1) *
                    Matrix.CreateTranslation(new(this.Origin, 0.0f));
-        }
-
-        public bool InsideCameraBounds(Vector2 targetPosition, DSize2 targetSize, bool inWorldPosition, float toleranceFactor = 0f)
-        {
-            Vector2 topLeft = targetPosition;
-            Vector2 bottomRight = targetPosition + new Vector2(targetSize.Width, targetSize.Height);
-
-            topLeft -= new Vector2(toleranceFactor);
-            bottomRight += new Vector2(toleranceFactor);
-
-            Vector2 screenTopLeft = topLeft;
-            Vector2 screenBottomRight = bottomRight;
-
-            if (inWorldPosition)
-            {
-                screenTopLeft = WorldToScreen(topLeft);
-                screenBottomRight = WorldToScreen(bottomRight);
-            }
-
-            // =========================== //
-
-            // IN-GAME | FINAL
-            Viewport viewport = this.graphicsManager.Viewport;
-
-            // =========================== //
-
-            return screenBottomRight.X >= 0 && screenTopLeft.X < viewport.Width &&
-                   screenBottomRight.Y >= 0 && screenTopLeft.Y < viewport.Height;
         }
     }
 }

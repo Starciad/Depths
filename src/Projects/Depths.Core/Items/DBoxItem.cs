@@ -7,9 +7,9 @@ namespace Depths.Core.Items
 {
     internal sealed class DBoxItem(string name, Range amountRange, Func<DBoxItem, DPlayerEntity, uint> onCollectionCallback)
     {
-        public string Name => name;
-        public Range AmountRange => amountRange;
-        public Func<DBoxItem, DPlayerEntity, uint> OnCollectionCallback => onCollectionCallback;
+        internal string Name => name;
+        internal Range AmountRange => amountRange;
+        internal Func<DBoxItem, DPlayerEntity, uint> OnCollectionCallback => onCollectionCallback;
 
         internal uint GetRandomCount()
         {

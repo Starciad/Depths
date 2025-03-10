@@ -4,7 +4,7 @@ namespace Depths.Core.Helpers
 {
     internal static class DUpdateCycleHelper
     {
-        public static DUpdateCycleFlag GetNextCycle(this DUpdateCycleFlag currentCycle)
+        internal static DUpdateCycleFlag GetNextCycle(this DUpdateCycleFlag currentCycle)
         {
             return currentCycle switch
             {

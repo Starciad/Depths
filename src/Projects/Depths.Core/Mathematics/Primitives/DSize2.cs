@@ -107,22 +107,22 @@ namespace Depths.Core.Mathematics.Primitives
             return this.Width == other.Width && this.Height == other.Height;
         }
 
-        public readonly DSize2 Abs()
+        internal readonly DSize2 Abs()
         {
             return new(Math.Abs(this.Width), Math.Abs(this.Height));
         }
 
-        public static DSize2 Min(DSize2 a, DSize2 b)
+        internal static DSize2 Min(DSize2 a, DSize2 b)
         {
             return new(Math.Min(a.Width, b.Width), Math.Min(a.Height, b.Height));
         }
 
-        public static DSize2 Max(DSize2 a, DSize2 b)
+        internal static DSize2 Max(DSize2 a, DSize2 b)
         {
             return new(Math.Max(a.Width, b.Width), Math.Max(a.Height, b.Height));
         }
 
-        public static DSize2 Clamp(DSize2 value, DSize2 min, DSize2 max)
+        internal static DSize2 Clamp(DSize2 value, DSize2 min, DSize2 max)
         {
             return new DSize2(
                 Math.Clamp(value.Width, min.Width, max.Width),
@@ -130,7 +130,7 @@ namespace Depths.Core.Mathematics.Primitives
             );
         }
 
-        public static DSize2 Lerp(DSize2 a, DSize2 b, float t)
+        internal static DSize2 Lerp(DSize2 a, DSize2 b, float t)
         {
             return new DSize2(
                 (int)MathF.Round(a.Width + ((b.Width - a.Width) * t)),

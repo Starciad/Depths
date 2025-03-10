@@ -41,18 +41,18 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DPlayerEntity : DEntity
     {
-        public byte Damage { get => this.damage; set => this.damage = value; }
-        public byte BackpackSize { get => this.backpackSize; set => this.backpackSize = value; }
+        internal byte Damage { get => this.damage; set => this.damage = value; }
+        internal byte BackpackSize { get => this.backpackSize; set => this.backpackSize = value; }
         internal sbyte HorizontalDirectionDelta { get => this.horizontalDirectionDelta; set => this.horizontalDirectionDelta = value; }
-        public byte Energy { get => this.energy; set => this.energy = value; }
+        internal byte Energy { get => this.energy; set => this.energy = value; }
         internal bool IsDead => this.isDead;
-        public byte MaximumEnergy { get => this.maximumEnergy; set => this.maximumEnergy = value; }
-        public uint Money { get => this.money; set => this.money = value; }
-        public byte Power { get => this.power; set => this.power = value; }
-        public uint StairCount { get => this.stairCount; set => this.stairCount = value; }
-        public uint PlataformCount { get => this.plataformCount; set => this.plataformCount = value; }
-        public uint RobotCount { get => this.robotCount; set => this.robotCount = value; }
-        public Queue<DOre> CollectedMinerals => this.collectedMinerals;
+        internal byte MaximumEnergy { get => this.maximumEnergy; set => this.maximumEnergy = value; }
+        internal uint Money { get => this.money; set => this.money = value; }
+        internal byte Power { get => this.power; set => this.power = value; }
+        internal uint StairCount { get => this.stairCount; set => this.stairCount = value; }
+        internal uint PlataformCount { get => this.plataformCount; set => this.plataformCount = value; }
+        internal uint RobotCount { get => this.robotCount; set => this.robotCount = value; }
+        internal Queue<DOre> CollectedMinerals => this.collectedMinerals;
 
         internal delegate void Died();
         internal delegate void EnergyDepleted();

@@ -1,15 +1,13 @@
-﻿using Depths.Core.Interfaces.Managers;
-
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 
 namespace Depths.Core.Managers
 {
-    internal sealed class DInputManager : IDInputManager
+    internal sealed class DInputManager
     {
-        public MouseState MouseState => this.mouseState;
-        public MouseState PreviousMouseState => this.previousMouseState;
-        public KeyboardState KeyboardState => this.keyboardState;
-        public KeyboardState PreviousKeyboardState => this.previousKeyboardState;
+        internal MouseState MouseState => this.mouseState;
+        internal MouseState PreviousMouseState => this.previousMouseState;
+        internal KeyboardState KeyboardState => this.keyboardState;
+        internal KeyboardState PreviousKeyboardState => this.previousKeyboardState;
 
         private MouseState mouseState;
         private MouseState previousMouseState;

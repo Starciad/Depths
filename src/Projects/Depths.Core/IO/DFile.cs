@@ -5,9 +5,9 @@ using System.IO;
 
 namespace Depths.Core.IO
 {
-    public static class DFile
+    internal static class DFile
     {
-        public static string WriteException(Exception exception)
+        internal static string WriteException(Exception exception)
         {
             string logFileName = string.Concat(DGameConstants.TITLE, "log", DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"), ".txt").ToLower();
             string logFilePath = Path.Combine(DDirectory.Logs, logFileName);

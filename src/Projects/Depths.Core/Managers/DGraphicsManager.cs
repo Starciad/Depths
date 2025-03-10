@@ -1,16 +1,15 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Interfaces.Managers;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Depths.Core.Managers
 {
-    internal sealed class DGraphicsManager(GraphicsDeviceManager graphicsDeviceManager) : IDGraphicsManager
+    internal sealed class DGraphicsManager(GraphicsDeviceManager graphicsDeviceManager)
     {
-        public GraphicsDeviceManager GraphicsDeviceManager => this.graphicsDeviceManager;
-        public GraphicsDevice GraphicsDevice => this.graphicsDeviceManager.GraphicsDevice;
-        public Viewport Viewport => this.GraphicsDevice.Viewport;
+        internal GraphicsDeviceManager GraphicsDeviceManager => this.graphicsDeviceManager;
+        internal GraphicsDevice GraphicsDevice => this.graphicsDeviceManager.GraphicsDevice;
+        internal Viewport Viewport => this.GraphicsDevice.Viewport;
         internal RenderTarget2D ScreenRenderTarget => this.screenRenderTarget;
         internal RenderTarget2D WorldRenderTarget => this.worldRenderTarget;
         internal RenderTarget2D GuiRenderTarget => this.guiRenderTarget;

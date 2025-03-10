@@ -25,9 +25,9 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DDustEntity : DEntity
     {
-        public Vector2 Velocity { get; set; }
-        public float Deceleration { get; set; } = 0.1f;
-        public Vector2 Direction => this.Velocity != Vector2.Zero ? Vector2.Normalize(this.Velocity) : Vector2.Zero;
+        internal Vector2 Velocity { get; set; }
+        internal float Deceleration { get; set; } = 0.1f;
+        internal Vector2 Direction => this.Velocity != Vector2.Zero ? Vector2.Normalize(this.Velocity) : Vector2.Zero;
 
         private byte animationIndex;
         private byte lifespanFrameCounter;

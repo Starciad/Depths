@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Depths.Core.Extensions
 {
-    public static class DIEnumerableExtensions
+    internal static class DIEnumerableExtensions
     {
-        public static T GetRandomItem<T>(this IEnumerable<T> enumerable)
+        internal static T GetRandomItem<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
             {
