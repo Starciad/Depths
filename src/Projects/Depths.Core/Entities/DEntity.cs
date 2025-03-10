@@ -37,14 +37,14 @@ namespace Depths.Core.Entities
             OnUpdate(gameTime);
         }
 
-        internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch)
         {
             if (!this.IsVisible)
             {
                 return;
             }
 
-            OnDraw(gameTime, spriteBatch);
+            OnDraw(spriteBatch);
         }
 
         internal void Destroy()
@@ -59,7 +59,7 @@ namespace Depths.Core.Entities
 
         protected virtual void OnInitialize() { return; }
         protected virtual void OnUpdate(GameTime gameTime) { return; }
-        protected virtual void OnDraw(GameTime gameTime, SpriteBatch spriteBatch) { return; }
+        protected virtual void OnDraw(SpriteBatch spriteBatch) { return; }
         protected virtual void OnDestroy() { return; }
         protected virtual void OnReset() { return; }
     }

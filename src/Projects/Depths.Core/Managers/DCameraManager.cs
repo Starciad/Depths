@@ -74,8 +74,23 @@ namespace Depths.Core.Managers
 
             this.Rotation = 0;
             this.Zoom = 1f;
-            this.Origin = new Vector2(DScreenConstants.SCREEN_WIDTH, DScreenConstants.SCREEN_HEIGHT) / 2f;
+            this.Origin = new Vector2(DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT) / 2f;
             this.Position = Vector2.Zero;
+        }
+
+        public void ZoomIn(float deltaZoom)
+        {
+            ClampZoom(this.Zoom + deltaZoom);
+        }
+
+        public void ZoomOut(float deltaZoom)
+        {
+            ClampZoom(this.Zoom - deltaZoom);
+        }
+
+        public void ClampZoom(float value)
+        {
+            this.Zoom = value < this.MinimumZoom ? this.MinimumZoom : value > this.MaximumZoom ? this.MaximumZoom : value;
         }
 
         internal Vector2 WorldToScreen(Vector2 worldPosition)

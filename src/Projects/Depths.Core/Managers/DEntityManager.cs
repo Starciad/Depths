@@ -42,7 +42,7 @@ namespace Depths.Core.Managers
             }
         }
 
-        internal void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < this.instantiatedEntities.Count; i++)
             {
@@ -53,7 +53,7 @@ namespace Depths.Core.Managers
                     continue;
                 }
 
-                entity.Draw(gameTime, spriteBatch);
+                entity.Draw(spriteBatch);
             }
         }
 

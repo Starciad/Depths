@@ -89,7 +89,7 @@ namespace Depths.Core.Entities.Common
             }
         }
 
-        protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void OnDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.texture, DTilemapMath.ToGlobalPosition(this.Position).ToVector2(), GetCurrentSpriteRectangle(), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }

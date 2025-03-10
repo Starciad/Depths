@@ -6,22 +6,27 @@ using Depths.Core.Databases;
 using Depths.Core.Entities.Common;
 using Depths.Core.Generators;
 using Depths.Core.Interfaces.General;
+using Depths.Core.IO;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
+using Depths.Core.Recorder;
 using Depths.Core.World;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 using System;
+using System.IO;
 
 namespace Depths.Core
 {
     public sealed class DGame : Game, IDResettable
     {
-        private SpriteBatch spriteBatch;
         private DBackground background;
+        private SpriteBatch spriteBatch;
+        private DRecorder recorder;
 
         private byte idolCutsceneFrameCounter;
         private byte truckMovementCutsceneFrameCounter;
@@ -142,6 +147,10 @@ namespace Depths.Core
         protected override void LoadContent()
         {
             this.spriteBatch = new(this.GraphicsDevice);
+
+#if DEBUG
+            this.recorder = new(this.background, this.entityManager, this.GraphicsDevice, this.spriteBatch, this.world);
+#endif
         }
 
         protected override void BeginRun()
@@ -235,6 +244,25 @@ namespace Depths.Core
 
         protected override void Update(GameTime gameTime)
         {
+#if DEBUG
+            // CAMERA ZOOM
+            if (this.inputManager.Started(Keys.OemPlus))
+            {
+                this.cameraManager.ZoomIn(0.1f);
+            }
+
+            if (this.inputManager.Started(Keys.OemMinus))
+            {
+                this.cameraManager.ZoomOut(0.1f);
+            }
+
+            // WORLD SCREENSHOT
+            if (this.inputManager.Started(Keys.D1))
+            {
+                this.recorder.CaptureWorld();
+            }
+#endif
+
 #if DESKTOP
             if (!this.gameInformation.IsGameFocused)
             {
@@ -389,7 +417,7 @@ namespace Depths.Core
             {
                 this.spriteBatch.Draw(this.background.RenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 this.world.Draw(this.spriteBatch);
-                this.entityManager.Draw(gameTime, this.spriteBatch);
+                this.entityManager.Draw(this.spriteBatch);
             }
 
             this.spriteBatch.End();

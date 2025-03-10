@@ -77,7 +77,7 @@ namespace Depths.Core.Entities.Common
             }
         }
 
-        protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void OnDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.texture, this.Position.ToVector2(), DSpriteConstants.IDOL_SOURCE_RECTANGLES[this.gameInformation.IdolHeadSpriteIndex], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }

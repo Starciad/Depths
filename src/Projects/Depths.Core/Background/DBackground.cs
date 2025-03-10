@@ -15,6 +15,9 @@ namespace Depths.Core.Background
     {
         internal RenderTarget2D RenderTarget => this.renderTarget;
 
+        internal int WorldPixelWidth => this.worldPixelWidth;
+        internal int WorldPixelHeight => this.worldPixelHeight;
+
         private readonly RenderTarget2D renderTarget;
 
         private readonly Texture2D[] surfaceTextures;

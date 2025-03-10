@@ -91,7 +91,7 @@ namespace Depths.Core.Entities.Common
             this.Position = new((int)Math.Round(this.internalPosition.X), (int)Math.Round(this.internalPosition.Y));
         }
 
-        protected override void OnDraw(GameTime gameTime, SpriteBatch spriteBatch)
+        protected override void OnDraw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.texture, this.Position.ToVector2(), this.sourceRectangles[this.animationIndex], Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
