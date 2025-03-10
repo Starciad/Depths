@@ -9,12 +9,15 @@ using Depths.Core.Interfaces.General;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
-using Depths.Core.Recorder;
 using Depths.Core.World;
+
+#if DEBUG
+using Depths.Core.Recorder;
+using Microsoft.Xna.Framework.Input;
+#endif
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 using System;
 
@@ -24,7 +27,10 @@ namespace Depths.Core
     {
         private DBackground background;
         private SpriteBatch spriteBatch;
+
+#if DEBUG
         private DRecorder recorder;
+#endif
 
         private byte idolCutsceneFrameCounter;
         private byte truckMovementCutsceneFrameCounter;

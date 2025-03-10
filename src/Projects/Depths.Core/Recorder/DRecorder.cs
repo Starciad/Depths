@@ -1,4 +1,5 @@
-﻿using Depths.Core.Background;
+﻿#if DEBUG
+using Depths.Core.Background;
 using Depths.Core.Constants;
 using Depths.Core.IO;
 using Depths.Core.Managers;
@@ -65,3 +66,4 @@ namespace Depths.Core.Recorder
         }
     }
 }
+#endif

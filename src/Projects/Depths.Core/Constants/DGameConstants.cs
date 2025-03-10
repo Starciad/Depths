@@ -2,14 +2,14 @@
 
 namespace Depths.Core.Constants
 {
-    internal static class DGameConstants
+    public static class DGameConstants
     {
-        internal static Version VERSION => new(1, 0, 0, 0);
+        internal static Version VERSION => new(2, 0, 0, 0);
 
-        internal const string TITLE = "Depths";
+        public const string TITLE = "Depths";
         internal const string AUTHOR = "Davi \"Starciad\" Fernandes";
 
-        internal static string GetTitleAndVersionString()
+        public static string GetTitleAndVersionString()
         {
             return string.Concat(TITLE, " - v", VERSION);
         }
