@@ -23,9 +23,14 @@ namespace Depths.Core.World
             this.Tilemap.Update();
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch, DCameraManager cameraManager)
         {
-            this.Tilemap.Draw(spriteBatch);
+            this.Tilemap.Draw(spriteBatch, cameraManager);
+        }
+
+        internal void DrawAll(SpriteBatch spriteBatch)
+        {
+            this.Tilemap.DrawAll(spriteBatch);
         }
 
         public void Reset()

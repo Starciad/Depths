@@ -228,7 +228,7 @@ namespace Depths.Core.Generators
 
         private void GenerateWalls()
         {
-            byte wallCount = (byte)DRandomMath.Range(100, 255);
+            byte wallCount = (byte)DRandomMath.Range(150, 350);
 
             if (this.stoneTiles.Count < wallCount)
             {

@@ -111,10 +111,13 @@ namespace Depths.Core.World.Tiles
 
                 [DTileType.Stone] = (tile, position) =>
                 {
+                    int layer = (int)MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT);
+
                     SetDefaults(tile, position);
-                    tile.SetHealth(Convert.ToUInt32(DRandomMath.Range(2, 3) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT)));
+                    tile.SetHealth(Convert.ToUInt32(DRandomMath.Range(3, 6) + layer));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Resistance = (byte)int.Max(0, layer - 1);
                     tile.Type = DTileType.Stone;
                 },
 
@@ -357,13 +360,46 @@ namespace Depths.Core.World.Tiles
             SetTile(position, DTileType.Empty);
         }
 
-        internal void Draw(SpriteBatch spriteBatch)
+        internal void Draw(SpriteBatch spriteBatch, DCameraManager cameraManager)
         {
-            for (byte y = 0; y < this.size.Height; y++)
+            Vector2 topLeftWorld = cameraManager.ScreenToWorld(new Vector2(0, 0));
+            Vector2 bottomRightWorld = cameraManager.ScreenToWorld(new Vector2(DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT));
+
+            int minTileX = (int)Math.Floor(topLeftWorld.X / DWorldConstants.TILE_SIZE);
+            int minTileY = (int)Math.Floor(topLeftWorld.Y / DWorldConstants.TILE_SIZE);
+            int maxTileX = (int)Math.Ceiling(bottomRightWorld.X / DWorldConstants.TILE_SIZE);
+            int maxTileY = (int)Math.Ceiling(bottomRightWorld.Y / DWorldConstants.TILE_SIZE);
+
+            minTileX = Math.Clamp(minTileX, 0, this.size.Width);
+            minTileY = Math.Clamp(minTileY, 0, this.size.Height);
+            maxTileX = Math.Clamp(maxTileX, 0, this.size.Width);
+            maxTileY = Math.Clamp(maxTileY, 0, this.size.Height);
+
+            for (int y = minTileY; y < maxTileY; y++)
             {
-                for (byte x = 0; x < this.size.Width; x++)
+                for (int x = minTileX; x < maxTileX; x++)
                 {
                     DPoint pos = new(x, y);
+                    DTile tile = GetTile(pos);
+                    Texture2D texture = GetTileTexture(tile.Type);
+                    if (texture is null)
+                    {
+                        continue;
+                    }
+                    Vector2 drawPosition = new(x * DWorldConstants.TILE_SIZE, y * DWorldConstants.TILE_SIZE);
+                    spriteBatch.Draw(texture, drawPosition, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                }
+            }
+        }
+
+        internal void DrawAll(SpriteBatch spriteBatch)
+        {
+            for (int y = 0; y < this.size.Height; y++)
+            {
+                for (int x = 0; x < this.size.Width; x++)
+                {
+                    DPoint pos = new(x, y);
+
                     DTile tile = GetTile(pos);
                     Texture2D texture = GetTileTexture(tile.Type);
 

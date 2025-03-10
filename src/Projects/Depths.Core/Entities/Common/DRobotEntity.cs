@@ -30,6 +30,7 @@ namespace Depths.Core.Entities.Common
 
     internal sealed class DRobotEntity : DEntity
     {
+        private byte playerEnergy;
         private byte playerDamage;
         private byte playerPower;
 
@@ -44,7 +45,6 @@ namespace Depths.Core.Entities.Common
         private readonly ushort lifespanFrameDelay = 360;
         private readonly byte movementFrameDelay = 16;
         private readonly byte animationFrameDelay = 10;
-        private readonly byte limitBlocksToBreak = 10;
 
         private readonly Texture2D texture;
         private readonly DEntityManager entityManager;
@@ -97,6 +97,8 @@ namespace Depths.Core.Entities.Common
         protected override void OnReset()
         {
             this.horizontalDirectionDelta = this.gameInformation.PlayerEntity.HorizontalDirectionDelta;
+
+            this.playerEnergy = this.gameInformation.PlayerEntity.Energy;
             this.playerDamage = this.gameInformation.PlayerEntity.Damage;
             this.playerPower = this.gameInformation.PlayerEntity.Power;
 
@@ -120,7 +122,7 @@ namespace Depths.Core.Entities.Common
 
         private bool TryCheckDeath()
         {
-            if (this.brokenBlockCount >= this.limitBlocksToBreak || ++this.lifespanFrameCounter >= this.lifespanFrameDelay)
+            if (this.brokenBlockCount >= this.playerDamage || ++this.lifespanFrameCounter >= this.lifespanFrameDelay)
             {
                 DAudioEngine.Play("sound_hit_5");
                 this.entityManager.DestroyEntity(this);

@@ -149,7 +149,7 @@ namespace Depths.Core
             this.spriteBatch = new(this.GraphicsDevice);
 
 #if DEBUG
-            this.recorder = new(this.background, this.entityManager, this.GraphicsDevice, this.spriteBatch, this.world);
+            this.recorder = new(this.background, this.cameraManager, this.entityManager, this.GraphicsDevice, this.spriteBatch, this.world);
 #endif
         }
 
@@ -416,7 +416,7 @@ namespace Depths.Core
             if (this.gameInformation.IsWorldVisible)
             {
                 this.spriteBatch.Draw(this.background.RenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
-                this.world.Draw(this.spriteBatch);
+                this.world.Draw(this.spriteBatch, this.cameraManager);
                 this.entityManager.Draw(this.spriteBatch);
             }
 

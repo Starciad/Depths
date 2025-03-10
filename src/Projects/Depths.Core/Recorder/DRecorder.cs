@@ -15,6 +15,7 @@ namespace Depths.Core.Recorder
     internal sealed class DRecorder
     {
         private readonly DBackground background;
+        private readonly DCameraManager cameraManager;
         private readonly DEntityManager entityManager;
         private readonly GraphicsDevice graphicsDevice;
         private readonly SpriteBatch spriteBatch;
@@ -22,9 +23,10 @@ namespace Depths.Core.Recorder
 
         private readonly string directoryPath;
 
-        internal DRecorder(DBackground background, DEntityManager entityManager, GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, DWorld world)
+        internal DRecorder(DBackground background, DCameraManager cameraManager, DEntityManager entityManager, GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, DWorld world)
         {
             this.background = background;
+            this.cameraManager = cameraManager;
             this.entityManager = entityManager;
             this.graphicsDevice = graphicsDevice;
             this.spriteBatch = spriteBatch;
@@ -54,7 +56,7 @@ namespace Depths.Core.Recorder
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
 
             this.spriteBatch.Draw(this.background.RenderTarget, Vector2.Zero, Color.White);
-            this.world.Draw(this.spriteBatch);
+            this.world.DrawAll(this.spriteBatch);
             this.entityManager.Draw(this.spriteBatch);
 
             this.spriteBatch.End();
