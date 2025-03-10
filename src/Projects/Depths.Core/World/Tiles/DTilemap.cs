@@ -25,13 +25,9 @@ namespace Depths.Core.World.Tiles
         internal DSize2 Size => this.size;
 
         private DUpdateCycleFlag updateCycleFlag;
-        private byte boulderTrapFrameCounter = 0;
-        private byte monsterMovementFrameCounter = 0;
-        private byte ghostMovementFrameCounter = 0;
+        private byte boulderTrapFrameCounter;
 
         private readonly byte boulderTrapFrameDelay = 5;
-        private readonly byte monsterMovementFrameDelay = 4;
-        private readonly byte ghostMovementFrameDelay = 4;
         private readonly int totalDust = 8;
 
         private readonly DSize2 size;
@@ -97,14 +93,7 @@ namespace Depths.Core.World.Tiles
 
             void SetDefaults(DTile tile, DPoint position)
             {
-                tile.Direction = DDirection.None;
-                tile.HasGravity = false;
-                tile.Health = 0;
-                tile.IsSolid = false;
-                tile.IsDestructible = false;
-                tile.Ore = null;
-                tile.Resistance = 0;
-                tile.OnDestroyed = null;
+                tile.Reset();
             }
 
             this.tileTypes = new Dictionary<DTileType, Action<DTile, DPoint>>
@@ -114,51 +103,57 @@ namespace Depths.Core.World.Tiles
                 [DTileType.Dirt] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
-                    tile.Health = 1;
+                    tile.SetHealth(1);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Type = DTileType.Dirt;
                 },
 
                 [DTileType.Stone] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
-                    tile.Health = Convert.ToInt32(DRandomMath.Range(2, 3) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
+                    tile.SetHealth(Convert.ToUInt32(DRandomMath.Range(2, 3) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT)));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Type = DTileType.Stone;
                 },
 
                 [DTileType.Ore] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
-                    tile.Health = Convert.ToInt32(DRandomMath.Range(4, 5) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT));
+                    tile.SetHealth(Convert.ToUInt32(DRandomMath.Range(4, 5) + MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT)));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.OnDestroyed = () => gameInformation.PlayerEntity.CollectOre(tile.Ore);
+                    tile.Type = DTileType.Ore;
                 },
 
                 [DTileType.Stair] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
                     tile.HasGravity = true;
+                    tile.Type = DTileType.Stair;
                 },
 
                 [DTileType.Box] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
                     tile.HasGravity = true;
-                    tile.Health = 2;
+                    tile.SetHealth(2);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.OnDestroyed = () =>
                     {
                         gameInformation.PlayerEntity.CollectBoxItem(items.GetRandomItem());
                     };
+                    tile.Type = DTileType.Box;
                 },
 
                 [DTileType.SpikeTrap] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
                     tile.HasGravity = true;
+                    tile.Type = DTileType.SpikeTrap;
                 },
 
                 [DTileType.Monster] = (tile, position) =>
@@ -166,15 +161,17 @@ namespace Depths.Core.World.Tiles
                     SetDefaults(tile, position);
                     tile.Direction = DDirection.Right;
                     tile.HasGravity = true;
-                    tile.Health = 3;
+                    tile.SetHealth(3);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Type = DTileType.Monster;
                 },
 
                 [DTileType.Wall] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
                     tile.IsSolid = true;
+                    tile.Type = DTileType.Wall;
                 },
 
                 [DTileType.BoulderTrap] = (tile, position) =>
@@ -182,18 +179,24 @@ namespace Depths.Core.World.Tiles
                     SetDefaults(tile, position);
                     tile.Direction = DRandomMath.Chance(50, 100) ? DDirection.Left : DDirection.Right;
                     tile.HasGravity = true;
-                    tile.Health = 5;
+                    tile.SetHealth(5);
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
+                    tile.Type = DTileType.BoulderTrap;
                 },
 
-                [DTileType.Platform] = SetDefaults,
+                [DTileType.Platform] = (tile, position) =>
+                {
+                    SetDefaults(tile, position);
+                    tile.Type = DTileType.Platform;
+                },
 
                 [DTileType.Ghost] = (tile, position) =>
                 {
                     SetDefaults(tile, position);
                     tile.Direction = DDirection.Left;
                     tile.IsSolid = true;
+                    tile.Type = DTileType.Ghost;
                 },
             };
         }
@@ -201,8 +204,6 @@ namespace Depths.Core.World.Tiles
         internal void Update()
         {
             this.boulderTrapFrameCounter++;
-            this.monsterMovementFrameCounter++;
-            this.ghostMovementFrameCounter++;
 
             for (byte y = 0; y < this.size.Height; y++)
             {
@@ -217,11 +218,6 @@ namespace Depths.Core.World.Tiles
 
                     tile.UpdateCycleFlag = tile.UpdateCycleFlag.GetNextCycle();
 
-                    if (TryDestroyTile(tile, position))
-                    {
-                        continue;
-                    }
-
                     UpdateTileGravity(tile, position);
 
                     switch (tile.Type)
@@ -235,23 +231,6 @@ namespace Depths.Core.World.Tiles
                             {
                                 UpdateBoulderTrap(tile, position);
                             }
-
-                            break;
-
-                        case DTileType.Monster:
-                            if (this.monsterMovementFrameCounter > this.monsterMovementFrameDelay)
-                            {
-                                UpdateMonster(position);
-                            }
-
-                            break;
-
-                        case DTileType.Ghost:
-                            if (this.ghostMovementFrameCounter > this.ghostMovementFrameDelay)
-                            {
-                                UpdateGhost(position);
-                            }
-
                             break;
 
                         default:
@@ -261,23 +240,23 @@ namespace Depths.Core.World.Tiles
             }
 
             this.boulderTrapFrameCounter = Convert.ToByte(this.boulderTrapFrameCounter > this.boulderTrapFrameDelay ? 0 : this.boulderTrapFrameCounter);
-            this.monsterMovementFrameCounter = Convert.ToByte(this.monsterMovementFrameCounter > this.monsterMovementFrameDelay ? 0 : this.monsterMovementFrameCounter);
-            this.ghostMovementFrameCounter = Convert.ToByte(this.ghostMovementFrameCounter > this.ghostMovementFrameDelay ? 0 : this.ghostMovementFrameCounter);
-
             this.updateCycleFlag = this.updateCycleFlag.GetNextCycle();
         }
 
-        private bool TryDestroyTile(DTile tile, DPoint position)
+        internal void DamageTile(DPoint position, uint value)
         {
-            if (tile.Health <= 0 && tile.IsDestructible)
+            DTile tile = GetTile(position);
+
+            if (!tile.TryDamage(value))
             {
-                tile.OnDestroyed?.Invoke();
-                SetTile(position, DTileType.Empty);
-                InstantiateDust(DTilemapMath.ToGlobalPosition(position));
-                return true;
+                return;
             }
 
-            return false;
+            if (tile.IsDestroyed)
+            {
+                SetTile(position, DTileType.Empty);
+                InstantiateDust(DTilemapMath.ToGlobalPosition(position));
+            }
         }
 
         private void InstantiateDust(DPoint position)
@@ -323,7 +302,8 @@ namespace Depths.Core.World.Tiles
 
         private void UpdateBoulderTrap(DTile tile, DPoint position)
         {
-            DTile bottomTile = GetTile(new DPoint(position.X, position.Y + 1));
+            DTile bottomTile = GetTile(new(position.X, position.Y + 1));
+
             if (bottomTile != null && !bottomTile.IsSolid)
             {
                 bottomTile.Copy(tile);
@@ -334,7 +314,7 @@ namespace Depths.Core.World.Tiles
             switch (tile.Direction)
             {
                 case DDirection.Right:
-                    DTile rightTile = GetTile(new DPoint(position.X + 1, position.Y));
+                    DTile rightTile = GetTile(new(position.X + 1, position.Y));
                     if (rightTile != null && !rightTile.IsSolid)
                     {
                         rightTile.Copy(tile);
@@ -346,8 +326,9 @@ namespace Depths.Core.World.Tiles
                     }
 
                     break;
+
                 case DDirection.Left:
-                    DTile leftTile = GetTile(new DPoint(position.X - 1, position.Y));
+                    DTile leftTile = GetTile(new(position.X - 1, position.Y));
                     if (leftTile != null && !leftTile.IsSolid)
                     {
                         leftTile.Copy(tile);
@@ -378,70 +359,6 @@ namespace Depths.Core.World.Tiles
             SetTile(position, DTileType.Empty);
         }
 
-        private void UpdateMonster(DPoint position)
-        {
-            DTile tile = GetTile(position);
-            if (tile == null || tile.Type != DTileType.Monster)
-            {
-                return;
-            }
-
-            DDirection nextDirection = tile.Direction == DDirection.Left ? DDirection.Right : DDirection.Left;
-            DPoint nextPosition = new(position.X + (tile.Direction == DDirection.Left ? -1 : 1), position.Y);
-            DTile nextTile = GetTile(nextPosition);
-
-            _ = GetTile(new(position.X, position.Y + 1));
-            DTile nextTileBelow = GetTile(new(nextPosition.X, nextPosition.Y + 1));
-
-            // Se há um bloco sólido à frente ou o próximo tile não tem chão, inverte a direção.
-            if (nextTile == null || nextTile.IsSolid || (nextTileBelow != null && !nextTileBelow.IsSolid))
-            {
-                tile.Direction = nextDirection;
-            }
-            else
-            {
-                nextTile.Copy(tile);
-                SetTile(position, DTileType.Empty);
-            }
-        }
-
-        private void UpdateGhost(DPoint position)
-        {
-            DTile tile = GetTile(position);
-            if (tile == null || tile.Type != DTileType.Ghost)
-            {
-                return;
-            }
-
-            List<DDirection> possibleDirections = [];
-            Dictionary<DDirection, DPoint> directionOffsets = new()
-            {
-                { DDirection.Left, new DPoint(position.X - 1, position.Y) },
-                { DDirection.Right, new DPoint(position.X + 1, position.Y) },
-                { DDirection.Up, new DPoint(position.X, position.Y - 1) },
-                { DDirection.Down, new DPoint(position.X, position.Y + 1) }
-            };
-
-            foreach (KeyValuePair<DDirection, DPoint> entry in directionOffsets)
-            {
-                DTile nextTile = GetTile(entry.Value);
-                if (nextTile != null && !nextTile.IsSolid)
-                {
-                    possibleDirections.Add(entry.Key);
-                }
-            }
-
-            if (possibleDirections.Count > 0)
-            {
-                DDirection chosenDirection = possibleDirections[DRandomMath.Range(0, possibleDirections.Count - 1)];
-                DPoint nextPosition = directionOffsets[chosenDirection];
-
-                DTile nextTile = GetTile(nextPosition);
-                nextTile.Copy(tile);
-                SetTile(position, DTileType.Empty);
-            }
-        }
-
         internal void Draw(SpriteBatch spriteBatch)
         {
             for (byte y = 0; y < this.size.Height; y++)
@@ -451,6 +368,7 @@ namespace Depths.Core.World.Tiles
                     DPoint pos = new(x, y);
                     DTile tile = GetTile(pos);
                     Texture2D texture = GetTileTexture(tile.Type);
+
                     if (texture == null)
                     {
                         continue;
@@ -507,11 +425,14 @@ namespace Depths.Core.World.Tiles
 
         public void Reset()
         {
+            this.boulderTrapFrameCounter = 0;
+            this.updateCycleFlag = DUpdateCycleFlag.None;
+
             for (byte y = 0; y < this.size.Height; y++)
             {
                 for (byte x = 0; x < this.size.Width; x++)
                 {
-                    SetTile(new DPoint(x, y), DTileType.Empty);
+                    SetTile(new(x, y), DTileType.Empty);
                 }
             }
         }

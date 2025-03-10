@@ -154,7 +154,7 @@ namespace Depths.Core.Entities.Common
 
             if (this.playerPower >= targetTile.Resistance)
             {
-                targetTile.Health -= this.playerDamage;
+                this.worldTilemap.DamageTile(targetPosition, (uint)this.playerDamage);
                 DAudioEngine.Play("sound_blip_7");
 
                 if (targetTile.Health <= 0)

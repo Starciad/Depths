@@ -130,22 +130,22 @@ namespace Depths.Core.Mathematics.Primitives
 
         public readonly DPoint Abs()
         {
-            return new DPoint(Math.Abs(this.X), Math.Abs(this.Y));
+            return new(Math.Abs(this.X), Math.Abs(this.Y));
         }
 
         public static DPoint Min(DPoint a, DPoint b)
         {
-            return new DPoint(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
+            return new(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y));
         }
 
         public static DPoint Max(DPoint a, DPoint b)
         {
-            return new DPoint(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
+            return new(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
         }
 
         public static DPoint Clamp(DPoint value, DPoint min, DPoint max)
         {
-            return new DPoint(
+            return new(
                 Math.Clamp(value.X, min.X, max.X),
                 Math.Clamp(value.Y, min.Y, max.Y)
             );
@@ -153,7 +153,7 @@ namespace Depths.Core.Mathematics.Primitives
 
         public static DPoint Lerp(DPoint a, DPoint b, float t)
         {
-            return new DPoint(
+            return new(
                 (int)MathF.Round(a.X + ((b.X - a.X) * t)),
                 (int)MathF.Round(a.Y + ((b.Y - a.Y) * t))
             );

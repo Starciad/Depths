@@ -13,6 +13,6 @@
         Wall = 8,
         BoulderTrap = 9,
         Platform = 10,
-        Ghost = 111
+        Ghost = 11
     }
 }

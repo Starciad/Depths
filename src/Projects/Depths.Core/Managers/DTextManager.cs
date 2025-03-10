@@ -119,7 +119,7 @@ namespace Depths.Core.Managers
 
                 foreach (char c in line)
                 {
-                    DrawCharacter(spriteBatch, c, new DPoint(currentX, currentY), options.FontType);
+                    DrawCharacter(spriteBatch, c, new(currentX, currentY), options.FontType);
                     currentX += DFontConstants.WIDTH + options.CharacterSpacing;
                 }
             }

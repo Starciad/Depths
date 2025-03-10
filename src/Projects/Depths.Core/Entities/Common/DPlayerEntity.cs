@@ -224,7 +224,7 @@ namespace Depths.Core.Entities.Common
 
         private void HandleHorizontalMovementInput()
         {
-            DTile tileBelow = this.tilemap.GetTile(new DPoint(this.Position.X, this.Position.Y + 1));
+            DTile tileBelow = this.tilemap.GetTile(new(this.Position.X, this.Position.Y + 1));
 
             if (tileBelow == null || tileBelow.Type == DTileType.Empty || tileBelow.Type == DTileType.SpikeTrap)
             {
@@ -384,7 +384,7 @@ namespace Depths.Core.Entities.Common
             if (this.power >= tile.Resistance)
             {
                 DAudioEngine.Play("sound_hit_6");
-                tile.Health -= this.damage;
+                this.tilemap.DamageTile(position, this.damage);
             }
             else
             {

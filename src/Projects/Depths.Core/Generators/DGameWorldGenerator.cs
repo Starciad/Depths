@@ -57,7 +57,7 @@ namespace Depths.Core.Generators
             for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
             {
                 DWorldChunk randomChunk = surfaceChunks.GetRandomItem();
-                randomChunk.ApplyToTilemap(new DPoint(x, 0), this.worldTilemap);
+                randomChunk.ApplyToTilemap(new(x, 0), this.worldTilemap);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Depths.Core.Generators
                 for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
                 {
                     DWorldChunk randomChunk = undergroundChunks.GetRandomItem();
-                    randomChunk.ApplyToTilemap(new DPoint(x, y), this.worldTilemap);
+                    randomChunk.ApplyToTilemap(new(x, y), this.worldTilemap);
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace Depths.Core.Generators
             for (byte x = 0; x < DWorldConstants.WORLD_WIDTH; x++)
             {
                 DWorldChunk randomChunk = depthChunks.GetRandomItem();
-                randomChunk.ApplyToTilemap(new DPoint(x, DWorldConstants.WORLD_HEIGHT - 1), this.worldTilemap);
+                randomChunk.ApplyToTilemap(new(x, DWorldConstants.WORLD_HEIGHT - 1), this.worldTilemap);
             }
         }
 
@@ -285,14 +285,14 @@ namespace Depths.Core.Generators
             // Set vertical borders (left and right)
             for (byte y = 0; y < this.worldSize.Height; y++)
             {
-                this.worldTilemap.SetTile(new DPoint(0, y), DTileType.Wall);
-                this.worldTilemap.SetTile(new DPoint(this.worldSize.Width - 1, y), DTileType.Wall);
+                this.worldTilemap.SetTile(new(0, y), DTileType.Wall);
+                this.worldTilemap.SetTile(new(this.worldSize.Width - 1, y), DTileType.Wall);
             }
 
             // Set horizontal bottom border
             for (byte x = 0; x < this.worldSize.Width; x++)
             {
-                this.worldTilemap.SetTile(new DPoint(x, this.worldSize.Height - 1), DTileType.Wall);
+                this.worldTilemap.SetTile(new(x, this.worldSize.Height - 1), DTileType.Wall);
             }
         }
 

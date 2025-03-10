@@ -50,7 +50,7 @@ namespace Depths.Core.Managers
             int newX = playerPosition.X / DScreenConstants.GAME_WIDTH * DScreenConstants.GAME_WIDTH;
             int newY = playerPosition.Y / (DScreenConstants.GAME_HEIGHT + 1) * (DScreenConstants.GAME_HEIGHT + 1);
 
-            this.targetPosition = new DPoint(newX, -newY);
+            this.targetPosition = new(newX, -newY);
             this.isTransitioning = true;
         }
 
