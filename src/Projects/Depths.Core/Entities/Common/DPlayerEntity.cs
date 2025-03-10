@@ -224,14 +224,16 @@ namespace Depths.Core.Entities.Common
 
         private void HandleHorizontalMovementInput()
         {
+            DTile currentTile = this.tilemap.GetTile(new(this.Position.X, this.Position.Y));
             DTile tileBelow = this.tilemap.GetTile(new(this.Position.X, this.Position.Y + 1));
 
-            if (tileBelow == null || tileBelow.Type == DTileType.Empty || tileBelow.Type == DTileType.SpikeTrap)
+            if (tileBelow == null || tileBelow.Type == DTileType.Empty || (currentTile != null && currentTile.Type != DTileType.Stair && tileBelow.Type == DTileType.SpikeTrap))
             {
                 return;
             }
 
             sbyte deltaX = 0;
+
             if (this.inputManager.Started(DKeyMappingConstant.Left))
             {
                 deltaX = -1;

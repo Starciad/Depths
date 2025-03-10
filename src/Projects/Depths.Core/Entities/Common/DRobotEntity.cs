@@ -98,7 +98,7 @@ namespace Depths.Core.Entities.Common
         {
             this.horizontalDirectionDelta = this.gameInformation.PlayerEntity.HorizontalDirectionDelta;
 
-            this.playerEnergy = this.gameInformation.PlayerEntity.Energy;
+            this.playerEnergy = this.gameInformation.PlayerEntity.MaximumEnergy;
             this.playerDamage = this.gameInformation.PlayerEntity.Damage;
             this.playerPower = this.gameInformation.PlayerEntity.Power;
 
@@ -122,7 +122,7 @@ namespace Depths.Core.Entities.Common
 
         private bool TryCheckDeath()
         {
-            if (this.brokenBlockCount >= this.playerDamage || ++this.lifespanFrameCounter >= this.lifespanFrameDelay)
+            if (this.brokenBlockCount >= this.playerEnergy || ++this.lifespanFrameCounter >= this.lifespanFrameDelay)
             {
                 DAudioEngine.Play("sound_hit_5");
                 this.entityManager.DestroyEntity(this);

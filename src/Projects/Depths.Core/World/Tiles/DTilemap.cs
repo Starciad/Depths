@@ -36,7 +36,7 @@ namespace Depths.Core.World.Tiles
         private readonly Dictionary<DTileType, Action<DTile, DPoint>> tileTypes;
 
         private static readonly DBoxItem[] items = [
-            new("Money", new(3, 6), (DBoxItem item, DPlayerEntity playerEntity) =>
+            new("Money", new(3, 12), (DBoxItem item, DPlayerEntity playerEntity) =>
             {
                 uint count = item.GetRandomCount();
 
@@ -114,7 +114,7 @@ namespace Depths.Core.World.Tiles
                     int layer = (int)MathF.Floor(position.Y / DWorldConstants.TILES_PER_CHUNK_HEIGHT);
 
                     SetDefaults(tile, position);
-                    tile.SetHealth(Convert.ToUInt32(DRandomMath.Range(3, 6) + layer));
+                    tile.SetHealth(Convert.ToUInt32(DRandomMath.Range(2, 3) + layer));
                     tile.IsSolid = true;
                     tile.IsDestructible = true;
                     tile.Resistance = (byte)int.Max(0, layer - 1);
