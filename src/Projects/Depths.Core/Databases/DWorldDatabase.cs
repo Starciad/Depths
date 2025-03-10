@@ -459,8 +459,8 @@ namespace Depths.Core.Databases
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
-                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
-                        { DCI.T2, DCI.T8, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T8, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T8, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T8, DCI.T0, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T5, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     }
@@ -719,8 +719,8 @@ namespace Depths.Core.Databases
                         { DCI.T6, DCI.T2, DCI.T2, DCI.T0, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T6 },
                         { DCI.T6, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T6 },
                         { DCI.T6, DCI.T2, DCI.T6, DCI.T0, DCI.T0, DCI.T5, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T6 },
-                        { DCI.T6, DCI.T2, DCI.T6, DCI.T0, DCI.T5, DCI.T6, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T6 },
-                        { DCI.T6, DCI.T2, DCI.T6, DCI.T0, DCI.T6, DCI.T6, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T6 },
+                        { DCI.T6, DCI.T2, DCI.T6, DCI.T0, DCI.T5, DCI.T0, DCI.T6, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T6 },
+                        { DCI.T6, DCI.T2, DCI.T6, DCI.T0, DCI.T6, DCI.T0, DCI.T6, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T6 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     },
                 },
@@ -746,11 +746,11 @@ namespace Depths.Core.Databases
                     Mapping = new DCI[,]
                     {
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T6, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T6, DCI.T0, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T2, DCI.T8, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T8, DCI.T2, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T6, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T6, DCI.T0, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     },
                 },
@@ -761,11 +761,11 @@ namespace Depths.Core.Databases
                     Mapping = new DCI[,]
                     {
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T9, DCI.T9, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T9, DCI.T9, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T0, DCI.T2 },
+                        { DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T2, DCI.T2, DCI.T2, DCI.T0, DCI.T0, DCI.T0, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     },
                 },
@@ -776,11 +776,11 @@ namespace Depths.Core.Databases
                     Mapping = new DCI[,]
                     {
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
-                        { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 },
+                        { DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T4, DCI.T2, DCI.T2 },
                         { DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2, DCI.T2 }
                     },
                 },
