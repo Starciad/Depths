@@ -267,6 +267,27 @@ namespace Depths.Core
                 return;
             }
 
+            // Skip
+            if (this.inputManager.PreviousKeyboardState.GetPressedKeyCount() == 0 && this.inputManager.KeyboardState.GetPressedKeyCount() > 0)
+            {
+                this.cameraManager.Position = this.cameraLobbyPosition.ToVector2();
+
+                this.gameInformation.PlayerEntity.IsVisible = true;
+                this.gameInformation.TruckEntity.IsMoving = false;
+
+                this.gameInformation.PlayerEntity.Position = this.playerLobbyPosition;
+                this.gameInformation.TruckEntity.Position = this.truckLobbyPosition;
+
+                this.gameInformation.IsIdolCutsceneRunning = false;
+                this.gameInformation.IsTruckCutsceneRunning = false;
+                this.gameInformation.IsPlayerCutsceneRunning = false;
+
+                this.gameInformation.TransitionIsDisabled = false;
+
+                this.musicManager.StopMusic();
+                return;
+            }
+
             UpdateIdolCutscene();
             UpdateTruckCutscene();
             UpdatePlayerCutscene();
