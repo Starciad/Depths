@@ -1,4 +1,9 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Depths.Core.Constants;
+using Depths.Core.Enums.Inputs;
+
+using Microsoft.Xna.Framework.Input;
+
+using System.Linq;
 
 namespace Depths.Core.Managers
 {
@@ -23,16 +28,40 @@ namespace Depths.Core.Managers
             this.keyboardState = Keyboard.GetState();
         }
 
+        internal bool Started(DCommandType commandType)
+        {
+            return DKeyMappingConstant.GetKeysForCommand(commandType).Any(key =>
+                this.keyboardState.IsKeyDown(key) &&
+                !this.previousKeyboardState.IsKeyDown(key)
+            );
+        }
+
         internal bool Started(Keys key)
         {
             return this.keyboardState.IsKeyDown(key) &&
                   !this.previousKeyboardState.IsKeyDown(key);
         }
 
+        internal bool Performed(DCommandType commandType)
+        {
+            return DKeyMappingConstant.GetKeysForCommand(commandType).Any(key =>
+                this.keyboardState.IsKeyDown(key) &&
+                this.previousKeyboardState.IsKeyDown(key)
+            );
+        }
+
         internal bool Performed(Keys key)
         {
             return this.keyboardState.IsKeyDown(key) &&
                    this.previousKeyboardState.IsKeyDown(key);
+        }
+
+        internal bool Canceled(DCommandType commandType)
+        {
+            return DKeyMappingConstant.GetKeysForCommand(commandType).Any(key =>
+                !this.keyboardState.IsKeyDown(key) &&
+                 this.previousKeyboardState.IsKeyDown(key)
+            );
         }
 
         internal bool Canceled(Keys key)

@@ -1,4 +1,4 @@
-﻿using Depths.Core.Constants;
+﻿using Depths.Core.Enums.Inputs;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
@@ -27,13 +27,13 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void HandleUserMainSectionInputs()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
+            if (this.inputManager.Started(DCommandType.Cancel))
             {
                 this.guiManager.Close(this.Identifier);
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.Confirm))
+            if (this.inputManager.Started(DCommandType.Confirm))
             {
                 this.currentPageIndex = 0;
 
@@ -54,7 +54,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.Up) || this.inputManager.Started(DKeyMappingConstant.Down))
+            if (this.inputManager.Started(DCommandType.Up) || this.inputManager.Started(DCommandType.Down))
             {
                 switch (this.selectedButton)
                 {
@@ -76,19 +76,19 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void HandleUserUpgradeSectionInputs()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
+            if (this.inputManager.Started(DCommandType.Cancel))
             {
                 this.selectedSection = DSection.Main;
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Confirm))
+            else if (this.inputManager.Started(DCommandType.Confirm))
             {
                 _ = this.purchasableUpgrades[this.currentPageIndex].TryBuy(this.gameInformation.PlayerEntity);
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Left))
+            else if (this.inputManager.Started(DCommandType.Left))
             {
                 PreviousPage(DSection.Upgrades);
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Right))
+            else if (this.inputManager.Started(DCommandType.Right))
             {
                 NextPage(DSection.Upgrades);
             }
@@ -96,19 +96,19 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void HandleUserItemSectionInputs()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
+            if (this.inputManager.Started(DCommandType.Cancel))
             {
                 this.selectedSection = DSection.Main;
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Confirm))
+            else if (this.inputManager.Started(DCommandType.Confirm))
             {
                 _ = this.purchasableItems[this.currentPageIndex].TryBuy(this.gameInformation.PlayerEntity);
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Left))
+            else if (this.inputManager.Started(DCommandType.Left))
             {
                 PreviousPage(DSection.Items);
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Right))
+            else if (this.inputManager.Started(DCommandType.Right))
             {
                 NextPage(DSection.Items);
             }

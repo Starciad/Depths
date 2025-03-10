@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
+using Depths.Core.Enums.Inputs;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
@@ -143,20 +144,20 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void HandleUserInputs()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.Cancel))
+            if (this.inputManager.Started(DCommandType.Cancel))
             {
                 this.guiManager.Close(this.Identifier);
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.Left))
+            if (this.inputManager.Started(DCommandType.Left))
             {
                 NextPage();
                 SyncTitleTextElement();
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.Right))
+            if (this.inputManager.Started(DCommandType.Right))
             {
                 PreviousPage();
                 SyncTitleTextElement();

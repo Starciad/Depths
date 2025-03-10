@@ -6,7 +6,6 @@ using Depths.Core.Databases;
 using Depths.Core.Entities.Common;
 using Depths.Core.Generators;
 using Depths.Core.Interfaces.General;
-using Depths.Core.IO;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
@@ -18,7 +17,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using System;
-using System.IO;
 
 namespace Depths.Core
 {

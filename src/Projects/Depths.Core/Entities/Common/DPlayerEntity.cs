@@ -1,5 +1,6 @@
 ﻿using Depths.Core.Audio;
 using Depths.Core.Constants;
+using Depths.Core.Enums.Inputs;
 using Depths.Core.Enums.World;
 using Depths.Core.Items;
 using Depths.Core.Managers;
@@ -209,13 +210,13 @@ namespace Depths.Core.Entities.Common
 
         private void HandleGuiInput()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.GameInfos))
+            if (this.inputManager.Started(DCommandType.GameInfos))
             {
                 this.guiManager.Open("Player Information");
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.TruckStore) && this.gameInformation.IsPlayerOnSurface)
+            if (this.inputManager.Started(DCommandType.TruckStore) && this.gameInformation.IsPlayerOnSurface)
             {
                 this.guiManager.Open("Truck Store");
                 return;
@@ -234,11 +235,11 @@ namespace Depths.Core.Entities.Common
 
             sbyte deltaX = 0;
 
-            if (this.inputManager.Started(DKeyMappingConstant.Left))
+            if (this.inputManager.Started(DCommandType.Left))
             {
                 deltaX = -1;
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Right))
+            else if (this.inputManager.Started(DCommandType.Right))
             {
                 deltaX = 1;
             }
@@ -270,11 +271,11 @@ namespace Depths.Core.Entities.Common
         {
             sbyte deltaY = 0;
 
-            if (this.inputManager.Started(DKeyMappingConstant.Up))
+            if (this.inputManager.Started(DCommandType.Up))
             {
                 deltaY = -1;
             }
-            else if (this.inputManager.Started(DKeyMappingConstant.Down))
+            else if (this.inputManager.Started(DCommandType.Down))
             {
                 deltaY = 1;
             }
@@ -318,7 +319,7 @@ namespace Depths.Core.Entities.Common
 
         private void HandlePlaceStairInput()
         {
-            if (!this.inputManager.Started(DKeyMappingConstant.PlaceStair))
+            if (!this.inputManager.Started(DCommandType.PlaceStair))
             {
                 return;
             }
@@ -334,7 +335,7 @@ namespace Depths.Core.Entities.Common
 
         private void HandlePlacePlataformInput()
         {
-            if (!this.inputManager.Started(DKeyMappingConstant.PlacePlataform))
+            if (!this.inputManager.Started(DCommandType.PlacePlataform))
             {
                 return;
             }
@@ -351,7 +352,7 @@ namespace Depths.Core.Entities.Common
 
         private void HandlePlaceRobotInput()
         {
-            if (!this.inputManager.Started(DKeyMappingConstant.PlaceRobot))
+            if (!this.inputManager.Started(DCommandType.PlaceRobot))
             {
                 return;
             }

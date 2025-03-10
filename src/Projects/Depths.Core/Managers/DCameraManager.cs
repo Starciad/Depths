@@ -1,5 +1,4 @@
 ﻿using Depths.Core.Constants;
-using Depths.Core.Mathematics.Primitives;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

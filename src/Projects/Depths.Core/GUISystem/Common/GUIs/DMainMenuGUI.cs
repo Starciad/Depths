@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Databases;
 using Depths.Core.Enums.Fonts;
+using Depths.Core.Enums.Inputs;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
@@ -102,20 +103,20 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void HandleUserInput()
         {
-            if (this.inputManager.Started(DKeyMappingConstant.Confirm))
+            if (this.inputManager.Started(DCommandType.Confirm))
             {
                 this.buttons[this.buttonIndex].OnClickCallback?.Invoke();
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.Up))
+            if (this.inputManager.Started(DCommandType.Up))
             {
                 UpButton();
                 SyncButtonElement();
                 return;
             }
 
-            if (this.inputManager.Started(DKeyMappingConstant.Down))
+            if (this.inputManager.Started(DCommandType.Down))
             {
                 DownButton();
                 SyncButtonElement();
