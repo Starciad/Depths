@@ -210,6 +210,12 @@ namespace Depths.Core.Entities.Common
 
         private void HandleGuiInput()
         {
+            if (this.inputManager.Started(DCommandType.Cancel))
+            {
+                this.guiManager.Open("Pause");
+                return;
+            }
+
             if (this.inputManager.Started(DCommandType.GameInfos))
             {
                 this.guiManager.Open("Player Information");

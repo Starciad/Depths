@@ -4,6 +4,7 @@ using Depths.Core.Enums.Fonts;
 using Depths.Core.Enums.Inputs;
 using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
+using Depths.Core.GUISystem.Helpers;
 using Depths.Core.Managers;
 
 using Microsoft.Xna.Framework;
@@ -14,12 +15,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed class DMainMenuGUI : DGUI
     {
-        private sealed class DButton(string name, Action onClickCallback)
-        {
-            internal string Name => name;
-            internal Action OnClickCallback => onClickCallback;
-        }
-
         private bool backgroundAnimationState;
         private byte backgroundAnimationFrameCounter;
         private sbyte buttonIndex;
