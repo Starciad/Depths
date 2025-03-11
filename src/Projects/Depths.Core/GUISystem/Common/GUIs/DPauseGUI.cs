@@ -93,6 +93,11 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void HandleUserInput()
         {
+            if (this.inputManager.Started(DCommandType.Cancel))
+            {
+                return;
+            }
+
             if (this.inputManager.Started(DCommandType.Confirm))
             {
                 this.buttons[this.buttonIndex].OnClickCallback?.Invoke();

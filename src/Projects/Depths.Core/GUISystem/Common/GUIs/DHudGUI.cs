@@ -135,15 +135,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         internal override void Update()
         {
-            base.Update();
-
-            UpdateArrowVisibility();
             UpdateTextAnimations();
-        }
-
-        private void UpdateArrowVisibility()
-        {
-
         }
 
         private void UpdateTextAnimations()
