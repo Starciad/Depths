@@ -1,6 +1,7 @@
 ﻿using Depths.Core.Constants;
 using Depths.Core.Entities.Common;
 using Depths.Core.Interfaces.General;
+using Depths.Core.IO;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
@@ -13,7 +14,7 @@ namespace Depths.Core
         internal DPlayerEntity PlayerEntity { get; private set; }
         internal DTruckEntity TruckEntity { get; private set; }
         internal DIdolHeadEntity IdolHeadEntity { get; private set; }
-        internal byte IdolHeadSpriteIndex { get; private set; }
+        internal byte IdolHeadSpriteIndex { get; set; }
 
         internal bool TransitionIsDisabled { get; set; }
 
@@ -32,9 +33,9 @@ namespace Depths.Core
         internal bool IsWorldActive { get; set; }
         internal bool IsWorldVisible { get; set; }
 
-        internal bool IsPlayerOnSurface { get; private set; }
-        internal bool IsPlayerInUnderground { get; private set; }
-        internal bool IsPlayerInDepth { get; private set; }
+        internal bool IsPlayerOnSurface { get; set; }
+        internal bool IsPlayerInUnderground { get; set; }
+        internal bool IsPlayerInDepth { get; set; }
 
         internal delegate void GameStarted();
         internal delegate void GameOver();
@@ -84,7 +85,30 @@ namespace Depths.Core
 
             this.IsGameStarted = true;
             this.OnGameStarted?.Invoke();
+
+#if DESKTOP
+            SaveGame();
+#endif
         }
+
+#if DESKTOP
+        internal void SaveGame()
+        {
+            DGameSave.Serialize(this);
+        }
+
+        internal void LoadGame()
+        {
+            try
+            {
+                DGameSave.Deserialize(this);
+            }
+            catch (Exception)
+            {
+                Start();
+            }
+        }
+#endif
 
         internal void Update()
         {

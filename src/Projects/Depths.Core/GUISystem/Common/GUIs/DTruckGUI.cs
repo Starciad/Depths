@@ -5,6 +5,7 @@ using Depths.Core.Enums.Text;
 using Depths.Core.GUISystem.Common.Elements;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics.Primitives;
+using Depths.Core.Shop;
 
 using Microsoft.Xna.Framework;
 
@@ -23,9 +24,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private byte pageAnimationFrameCounter;
 
         private readonly byte pageAnimationFrameDelay = 10;
-
-        private readonly DPurchasableItem[] purchasableUpgrades;
-        private readonly DPurchasableItem[] purchasableItems;
 
         private readonly DGUITextElement currentMoneyTextElement;
         private readonly DGUITextElement pageTitleTextElement;
@@ -52,12 +50,14 @@ namespace Depths.Core.GUISystem.Common.GUIs
         private readonly DInputManager inputManager;
         private readonly DGUIManager guiManager;
         private readonly DGameInformation gameInformation;
+        private readonly DShopDatabase shopDatabase;
 
-        internal DTruckGUI(string identifier, DAssetDatabase assetDatabase, DGameInformation gameInformation, DGUIManager guiManager, DInputManager inputManager, DTextManager textManager) : base(identifier)
+        internal DTruckGUI(string identifier, DAssetDatabase assetDatabase, DGameInformation gameInformation, DGUIManager guiManager, DInputManager inputManager, DShopDatabase shopDatabase, DTextManager textManager) : base(identifier)
         {
             this.inputManager = inputManager;
             this.guiManager = guiManager;
             this.gameInformation = gameInformation;
+            this.shopDatabase = shopDatabase;
 
             // ============================ //
 
@@ -118,112 +118,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
                 new(20, 36),
                 new(16, 36),
             ];
-
-            #region ITEMS
-            // Upgrades
-            this.purchasableUpgrades = [
-                new("Energy", 8, true, 2f)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = gameInformation.PlayerEntity.MaximumEnergy;
-                        item.NextPreviewValue = gameInformation.PlayerEntity.MaximumEnergy + DPlayerConstants.DEFAULT_MAXIMUM_STARTING_ENERGY;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.MaximumEnergy = (byte)item.NextPreviewValue;
-                    },
-                },
-
-                new("Power", 6, true, 2f)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = gameInformation.PlayerEntity.Power;
-                        item.NextPreviewValue = gameInformation.PlayerEntity.Power + DPlayerConstants.DEFAULT_STARTING_POWER;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.Power = (byte)item.NextPreviewValue;
-                    },
-                },
-
-                new("Damage", 6, true, 2f)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = gameInformation.PlayerEntity.Damage;
-                        item.NextPreviewValue = gameInformation.PlayerEntity.Damage + DPlayerConstants.DEFAULT_STARTING_DAMAGE;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.Damage = (byte)item.NextPreviewValue;
-                    },
-                },
-
-                new("Bag Size", 10, true, 2f)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = gameInformation.PlayerEntity.BackpackSize;
-                        item.NextPreviewValue = gameInformation.PlayerEntity.BackpackSize + DPlayerConstants.DEFAULT_STARTING_BAG_SIZE;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.BackpackSize = (byte)item.NextPreviewValue;
-                    },
-                },
-            ];
-
-            // Items
-            this.purchasableItems = [
-                new("Stairs", 5, false, 0)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.StairCount;
-                        item.NextPreviewValue = (int)gameInformation.PlayerEntity.StairCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_STAIRS;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.StairCount = (uint)item.NextPreviewValue;
-                    },
-                },
-
-                new("Plataforms", 8, false, 0)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.PlataformCount;
-                        item.NextPreviewValue = (int)gameInformation.PlayerEntity.PlataformCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_PLATAFORMS;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.PlataformCount = (uint)item.NextPreviewValue;
-                    },
-                },
-
-                new("Miners", 25, false, 0)
-                {
-                    OnSyncPreviewValuesCallback = (DPurchasableItem item) =>
-                    {
-                        item.CurrentPreviewValue = (int)gameInformation.PlayerEntity.RobotCount;
-                        item.NextPreviewValue = (int)gameInformation.PlayerEntity.RobotCount + DPlayerConstants.DEFAULT_STARTING_NUMBER_OF_ROBOTS;
-                    },
-
-                    OnBuyCallback = (DPurchasableItem item) =>
-                    {
-                        gameInformation.PlayerEntity.RobotCount = (uint)item.NextPreviewValue;
-                    },
-                },
-            ];
-            #endregion
         }
 
         protected override void OnBuild()
@@ -261,12 +155,12 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         public override void Reset()
         {
-            foreach (DPurchasableItem purchasableItem in this.purchasableUpgrades)
+            foreach (DPurchasableItem purchasableItem in this.shopDatabase.PurchasableUpgrades)
             {
                 purchasableItem.Reset();
             }
 
-            foreach (DPurchasableItem purchasableItem in this.purchasableItems)
+            foreach (DPurchasableItem purchasableItem in this.shopDatabase.PurchasableItems)
             {
                 purchasableItem.Reset();
             }
