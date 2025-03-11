@@ -46,7 +46,7 @@ namespace Depths.Core.Entities.Common
         internal byte BackpackSize { get => this.backpackSize; set => this.backpackSize = value; }
         internal sbyte HorizontalDirectionDelta { get => this.horizontalDirectionDelta; set => this.horizontalDirectionDelta = value; }
         internal byte Energy { get => this.energy; set => this.energy = value; }
-        internal bool IsDead => this.isDead;
+        internal bool IsDead { get => this.isDead; set => this.isDead = value; }
         internal byte MaximumEnergy { get => this.maximumEnergy; set => this.maximumEnergy = value; }
         internal uint Money { get => this.money; set => this.money = value; }
         internal byte Power { get => this.power; set => this.power = value; }

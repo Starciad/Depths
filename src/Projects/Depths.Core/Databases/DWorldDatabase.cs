@@ -25,7 +25,7 @@ namespace Depths.Core.Databases
                     Name = "Coal",
                     Rarity = DRarity.Common,
                     Resistance = 1,
-                    Value = 1
+                    Value = 2
                 },
 
                 new()
@@ -35,7 +35,7 @@ namespace Depths.Core.Databases
                     Name = "Limestone",
                     Rarity = DRarity.Common,
                     Resistance = 1,
-                    Value = 2
+                    Value = 3
                 },
 
                 new()
@@ -45,7 +45,7 @@ namespace Depths.Core.Databases
                     Name = "Quartz",
                     Rarity = DRarity.Common,
                     Resistance = 1,
-                    Value = 2
+                    Value = 3
                 },
 
                 new()
@@ -55,7 +55,7 @@ namespace Depths.Core.Databases
                     Name = "Ambar",
                     Rarity = DRarity.Uncommon,
                     Resistance = 2,
-                    Value = 4
+                    Value = 5
                 },
 
                 new()
@@ -65,7 +65,7 @@ namespace Depths.Core.Databases
                     Name = "Iron",
                     Rarity = DRarity.Uncommon,
                     Resistance = 3,
-                    Value = 3
+                    Value = 4
                 },
 
                 new()
@@ -75,7 +75,7 @@ namespace Depths.Core.Databases
                     Name = "Sulfur",
                     Rarity = DRarity.Common,
                     Resistance = 2,
-                    Value = 3
+                    Value = 4
                 },
 
                 new()
@@ -85,7 +85,7 @@ namespace Depths.Core.Databases
                     Name = "Emerald",
                     Rarity = DRarity.Rare,
                     Resistance = 5,
-                    Value = 7
+                    Value = 8
                 },
 
                 new()
@@ -95,7 +95,7 @@ namespace Depths.Core.Databases
                     Name = "Gold",
                     Rarity = DRarity.Rare,
                     Resistance = 4,
-                    Value = 6
+                    Value = 7
                 },
 
                 new()
@@ -105,7 +105,7 @@ namespace Depths.Core.Databases
                     Name = "Lapis Lazuli",
                     Rarity = DRarity.Rare,
                     Resistance = 4,
-                    Value = 5
+                    Value = 6
                 },
 
                 new()
@@ -115,7 +115,7 @@ namespace Depths.Core.Databases
                     Name = "Sapphire",
                     Rarity = DRarity.VeryRare,
                     Resistance = 7,
-                    Value = 10
+                    Value = 11
                 },
 
                 new()
@@ -125,7 +125,7 @@ namespace Depths.Core.Databases
                     Name = "Diamond",
                     Rarity = DRarity.VeryRare,
                     Resistance = 8,
-                    Value = 12
+                    Value = 13
                 },
 
                 new()
@@ -135,7 +135,7 @@ namespace Depths.Core.Databases
                     Name = "Ruby",
                     Rarity = DRarity.ExtremelyRare,
                     Resistance = 9,
-                    Value = 15
+                    Value = 16
                 },
 
                 new()
@@ -145,7 +145,7 @@ namespace Depths.Core.Databases
                     Name = "Onyx",
                     Rarity = DRarity.Legendary,
                     Resistance = 10,
-                    Value = 20
+                    Value = 21
                 },
 
                 new()
@@ -155,7 +155,7 @@ namespace Depths.Core.Databases
                     Name = "Amethyst",
                     Rarity = DRarity.Legendary,
                     Resistance = 10,
-                    Value = 22
+                    Value = 23
                 },
             ];
 

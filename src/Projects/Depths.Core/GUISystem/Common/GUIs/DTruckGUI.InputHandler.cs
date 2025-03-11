@@ -1,5 +1,7 @@
 ﻿using Depths.Core.Enums.Inputs;
 
+using System.Linq;
+
 namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed partial class DTruckGUI
@@ -82,7 +84,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             }
             else if (this.inputManager.Started(DCommandType.Confirm))
             {
-                _ = this.purchasableUpgrades[this.currentPageIndex].TryBuy(this.gameInformation.PlayerEntity);
+                _ = this.shopDatabase.PurchasableUpgrades.ElementAt(this.currentPageIndex).TryBuy(this.gameInformation.PlayerEntity);
             }
             else if (this.inputManager.Started(DCommandType.Left))
             {
@@ -102,7 +104,7 @@ namespace Depths.Core.GUISystem.Common.GUIs
             }
             else if (this.inputManager.Started(DCommandType.Confirm))
             {
-                _ = this.purchasableItems[this.currentPageIndex].TryBuy(this.gameInformation.PlayerEntity);
+                _ = this.shopDatabase.PurchasableItems.ElementAt(this.currentPageIndex).TryBuy(this.gameInformation.PlayerEntity);
             }
             else if (this.inputManager.Started(DCommandType.Left))
             {

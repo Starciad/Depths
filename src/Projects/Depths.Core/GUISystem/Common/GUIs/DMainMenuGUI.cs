@@ -67,14 +67,6 @@ namespace Depths.Core.GUISystem.Common.GUIs
                     gameInformation.Start();
                 }),
 
-#if DESKTOP
-                new("Load", () =>
-                {
-                    guiManager.Close(identifier);
-                    gameInformation.LoadGame();
-                }),
-#endif
-
                 new("Cast", () =>
                 {
                     guiManager.Close(identifier);

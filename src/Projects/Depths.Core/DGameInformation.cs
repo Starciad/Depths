@@ -85,30 +85,7 @@ namespace Depths.Core
 
             this.IsGameStarted = true;
             this.OnGameStarted?.Invoke();
-
-#if DESKTOP
-            SaveGame();
-#endif
         }
-
-#if DESKTOP
-        internal void SaveGame()
-        {
-            DGameSave.Serialize(this);
-        }
-
-        internal void LoadGame()
-        {
-            try
-            {
-                DGameSave.Deserialize(this);
-            }
-            catch (Exception)
-            {
-                Start();
-            }
-        }
-#endif
 
         internal void Update()
         {

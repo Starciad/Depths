@@ -29,7 +29,7 @@ namespace Depths.Core.Audio
             public void Reset()
             {
                 this.instance.Stop();
-                this.instance.Volume = 0.02f;
+                this.instance.Volume = 1f;
                 this.instance.Pitch = 0.0f;
                 this.instance.Pan = 0.0f;
             }

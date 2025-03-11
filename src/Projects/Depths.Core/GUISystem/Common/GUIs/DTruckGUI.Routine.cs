@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Depths.Core.Shop;
+
+using Microsoft.Xna.Framework;
 
 namespace Depths.Core.GUISystem.Common.GUIs
 {
@@ -15,12 +17,12 @@ namespace Depths.Core.GUISystem.Common.GUIs
 
         private void SyncItems()
         {
-            foreach (DPurchasableItem item in this.purchasableUpgrades)
+            foreach (DPurchasableItem item in this.shopDatabase.PurchasableUpgrades)
             {
                 item.Sync();
             }
 
-            foreach (DPurchasableItem item in this.purchasableItems)
+            foreach (DPurchasableItem item in this.shopDatabase.PurchasableItems)
             {
                 item.Sync();
             }

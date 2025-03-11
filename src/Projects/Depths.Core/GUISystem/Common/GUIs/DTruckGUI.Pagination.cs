@@ -1,4 +1,8 @@
-﻿namespace Depths.Core.GUISystem.Common.GUIs
+﻿using Depths.Core.Shop;
+
+using System.Linq;
+
+namespace Depths.Core.GUISystem.Common.GUIs
 {
     internal sealed partial class DTruckGUI
     {
@@ -22,8 +26,8 @@
         {
             return section switch
             {
-                DSection.Upgrades => this.purchasableUpgrades.Length - 1,
-                DSection.Items => this.purchasableItems.Length - 1,
+                DSection.Upgrades => this.shopDatabase.PurchasableUpgrades.Count() - 1,
+                DSection.Items => this.shopDatabase.PurchasableItems.Count() - 1,
                 _ => 0,
             };
         }
@@ -32,8 +36,8 @@
         {
             DPurchasableItem item = section switch
             {
-                DSection.Upgrades => this.purchasableUpgrades[this.currentPageIndex],
-                DSection.Items => this.purchasableItems[this.currentPageIndex],
+                DSection.Upgrades => this.shopDatabase.PurchasableUpgrades.ElementAt(this.currentPageIndex),
+                DSection.Items => this.shopDatabase.PurchasableItems.ElementAt(this.currentPageIndex),
                 _ => null,
             };
 

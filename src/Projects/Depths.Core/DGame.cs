@@ -28,6 +28,7 @@ namespace Depths.Core
     {
         private DBackground background;
         private SpriteBatch spriteBatch;
+        private DShopDatabase shopDatabase;
 
 #if DEBUG
         private DRecorder recorder;
@@ -143,6 +144,7 @@ namespace Depths.Core
             this.textManager.Initialize();
 
             this.background = new(this.assetDatabase, this.graphicsManager);
+            this.shopDatabase = new(this.gameInformation);
 
             DAudioEngine.Initialize(this.assetDatabase);
 
@@ -160,7 +162,7 @@ namespace Depths.Core
 
         protected override void BeginRun()
         {
-            this.guiDatabase.Initialize(this.assetDatabase, this.gameInformation, this.guiManager, this.inputManager, this.musicManager, this.textManager);
+            this.guiDatabase.Initialize(this.assetDatabase, this.gameInformation, this.guiManager, this.inputManager, this.musicManager, this.shopDatabase, this.textManager);
 
             BuildEvents();
 

@@ -105,7 +105,7 @@ namespace Depths.Core.Databases
                     },
                 },
 
-                new("Miners", 25, false, 0)
+                new("Miners", 30, false, 0)
                 {
                     OnSyncPreviewValuesCallback = (item) =>
                     {
