@@ -17,11 +17,7 @@ $beauty2Ignored  = "SDL2.dll;libSDL2-2.0.so.0;libopenal.so.1;libopenal.1.dylib;l
 
 # ---------------------- Project Paths ---------------------- #
 $windowsDXProject  = "..\..\Projects\Depths.Game\Depths.WindowsDX.Game\Depths.WindowsDX.Game.csproj"
-$desktopGLProject  = "..\..\Projects\Depths.Game\Depths.DesktopGL.Game\Depths.DesktopGL.Game.csproj"
 $webGLProject      = "..\..\Projects\Depths.Game\Depths.WebGL.Game\Depths.WebGL.Game.csproj"
-
-# ---------------------- Platforms ---------------------- #
-$platforms = @("win-x64", "linux-x64", "osx-x64")
 
 # ---------------------- Clean Output Directory ---------------------- #
 if (Test-Path $outputDirRoot) {
@@ -32,7 +28,6 @@ if (Test-Path $outputDirRoot) {
 # ---------------------- Restore Projects ---------------------- #
 Write-Host "Restoring .NET projects..."
 
-dotnet restore "..\..\Projects\Depths.DesktopGL.Project.sln"
 dotnet restore "..\..\Projects\Depths.WindowsDX.Project.sln"
 dotnet restore "..\..\Projects\Depths.WebGL.Project.sln"
 
@@ -90,38 +85,10 @@ function Publish-BlazorProject {
 
 # Publish WindowsDX project for win-x64
 Write-Host "Publishing Depths (WindowsDX) for Win-x64..."
-Publish-Project -projectName "windowsdx" -projectPath $windowsDXProject -platform $platforms[0]
-
-# Publish DesktopGL project for all specified platforms
-# Write-Host "Publishing Depths (DesktopGL) for all platforms..."
-# foreach ($platform in $platforms) {
-#    Publish-Project -projectName "desktopgl" -projectPath $desktopGLProject -platform $platform
-#    Write-Host "Proceeding to the next platform..."
-# }
+Publish-Project -projectName "windowsdx" -projectPath $windowsDXProject -platform "win-x64"
 
 # Publish WebGL project (Blazor)
 Write-Host "Publishing Depths (WebGL)..."
 Publish-BlazorProject -projectName "webgl" -projectPath $webGLProject
 
 Write-Host "All publishing processes have been completed."
-
-# ---------------------- Assets Copying with Exclusions ---------------------- #
-
-Write-Host "Copying assets directory while excluding unwanted subdirectories (bin, obj)..."
-$assetsSource    = "..\..\Projects\Depths.Core\Assets\"
-$licenseFile     = "..\..\..\LICENSE-ASSETS.txt"
-$assetsDest      = "$outputDirRoot\$gameName.$gameVersion.assets\Assets"
-$excludeDirs     = "bin","obj"
-
-# Create the destination directory
-New-Item -ItemType Directory -Path $assetsDest -Force | Out-Null
-
-# Use Robocopy to copy assets while excluding specified directories
-# /E : Copies all subdirectories, including empty ones.
-# /XD : Excludes directories matching the given names.
-robocopy $assetsSource $assetsDest /E /XD $excludeDirs | Out-Null
-
-# Copy the license file to the assets destination directory
-Copy-Item -Path $licenseFile -Destination $assetsDest -Force
-
-Write-Host "Assets copied to '$assetsDest' with excluded directories omitted."
