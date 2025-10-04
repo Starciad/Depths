@@ -75,11 +75,17 @@ namespace Depths.Core
             // Graphics
             this.graphicsManager = new(new GraphicsDeviceManager(this)
             {
+                GraphicsProfile = GraphicsProfile.Reach,
+                PreferredBackBufferFormat = SurfaceFormat.Color,
                 PreferredBackBufferWidth = DScreenConstants.SCREEN_WIDTH,
                 PreferredBackBufferHeight = DScreenConstants.SCREEN_HEIGHT,
-                GraphicsProfile = GraphicsProfile.Reach,
                 IsFullScreen = false,
                 SynchronizeWithVerticalRetrace = true,
+                HardwareModeSwitch = true,
+                PreferHalfPixelOffset = true,
+                PreferMultiSampling = false,
+                PreferredDepthStencilFormat = DepthFormat.None,
+                SupportedOrientations = DisplayOrientation.Default
             });
 
             // Databases

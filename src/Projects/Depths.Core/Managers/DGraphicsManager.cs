@@ -22,9 +22,9 @@ namespace Depths.Core.Managers
 
         internal void Initialize()
         {
-            this.screenRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT);
-            this.worldRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT);
-            this.guiRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT);
+            this.screenRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents, false);
+            this.worldRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents, false);
+            this.guiRenderTarget = new(this.GraphicsDevice, DScreenConstants.GAME_WIDTH, DScreenConstants.GAME_HEIGHT, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents, false);
         }
 
         internal Vector2 GetScreenScaleFactor()

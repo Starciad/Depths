@@ -398,4 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Game
-assets/
+src/Projects/Depths.Core/Assets
+!src/Projects/Depths.Core/Assets/Assets.mgcb
+
+src/Projects/Depths.Game/Depths.WebGL.Game/wwwroot/Assets/
