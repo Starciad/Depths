@@ -6,7 +6,7 @@ namespace Depths.Core.Constants
     {
         public const string TITLE = "Depths";
 
-        internal static readonly Version VERSION = new(2, 0, 0, 0);
+        internal static readonly Version VERSION = new(2, 1, 0, 0);
         internal const string AUTHOR = "Davi \"Starciad\" Fernandes";
 
         public static string GetTitleAndVersionString()

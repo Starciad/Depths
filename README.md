@@ -150,7 +150,6 @@ To compile the game, follow these steps to ensure a smooth setup:
 
 For more details on .NET project structure or troubleshooting, refer to the [official .NET documentation](https://learn.microsoft.com/en-us/dotnet/core/introduction).
 
-
 ## Screenshots
 
 ![screenshot_01]
