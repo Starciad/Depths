@@ -10,6 +10,7 @@ using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
 
 #if DEBUG
+using Depths.Core.RecorderSystem;
 using Microsoft.Xna.Framework.Input;
 #endif
 
@@ -19,7 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 using Depths.Core.BackgroundSystem;
-using Depths.Core.RecorderSystem;
 
 namespace Depths.Core
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 
-using Depths.Core;
 using Depths.Core.IO;
 
 #if WINDOWS_DX
@@ -8,8 +7,8 @@ using System.Windows.Forms;
 #endif
 
 #if !DEBUG
-using Depths.Core.Constants;
 using System.Text;
+using Depths.Core.Constants;
 #endif
 
 namespace Depths.Game
@@ -64,13 +63,13 @@ namespace Depths.Game
             string logFilename = DFile.WriteException(value);
 
             StringBuilder logString = new();
-            _ = logString.AppendLine(string.Concat("An unexpected error caused ", DGameConstants.TITLE, " to crash!"));
+            _ = logString.AppendLine(string.Concat("An unexpected error caused ", GameConstants.TITLE, " to crash!"));
             _ = logString.AppendLine();
             _ = logString.AppendLine(string.Concat("For more details, see the log file at: ", logFilename));
             _ = logString.AppendLine();
             _ = logString.AppendLine($"Exception: {value.Message}");
 
-            _ = MessageBox.Show(logString.ToString(), $"{DGameConstants.GetTitleAndVersionString()} - Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _ = MessageBox.Show(logString.ToString(), $"{GameConstants.GetTitleAndVersionString()} - Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 #endif
     }
