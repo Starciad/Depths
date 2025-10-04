@@ -1,5 +1,4 @@
 ﻿using Depths.Core.Audio;
-using Depths.Core.Background;
 using Depths.Core.Colors;
 using Depths.Core.Constants;
 using Depths.Core.Databases;
@@ -9,11 +8,8 @@ using Depths.Core.Interfaces.General;
 using Depths.Core.Managers;
 using Depths.Core.Mathematics;
 using Depths.Core.Mathematics.Primitives;
-using Depths.Core.World;
 
 #if DEBUG
-using Depths.Core.Recorder;
-
 using Microsoft.Xna.Framework.Input;
 #endif
 
@@ -22,16 +18,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 using System;
 
+using Depths.Core.BackgroundSystem;
+using Depths.Core.RecorderSystem;
+
 namespace Depths.Core
 {
-    public sealed class DGame : Game, IDResettable
+    public sealed class DGame : Microsoft.Xna.Framework.Game, IResettable
     {
-        private DBackground background;
+        private Background background;
         private SpriteBatch spriteBatch;
-        private DShopDatabase shopDatabase;
+        private ShopDatabase shopDatabase;
 
 #if DEBUG
-        private DRecorder recorder;
+        private Recorder recorder;
 #endif
 
         private byte idolCutsceneFrameCounter;
@@ -50,25 +49,25 @@ namespace Depths.Core
         private readonly DPoint cameraLobbyPosition;
         private readonly DPoint idolHeadSpawnPosition;
 
-        private readonly DAssetDatabase assetDatabase;
-        private readonly DMusicDatabase musicDatabase;
-        private readonly DEntityDatabase entityDatabase;
-        private readonly DWorldDatabase worldDatabase;
-        private readonly DGUIDatabase guiDatabase;
+        private readonly AssetDatabase assetDatabase;
+        private readonly MusicDatabase musicDatabase;
+        private readonly EntityDatabase entityDatabase;
+        private readonly WorldDatabase worldDatabase;
+        private readonly GUIDatabase guiDatabase;
 
-        private readonly DGraphicsManager graphicsManager;
-        private readonly DInputManager inputManager;
-        private readonly DTextManager textManager;
-        private readonly DMusicManager musicManager;
-        private readonly DEntityManager entityManager;
-        private readonly DCameraManager cameraManager;
-        private readonly DWorldTransitionManager worldTransitionManager;
-        private readonly DGUIManager guiManager;
+        private readonly GraphicsManager graphicsManager;
+        private readonly InputManager inputManager;
+        private readonly TextManager textManager;
+        private readonly MusicManager musicManager;
+        private readonly EntityManager entityManager;
+        private readonly CameraManager cameraManager;
+        private readonly WorldTransitionManager worldTransitionManager;
+        private readonly GUIManager guiManager;
 
-        private readonly DWorld world;
+        private readonly World.World world;
 
-        private readonly DGameWorldGenerator gameGenerator;
-        private readonly DGameInformation gameInformation;
+        private readonly GameWorldGenerator gameGenerator;
+        private readonly GameInformation gameInformation;
 
         public DGame()
         {
@@ -77,8 +76,8 @@ namespace Depths.Core
             {
                 GraphicsProfile = GraphicsProfile.Reach,
                 PreferredBackBufferFormat = SurfaceFormat.Color,
-                PreferredBackBufferWidth = DScreenConstants.SCREEN_WIDTH,
-                PreferredBackBufferHeight = DScreenConstants.SCREEN_HEIGHT,
+                PreferredBackBufferWidth = ScreenConstants.SCREEN_WIDTH,
+                PreferredBackBufferHeight = ScreenConstants.SCREEN_HEIGHT,
                 IsFullScreen = false,
                 SynchronizeWithVerticalRetrace = true,
                 HardwareModeSwitch = true,
@@ -119,26 +118,26 @@ namespace Depths.Core
             };
 
             // Initialize Content
-            this.Content.RootDirectory = DDirectoryConstants.ASSETS;
+            this.Content.RootDirectory = DirectoryConstants.ASSETS;
 
             // Configure the game's window
             this.Window.AllowUserResizing = true;
             this.Window.IsBorderless = false;
-            this.Window.Title = DGameConstants.GetTitleAndVersionString();
+            this.Window.Title = GameConstants.GetTitleAndVersionString();
 
             // Configure game settings
-            this.TargetElapsedTime = TimeSpan.FromSeconds(1f / DVideoConstants.GAME_FRAME_RATE);
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1f / VideoConstants.GAME_FRAME_RATE);
             this.IsMouseVisible = false;
             this.IsFixedTimeStep = true;
 
             // Positions
             this.playerSpawnPosition = new(this.world.Tilemap.Size.Width / 2, 4);
             this.playerLobbyPosition = new((this.world.Tilemap.Size.Width / 2) - 3, 4);
-            this.truckSpawnPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + DWorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new DPoint(0, 10);
-            this.truckLobbyPosition = DTilemapMath.ToGlobalPosition(new((DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2)) + (DWorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new DPoint(-6, 10);
-            this.cameraLobbyPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), 0));
-            this.cameraIdolPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1) * -1));
-            this.idolHeadSpawnPosition = DTilemapMath.ToGlobalPosition(new(DWorldConstants.TILES_PER_CHUNK_WIDTH * (DWorldConstants.WORLD_WIDTH / 2), DWorldConstants.TILES_PER_CHUNK_HEIGHT * (DWorldConstants.WORLD_HEIGHT - 1))) + new DPoint((DScreenConstants.GAME_WIDTH / 2) - 10, 12);
+            this.truckSpawnPosition = TilemapMath.ToGlobalPosition(new((WorldConstants.TILES_PER_CHUNK_WIDTH * (WorldConstants.WORLD_WIDTH / 2)) + WorldConstants.TILES_PER_CHUNK_WIDTH, 0)) + new DPoint(0, 10);
+            this.truckLobbyPosition = TilemapMath.ToGlobalPosition(new((WorldConstants.TILES_PER_CHUNK_WIDTH * (WorldConstants.WORLD_WIDTH / 2)) + (WorldConstants.TILES_PER_CHUNK_WIDTH / 2), 0)) + new DPoint(-6, 10);
+            this.cameraLobbyPosition = TilemapMath.ToGlobalPosition(new(WorldConstants.TILES_PER_CHUNK_WIDTH * (WorldConstants.WORLD_WIDTH / 2), 0));
+            this.cameraIdolPosition = TilemapMath.ToGlobalPosition(new(WorldConstants.TILES_PER_CHUNK_WIDTH * (WorldConstants.WORLD_WIDTH / 2), WorldConstants.TILES_PER_CHUNK_HEIGHT * (WorldConstants.WORLD_HEIGHT - 1) * -1));
+            this.idolHeadSpawnPosition = TilemapMath.ToGlobalPosition(new(WorldConstants.TILES_PER_CHUNK_WIDTH * (WorldConstants.WORLD_WIDTH / 2), WorldConstants.TILES_PER_CHUNK_HEIGHT * (WorldConstants.WORLD_HEIGHT - 1))) + new DPoint((ScreenConstants.GAME_WIDTH / 2) - 10, 12);
         }
 
         protected override void Initialize()
@@ -152,7 +151,7 @@ namespace Depths.Core
             this.background = new(this.assetDatabase, this.graphicsManager);
             this.shopDatabase = new(this.gameInformation);
 
-            DAudioEngine.Initialize(this.assetDatabase);
+            AudioEngine.Initialize(this.assetDatabase);
 
             base.Initialize();
         }
@@ -201,9 +200,9 @@ namespace Depths.Core
 
                 // ======================= //
 
-                this.gameInformation.SetPlayerEntity((DPlayerEntity)this.entityManager.InstantiateEntity("Player", null));
-                this.gameInformation.SetTruckEntity((DTruckEntity)this.entityManager.InstantiateEntity("Truck Store", null));
-                this.gameInformation.SetIdolHeadEntity((DIdolHeadEntity)this.entityManager.InstantiateEntity("Idol Head", null));
+                this.gameInformation.SetPlayerEntity((PlayerEntity)this.entityManager.InstantiateEntity("Player", null));
+                this.gameInformation.SetTruckEntity((TruckEntity)this.entityManager.InstantiateEntity("Truck Store", null));
+                this.gameInformation.SetIdolHeadEntity((IdolHeadEntity)this.entityManager.InstantiateEntity("Idol Head", null));
 
                 // ======================= //
 
@@ -414,7 +413,7 @@ namespace Depths.Core
                 return;
             }
 
-            this.worldTransitionManager.Update(DTilemapMath.ToGlobalPosition(this.gameInformation.PlayerEntity.Position));
+            this.worldTransitionManager.Update(TilemapMath.ToGlobalPosition(this.gameInformation.PlayerEntity.Position));
         }
 
         protected override void Draw(GameTime gameTime)
@@ -446,7 +445,7 @@ namespace Depths.Core
 
             #region RENDERING (SCREEN)
             this.GraphicsDevice.SetRenderTarget(this.graphicsManager.ScreenRenderTarget);
-            this.GraphicsDevice.Clear(DColorPalette.LightGreen);
+            this.GraphicsDevice.Clear(NokiaColorPalette.LightGreen);
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
             this.spriteBatch.Draw(this.graphicsManager.WorldRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
@@ -456,10 +455,10 @@ namespace Depths.Core
 
             #region RENDERING (FINAL)
             this.GraphicsDevice.SetRenderTarget(null);
-            this.GraphicsDevice.Clear(DColorPalette.LightGreen);
+            this.GraphicsDevice.Clear(NokiaColorPalette.LightGreen);
 
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, null, null);
-            this.spriteBatch.Draw(this.graphicsManager.ScreenRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, DScreenConstants.SCALE_FACTOR * this.graphicsManager.GetScreenScaleFactor(), SpriteEffects.None, 0f);
+            this.spriteBatch.Draw(this.graphicsManager.ScreenRenderTarget, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, ScreenConstants.SCALE_FACTOR * this.graphicsManager.GetScreenScaleFactor(), SpriteEffects.None, 0f);
             this.spriteBatch.End();
             #endregion
 
